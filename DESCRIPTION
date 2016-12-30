@@ -5,6 +5,7 @@ Version: 0.1.0
 Author: Andrew Zammit-Mangion and Christopher Wikle
 Maintainer: Andrew Zammit-Mangion <andrewzm@gmail.com>
 Description: Provides data and helper functions for the Labs in the book.
+Imports: ggplot2, fields
 License: GPL (>2.1)
 LazyData: TRUE
 RoxygenNote: 5.0.1
