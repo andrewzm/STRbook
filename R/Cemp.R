@@ -33,6 +33,7 @@
 # }
 
 # plot subsets of the covariance matrix M
+#' @export
 plot_cov_strips <- function(C,spat_df) {  
     # for each longitudinal strip 
     require(fields)   # load fields for plotting

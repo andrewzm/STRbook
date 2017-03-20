@@ -8,4 +8,4 @@ Description: Provides data and helper functions for the Labs in the book.
 Imports: ggplot2, fields
 License: GPL (>2.1)
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

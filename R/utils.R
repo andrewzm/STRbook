@@ -1,3 +1,4 @@
+#' @export
 LinePlotTheme <- function (df)
 {
     g <- ggplot(df) + theme(panel.background = element_rect(fill = "white",
@@ -12,13 +13,14 @@ LinePlotTheme <- function (df)
 # world_map <- geom_path(data=map_data("world"),
 #           aes(x=long,y=lat,group=group))
 
-
+#' @export
 col_scale <- function(leg_title) {
     scale_colour_distiller(palette="Spectral",   # spectral colour scale
                            guide="colourbar",    # continuous colour bar
                            name=leg_title)
 }
 
+#' @export
 fill_scale <- function(leg_title) {
     scale_fill_distiller(palette="Spectral",   # spectral colour scale
                            guide="colourbar",    # continuous colour bar

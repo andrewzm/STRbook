@@ -7,4 +7,3 @@
 \description{
 Supplementary data for book on ST modelling with R
 }
-
