@@ -5,4 +5,5 @@
 #' @docType package
 #' @import ggplot2
 #' @import fields
+#' @import Matrix
 NULL

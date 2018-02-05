@@ -2,10 +2,12 @@ Package: STRbook
 Type: Package
 Title: Supplementary package for book on ST modelling with R
 Version: 0.1.0
-Author: Andrew Zammit-Mangion and Christopher Wikle
+Authors@R: c(
+    person("Andrew", "Zammit-Mangion", , "andrewzm@gmail.com", c("aut", "cre")),
+    person("Patrick", "McDermott", , "plmyt7@mail.missouri.edu", role = "ctb"))
 Maintainer: Andrew Zammit-Mangion <andrewzm@gmail.com>
 Description: Provides data and helper functions for the Labs in the book.
-Imports: ggplot2, fields
+Imports: ggplot2, fields, Matrix
 License: GPL (>2.1)
 LazyData: TRUE
 RoxygenNote: 6.0.1
