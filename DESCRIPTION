@@ -4,7 +4,7 @@ Title: Supplementary package for book on ST modelling with R
 Version: 0.1.0
 Authors@R: c(
     person("Andrew", "Zammit-Mangion", , "andrewzm@gmail.com", c("aut", "cre")),
-    person("Patrick", "McDermott", , "plmyt7@mail.missouri.edu", role = "ctb"))
+    person("Patrick", "McDermott", , "plmyt7@gmail.com", role = "ctb"))
 Maintainer: Andrew Zammit-Mangion <andrewzm@gmail.com>
 Description: Provides data and helper functions for the Labs in the book.
 Imports: ggplot2, fields, Matrix
