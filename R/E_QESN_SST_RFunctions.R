@@ -100,7 +100,19 @@ setParsEESN=function(regPar,nh,numLocs,m){
 ###### Generates a single reservoir 
 
 #' @export
-genResR=function(nh,echoTrainLen,testLen,designMat,designMatrixOutSample,wWidth,uWidth,piW,piU,nColsU,nuESN,startValuesHMat,ridgeMat,scaledInSampY,inSampMean,inSampStDev,quadInd){
+genResR=function(nh,wWidth,uWidth,piW,piU,nuESN,quadInd,DataObj,setParObj,testLen){
+  
+  echoTrainLen=DataObj$lenInSampleEmb
+  designMat=DataObj$designMatrix 
+  designMatrixOutSample=DataObj$designMatrixOutSample
+  startValuesHMat=setParObj$strValuesXtemp 
+  ridgeMat=setParObj$ridgeMat
+  scaledInSampY=DataObj$curYInSamp 
+  nColsU=ncol(designMat)  
+  inSampMean=DataObj$curInSampMean 
+  inSampStDev=DataObj$curInSampSD
+  # DataObj,setParObj
+  
   U=matrix(runif(nh*nColsU,-uWidth,uWidth),nh)
   W=matrix(runif(nh*nh,-wWidth,wWidth),nh)
   
@@ -268,4 +280,3 @@ findYear=function(strYear,curPerd){
   }
   return(returnYr)
 }
-
