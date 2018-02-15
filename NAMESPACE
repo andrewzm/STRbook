@@ -2,6 +2,8 @@
 
 export(DSTM_EM)
 export(LinePlotTheme)
+export(Medwind_BHM)
+export(Medwind_BHM_preproc)
 export(col_scale)
 export(createEmbedRNNData)
 export(createHMatR)
