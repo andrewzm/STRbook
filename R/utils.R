@@ -2,11 +2,11 @@
 LinePlotTheme <- function (df)
 {
     g <- ggplot(df) + theme(panel.background = element_rect(fill = "white",
-                                                          colour = "black"),
-                          text = element_text(size = 20),
-                          panel.grid.major = element_line(colour = "light gray",size = 0.05),
-                          panel.border = element_rect(fill = NA,colour = "black"),
-                          plot.margin = unit(c(5, 5, 5, 0), "mm"))
+                                                            colour = "black"),
+                            text = element_text(size = 20),
+                            panel.grid.major = element_line(colour = "light gray",size = 0.05),
+                            panel.border = element_rect(fill = NA,colour = "black"),
+                            plot.margin = unit(c(5, 5, 5, 0), "mm"))
     return(g)
 }
 
@@ -23,8 +23,8 @@ col_scale <- function(leg_title) {
 #' @export
 fill_scale <- function(leg_title) {
     scale_fill_distiller(palette="Spectral",   # spectral colour scale
-                           guide="colourbar",    # continuous colour bar
-                           name=leg_title)
+                         guide="colourbar",    # continuous colour bar
+                         name=leg_title)
 }
 
 #' @name dist-matrix
@@ -39,25 +39,25 @@ fill_scale <- function(leg_title) {
 #' A <- matrix(rnorm(50),5,10)
 #' D <- distR(A,A[-3,])
 distR <- function (x1, x2 = NULL)  {
-  ## Try to coerce to matrix
-  if (!is.matrix(x1)) {
-    x1 <- as.matrix(x1)
-  }
-  
-  ## If x2 is not specified set it equatl to x1
-  if (is.null(x2)) {
-    x2 <- x1
-  }
-  
-  ## If it is specified, coerce it to matrix
-  if (!is.matrix(x2)) {
-    x2 <- as.matrix(x2)
-  }
-  
-  ## Basic check
-  if(!(ncol(x1) == ncol(x2)))
-    stop("x1 and x2 have to have same number of columns")
-  
-  ## Compute the distance in C (distR_C is a wrapper)
-  distR_C(x1,x2)
+    ## Try to coerce to matrix
+    if (!is.matrix(x1)) {
+        x1 <- as.matrix(x1)
+    }
+
+    ## If x2 is not specified set it equatl to x1
+    if (is.null(x2)) {
+        x2 <- x1
+    }
+
+    ## If it is specified, coerce it to matrix
+    if (!is.matrix(x2)) {
+        x2 <- as.matrix(x2)
+    }
+
+    ## Basic check
+    if(!(ncol(x1) == ncol(x2)))
+        stop("x1 and x2 have to have same number of columns")
+
+    ## Compute the distance in C (distR_C is a wrapper)
+    distR_C(x1,x2)
 }
