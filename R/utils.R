@@ -14,17 +14,19 @@ LinePlotTheme <- function (df)
 #           aes(x=long,y=lat,group=group))
 
 #' @export
-col_scale <- function(leg_title) {
-    scale_colour_distiller(palette="Spectral",   # spectral colour scale
-                           guide="colourbar",    # continuous colour bar
-                           name=leg_title)
+col_scale <- function(palette = "Spectral", name = "", limits = NULL) {
+    scale_colour_distiller(palette = palette,   # spectral colour scale
+                           guide = "colourbar", # continuous colour bar
+                           name = name,
+                           limits = limits)
 }
 
 #' @export
-fill_scale <- function(leg_title) {
-    scale_fill_distiller(palette="Spectral",   # spectral colour scale
-                         guide="colourbar",    # continuous colour bar
-                         name=leg_title)
+fill_scale <- function(palette = "Spectral", name = "", limits = NULL) {
+    scale_fill_distiller(palette = palette,   # spectral colour scale
+                         guide = "colourbar", # continuous colour bar
+                         name = name,
+                         limits = limits)
 }
 
 #' @name dist-matrix
