@@ -1,7 +1,7 @@
 # STRbook
 *Supplementary package for "Spatio-Temporal Statistics with R" by C.K. Wikle, A. Zammit-Mangion, and N. Cressie*
 
-**STRbook** contains several data sets, as well as helper functions, for guiding the user through the Labs in the book. The package will not be available on CRAN due the size of the data sets, and it must be installed from this GitHub page. To install, please install **devtools** first. Then, in the command line, type
+**STRbook** contains several data sets, as well as helper functions, for guiding the user through the Labs in the book. The package will not be available on CRAN due to the size of the data sets, and it must be installed from this GitHub page. To install, please install **devtools** first. Then, in the command line, type
 
 ```
 library(devtools)
