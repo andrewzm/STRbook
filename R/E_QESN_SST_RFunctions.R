@@ -47,26 +47,28 @@ createEmbedRNNData=function(m,tauEmb,yTrain,rawDataInput,curXTestIndex){
   
   
   ####### Out Sample
-  altOutSampleXRaw=array(NA,c(curTestLen,m+1,numLocs))
-  for(i in 1:curTestLen){
-    altOutSampleXRaw[i,,]=rawDataInput[seq(curXTestIndex[i]-(m*tauEmb),curXTestIndex[i],by=tauEmb),]
-  }
+  allOutSampIndexes=(curXTestIndex[1]-tau+1):curXTestIndex[length(curXTestIndex)]
   
+  xMatchIndexes=match(xTestIndex,allOutSampIndexes)
+
+  altOutSampleXRaw=array(NA,c(length(allOutSampIndexes),m+1,numLocs))
+  for(i in 1:length(allOutSampIndexes)){
+    altOutSampleXRaw[i,,]=rawDataInput[seq(allOutSampIndexes[i]-(m*tauEmb),allOutSampIndexes[i],by=tauEmb),]
+  }
   
   #######Scale in-sample x and y
   altOutSampleX=(altOutSampleXRaw-meanXTrainMatrix)/sdXTrainMatrix
   
-  designMatrixOutSample=matrix(1,curTestLen,(m+1)*numLocs+1)
-  for(i in 1:curTestLen){
+  designMatrixOutSample=matrix(1,length(allOutSampIndexes),(m+1)*numLocs+1)
+  for(i in 1:length(allOutSampIndexes)){
     designMatrixOutSample[i,2:((m+1)*numLocs+1)]=as.vector(altOutSampleX[i,,])
   }
   
-  
-  
-  return(list(curInSampMean=altYMean,curInSampSD=altScaleFactor,curYInSamp=altYInSamp,curInSampX=altInSampleX,curOutSampX=altOutSampleX,lenInSampleEmb=lenInSampleEmb,designMatrix=designMatrix,designMatrixOutSample=designMatrixOutSample,curTestLen=curTestLen ))
+  return(list(curInSampMean=altYMean,curInSampSD=altScaleFactor,curYInSamp=altYInSamp,curInSampX=altInSampleX,curOutSampX=altOutSampleX,lenInSampleEmb=lenInSampleEmb,designMatrix=designMatrix,designMatrixOutSample=designMatrixOutSample,curTestLen=curTestLen,xMatchIndexes=xMatchIndexes ))
   
   
 }
+
 
 ################################################################
 ############### Ensembel ESN Set Parameters ####################
@@ -111,6 +113,7 @@ genResR=function(nh,wWidth,uWidth,piW,piU,nuESN,quadInd,DataObj,setParObj,testLe
   nColsU=ncol(designMat)  
   inSampMean=DataObj$curInSampMean 
   inSampStDev=DataObj$curInSampSD
+  xMatchIndexes=DataObj$xMatchIndexes
   # DataObj,setParObj
   
   U=matrix(runif(nh*nColsU,-uWidth,uWidth),nh)
@@ -147,7 +150,10 @@ genResR=function(nh,wWidth,uWidth,piW,piU,nuESN,quadInd,DataObj,setParObj,testLe
   
   ##### Calculate in-sample hMat
   srtValsInSamp=startValuesHMat
+  
+  
   inSampleHMatObj=createHMatR(nh,echoTrainLen,wMatScaled,uProdMat,srtValsInSamp,quadInd)
+  
   inSampleHMat=inSampleHMatObj$hMat
   ##### Save last in-sample h Value
   hLastInSamp=inSampleHMatObj$xTemp
@@ -159,12 +165,12 @@ genResR=function(nh,wWidth,uWidth,piW,piU,nuESN,quadInd,DataObj,setParObj,testLe
   ###### Calculate Out-of-Sample Forecasts
   uProdMatOutSamp=U%*%t(designMatrixOutSample)
   ##### Calculate Out-of-Sample hMat
-  outSampleHMat=createHMatR(nh,testLen,wMatScaled,uProdMatOutSamp,hLastInSamp,quadInd)$hMat
+  outSampleHMat=createHMatR(nh,nrow(designMatrixOutSample),wMatScaled,uProdMatOutSamp,hLastInSamp,quadInd)$hMat
   
   #####Out-Sample Forecasts
   scaledForecast=vMatESN%*%outSampleHMat
-  unScaledForecasts=scaledForecast*inSampStDev+inSampMean
-  
+  unScaledForecasts=(scaledForecast*inSampStDev+inSampMean)[,xMatchIndexes]
+
   
   return(list(U=U,wMatScaled=wMatScaled,vMatESN=vMatESN,inSampleHMat=inSampleHMat,unScaledForecasts=unScaledForecasts))
 }
@@ -177,11 +183,15 @@ genResR=function(nh,wWidth,uWidth,piW,piU,nuESN,quadInd,DataObj,setParObj,testLe
 createHMatR=function(nh,numTimePerds,wMatScaled,uProdMat,startValues,quadInd){
   xTemp=startValues
   
+  
+  
   if(quadInd){
     hMat = matrix(0,2*nh ,numTimePerds)
   }else{
     hMat = matrix(0,nh ,numTimePerds)
   }
+  
+ 
   
   for (t in 1:numTimePerds){
     

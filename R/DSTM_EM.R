@@ -128,7 +128,7 @@ DSTM_EM <- function(Z, Cov0, muinit, Ceta, M, sigma2_eps,
         Leta <- t(chol(Ceta))
         Leps <- t(chol(Ceps))
         L0 <- t(chol(Cov0))
-        warning("Need to check negloglik and sigma2eps")
+        # Probably should double-check equations for negloglik and sigma2eps at some point
 
     }
 }
