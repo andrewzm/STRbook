@@ -12,6 +12,9 @@
 ############################################################
 #' @export
 createEmbedRNNData=function(m,tauEmb,yTrain,rawDataInput,curXTestIndex){
+  #Note the parameter "tau" is defined globally and therefore does not need
+  # to be directly passed to this function
+
   
   curTrainLen <- nrow(yTrain)
   numLocs <- ncol(yTrain)
@@ -75,6 +78,9 @@ createEmbedRNNData=function(m,tauEmb,yTrain,rawDataInput,curXTestIndex){
 ################################################################
 #' @export
 setParsEESN=function(regPar,nh,numLocs,m){
+  #Note the parameter "quadInd" is defined globally and therefore does not need
+  # to be directly passed to this function
+  
   inSize = numLocs*(m+1)
   nColsU=inSize+1
   
