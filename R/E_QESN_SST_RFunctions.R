@@ -11,10 +11,7 @@
 ############### Create Embed Data ##########################
 ############################################################
 #' @export
-createEmbedRNNData=function(m,tau,yTrain,rawDataInput,curXTestIndex){
-
-  tauEmb <- tau # force embedding length time to be forecast lead time --
-                # this can be changed in a future revision
+createEmbedRNNData=function(m,tauEmb,tau,yTrain,rawDataInput,curXTestIndex){
 
   curTrainLen <- nrow(yTrain)
   numLocs <- ncol(yTrain)
