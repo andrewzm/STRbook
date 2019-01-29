@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="main.css">
+  <title>{{ site.title }}</title>
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-122678626-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script>
+var trackOutboundLink = function(url) {
+   ga('send', 'event', 'outbound', 'click', url, {
+     'transport': 'beacon',
+     'hitCallback': function(){document.location = url;}
+   });
+}
+</script> 
+<!-- End Google Analytics -->
+    
+</head>
+
+  <body>
+    <a name="top"></a>
+    <p style="padding: 20px; margin: 0px;"></p>
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    {%- include menu.html -%}
+    
+  </div>
+</header>
+    
+    
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+
+  <div class="wrapper">
+    
+{%- include menu.html -%}
+    
+  </div>
+
+</footer>
+
+    <a name="bottom"></a>
+  </body>
+
+</html>

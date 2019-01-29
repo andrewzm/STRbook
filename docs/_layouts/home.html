@@ -1,0 +1,59 @@
+---
+layout: default
+---
+
+<p>This website, http://spacetimewithr.org, is meant to serve several purposes: It is a landing page for our book <i>Spatio-Temporal Statistics with R</i> (including an associated <span style="font-family: Courier; font-size: large;">R</span> package <b>STRbook</b>, reviews, and an errata sheet); it offers an opportunity for individuals to participate in a Discussion Forum; and it is a place where new software, data sets, and articles on spatio-temporal statistics can be posted.</p>
+
+{%- include book.html -%}
+
+<!--
+<h1>Reviews</h1>
+<p><a href="reviews">Click here</a> for Endorsements and Reviews.</p>
+-->
+
+<h1>Errata</h1>
+
+<p><a href="errata">Click here</a> for the full list of errata.</p>
+
+{%- include news.html -%}
+
+<h1>Software</h1>
+
+<p>The Software page has instructions on how to download the book's R package, <b>STRbook</b>. It also contains information on other software that may be useful to readers.</p>
+  <p><a href="software">Click here</a> to visit the Software page.</p>
+
+<!--
+<h1>Data Sets</h1>
+  <p>The Data Sets page has information on spatio-temporal data sets that may be useful to readers. (The data sets used in the book are already included in <b>STRbook</b>.)</p>
+  <p><a href="datasets">Click here</a> to visit the Data Sets page.</p>
+-->
+
+<!--
+<h1>Articles</h1>
+  <p>The Articles page contains references and links (if available) to articles on spatio-temporal statistics.</p>
+  <p><a href="articles">Click here</a> to visit the Articles page.</p>
+-->
+
+<h1>Contact</h1>
+
+  <p><a href="contact">Click here</a> to contact us.</p>
+
+<a name="discussion">&nbsp;</a>
+<h1>Discussion Forum</h1>
+
+<p>The discussion forum below is hosted by Google Groups.</p>
+
+<iframe id="forum_embed" src="javascript:void(0)" scrolling="no" frameborder="0" width="100%" height="500" style="background:url(loading.png) no-repeat" >
+  <p>Discussion forum is loading...</p>
+</iframe>
+  <script type="text/javascript">
+    document.getElementById('forum_embed').src =
+       'https://groups.google.com/forum/embed/?place=forum/spacetimewithr'
+       + '&showsearch=true&showpopout=true&showtabs=false'
+       + '&parenturl=' + encodeURIComponent(window.location.href);
+    document.getElementById('forum_embed').onload = function(){
+      document.getElementById("forum_embed").style.backgroundImage = "none";
+    };
+</script>
+
+  {{ content }}
