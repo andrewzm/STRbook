@@ -7,8 +7,11 @@
 library(devtools)
 install_github("andrewzm/STRbook")
 ```
+## About the Book
 
-## About the book
+The book "Spatio-Temporal Statistics with R" is a 2019 Chapman & Hall/CRC book, and a print edition is available for purchase [here](http://www.crcpress.com/9781138711136). The book is also available for free download on the book's companion website [https://spacetimewithr.org](https://spacetimewithr.org). The companion website also contains source code for the Labs, errata, contact information, and more.
+
+## Book Summary
 
 <img align="right" src="https://spacetimewithr.org/cover.jpg" alt="drawing" width="200"/>
 
