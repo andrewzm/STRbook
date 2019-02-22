@@ -1,0 +1,73 @@
+
+---
+title: Linked Brushing
+output: html_document
+runtime: shiny
+---
+
+```{r, echo = FALSE}
+## Wikle, C. K., Zammit-Mangion, A., and Cressie, N. (2019), 
+## Spatio-Temporal Statistics with R, Boca Raton, FL: Chapman & Hall/CRC
+## Copyright (c) 2019 Wikle, Zammit-Mangion, Cressie
+##
+## This program is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation; either version 2
+## of the License, or (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+```
+
+Please install `ggvis` and `shiny`. Then set working directory to the source file location and click `Run Document` in `Rstudio`.
+
+
+```{r, message = FALSE, echo = FALSE}
+library(ggvis)
+library(shiny)
+library(STRbook)
+
+data("NOAA_df_1990", package = "STRbook")      # load dataset
+Tmax <- subset(NOAA_df_1990,    # subset dataset
+              proc=="Tmax" &
+              month %in% 5:9 &
+              year == 1993)
+```
+
+The spatial distribution of the stations is shown in the first panel and the time series plots are shown in the second panel. Highlight stations in the first panel using the mouse; the corresponding time series will be highlighted in red in the second panel. This form of visualization is known as `linked brushing.'
+
+```{r fig.width = 4, fig.height = 3, echo = FALSE, results = "hold"}
+lb <- linked_brush(keys = Tmax$id, "red")   
+
+Tmax %>%
+  ggvis(~lon, ~lat, key := ~id) %>%
+  layer_points(fill := lb$fill, 
+               fill.brush := "red", 
+               opacity := 0.3) %>%
+  lb$input()
+
+# A subset of maximum temperatures, of only the selected points
+selected <- lb$selected
+Tmax_selected <- reactive({
+  Tmax[selected(), ]
+})
+
+Tmax %>%
+  group_by(id) %>%
+  ggvis(~julian,~z) %>%
+    layer_lines() %>%
+    add_data(group_by(Tmax_selected,id)) %>%
+    layer_lines(stroke := "#dd3333") %>%
+    add_axis("x",ticks=2)
+    
+```
+
+Summary of the data at the selected stations:
+
+```{r, echo = FALSE}
+renderPrint(
+  summary(Tmax_selected())
+)
+```
