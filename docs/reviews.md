@@ -5,9 +5,9 @@ title: Reviews
 
 ## Book Reviews
 
-**A Gentle Introduction to Spatio-Temporal Statistics (Spatio-Temporal Statistics with R)**
+**A Gentle Introduction to Spatio-Temporal Statistics**
 
-"The dynamic nature of our world is being increasingly captured by sensors as big data. Much of this big data can be indexed by its spatial location and time stamp. Spatio-Temporal Statistics with R, by Christopher K. Wikle, Andrew Zammit-Mangion, and Noel Cressie, provides an accessible introduction to analyzing spatio-temporal data using the programming language R.
+The dynamic nature of our world is being increasingly captured by sensors as big data. Much of this big data can be indexed by its spatial location and time stamp. Spatio-Temporal Statistics with R, by Christopher K. Wikle, Andrew Zammit-Mangion, and Noel Cressie, provides an accessible introduction to analyzing spatio-temporal data using the programming language R.
 
 The format for each of its stand-alone chapters is an explanation of methodology followed by hands-on application of relatively mature models and methodologies. R was chosen because it is open source, has strong community support, and has many packages that can be used for spatio-temporal modeling.
 
@@ -15,9 +15,9 @@ This book assumes that readers have a background in calculus-based probability a
 
 Spatio-Temporal Statistics with R is a down-to-earth and engaging introduction to the topic, rather than a comprehensive book on the subject. More advanced and technically trained readers may wish to look at a previous book on the same subject by authors Wikle and Cressie, Statistics for Spatio-Temporal Data; however, this book does not include software or coding examples.
 
-Since increasing the number of people who are analyzing spatio-temporal data was a fundamental goal of the authors, [a PDF of the entire book](https://spacetimewithr.org) is available, with support of the book’s print edition publishers. The hardcover edition of this book was published by Chapman and Hall/CRC as part of The R Series in 2019, ISBN 9781138711136."
+Since increasing the number of people who are analyzing spatio-temporal data was a fundamental goal of the authors, [a PDF of the entire book](https://spacetimewithr.org) is available, with support of the book’s print edition publishers. The hardcover edition of this book was published by Chapman and Hall/CRC as part of The R Series in 2019, ISBN 9781138711136.
 
-**-- ArcUser**, a publication of [Esri](https://www.esri.com/about/newsroom/arcuser/gis-bookshelf-20/)
+-- [**ArcUser (Spring 2019, GIS Bookshelf)**](https://www.esri.com/about/newsroom/arcuser/gis-bookshelf-20/), a publication of Esri
 
 
 
