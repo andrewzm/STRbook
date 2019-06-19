@@ -15,7 +15,7 @@ This book assumes that readers have a background in calculus-based probability a
 
 Spatio-Temporal Statistics with R is a down-to-earth and engaging introduction to the topic, rather than a comprehensive book on the subject. More advanced and technically trained readers may wish to look at a previous book on the same subject by authors Wikle and Cressie, Statistics for Spatio-Temporal Data; however, this book does not include software or coding examples.
 
-Since increasing the number of people who are analyzing spatio-temporal data was a fundamental goal of the authors, a PDF of the entire book is available, with support of the book’s print edition publishers. The hardcover edition of this book was published by Chapman and Hall/CRC as part of The R Series in 2019, ISBN 9781138711136."
+Since increasing the number of people who are analyzing spatio-temporal data was a fundamental goal of the authors, [a PDF of the entire book](https://spacetimewithr.org) is available, with support of the book’s print edition publishers. The hardcover edition of this book was published by Chapman and Hall/CRC as part of The R Series in 2019, ISBN 9781138711136."
 
 **-- ArcUser**, a publication of [Esri](https://www.esri.com/about/newsroom/arcuser/gis-bookshelf-20/)
 
