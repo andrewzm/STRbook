@@ -39,7 +39,12 @@ layout: default
 </td></tr>
 </table>
 </form>
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {message has sent}"></iframe> 
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {load()}"></iframe> 
+<script>
+function load(){
+	alert("Message has sent...");
+}
+</script>
   
   {{ content }}
 
