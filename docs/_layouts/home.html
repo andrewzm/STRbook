@@ -49,6 +49,9 @@ layout: default
        'https://groups.google.com/forum/embed/?place=forum/spacetimewithr'
        + '&showsearch=true&showpopout=true&showtabs=false'
        + '&parenturl=' + encodeURIComponent(window.location.href);
+    document.getElementById('forum_embed').onload = function(){
+      document.getElementById("forum_embed").style.backgroundImage = "none"; 
+    };
 </script>
 
   {{ content }}
