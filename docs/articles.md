@@ -2,4 +2,9 @@
 layout: page
 title: Articles
 ---
-**2019-03-28**: “Comparison of Deep Neural Networks and Deep Hierarchical Models for Spatio-Temporal Data” by Christopher K. Wikle. Submitted to arXiv on 22 Feb 2019 ([https://arxiv.org/abs/1902.08321](https://arxiv.org/abs/1902.08321))
+
+Wikle, C.K. (2019). Comparison of Deep Neural Networks and Deep Hierarchical Models for Spatio-Temporal Data. *JABES* **24**, 175–203 (2019). [https://doi.org/10.1007/s13253-019-00361-7](https://doi.org/10.1007/s13253-019-00361-7)  
+
+Zammit-Mangion, A. and Wikle, C.k. (2020). Deep integro-difference equation models for spatio-temporal forecasting. [https://doi.org/10.1016/j.spasta.2020.100408](https://doi.org/10.1016/j.spasta.2020.100408). In Press with *Spatial Statistics*.  
+
+Zhang, B. and Cressie, N. (2020). Bayesian inference of spatio-temporal changes of Arctic sea ice. [http://arxiv.org/abs/2003.06843](http://arxiv.org/abs/2003.06843). Forthcoming in *Bayesian Analysis*.  
