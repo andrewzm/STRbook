@@ -6,7 +6,6 @@ title: Reviews
 ## Book Reviews
 
 **A Gentle Introduction to Spatio-Temporal Statistics**
-
 The dynamic nature of our world is being increasingly captured by sensors as big data. Much of this big data can be indexed by its spatial location and time stamp. Spatio-Temporal Statistics with R, by Christopher K. Wikle, Andrew Zammit-Mangion, and Noel Cressie, provides an accessible introduction to analyzing spatio-temporal data using the programming language R.
 
 The format for each of its stand-alone chapters is an explanation of methodology followed by hands-on application of relatively mature models and methodologies. R was chosen because it is open source, has strong community support, and has many packages that can be used for spatio-temporal modeling.
