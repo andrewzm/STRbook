@@ -41,6 +41,7 @@ layout: default
 
 <p>The discussion forum below is hosted by Google Groups.</p>
 
+<!--
 <iframe id="forum_embed" src="javascript:void(0)" scrolling="no" frameborder="0" width="100%" height="500" style="background:url(loading.png) no-repeat" >
   <p>Discussion forum is loading...</p>
 </iframe>
@@ -52,6 +53,20 @@ layout: default
     document.getElementById('forum_embed').onload = function(){
       document.getElementById("forum_embed").style.backgroundImage = "none"; 
     };
+</script>
+-->
+<iframe id="forum_embed"
+  src="javascript:void(0)"
+  scrolling="no"
+  frameborder="0"
+  width="900"
+  height="700">
+</iframe>
+<script type="text/javascript">
+  document.getElementById('forum_embed').src =
+     'https://groups.google.com/forum/embed/?place=forum/spacetimewithr'
+     + '&showsearch=true&showpopout=true&showtabs=false'
+     + '&parenturl=' + encodeURIComponent(window.location.href);
 </script>
 
   {{ content }}
