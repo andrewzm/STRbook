@@ -719,8 +719,16 @@ table {
     color: #099
 }
 
-.text-name {
-    color: #1756a9
+.text-b1 {
+    color: #1756a9;
+    font-style: italic;
+    font-weight: bold        
+}
+
+.text-b2 {
+    color: #1756a9;
+    font-style: normal;
+    font-weight: bold        
 }
 
 h1 {
