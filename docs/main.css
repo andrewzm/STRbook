@@ -719,6 +719,10 @@ table {
     color: #099
 }
 
+.text-name {
+    color: #1756a9
+}
+
 h1 {
   border-bottom: 2px solid #e55668;
   white-space: nowrap;
