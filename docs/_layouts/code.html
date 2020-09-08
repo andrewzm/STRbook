@@ -26,6 +26,9 @@ Chapter 3: <a href="Chap3_Lab1.R">Lab 3.1</a>, <a href="Chap3_Lab2.R">Lab 3.2</a
 Chapter 4: <a href="Chap4_Lab1.R">Lab 4.1</a>, <a href="Chap4_Lab2.R">Lab 4.2</a>, <a href="Chap4_Lab3.R">Lab 4.3</a>, <a href="Chap4_Lab4.R">Lab 4.4</a>, <a href="Chap4_Lab5.R">Lab 4.5</a><br />
 Chapter 5: <a href="Chap5_Lab1.R">Lab 5.1</a>, <a href="Chap5_Lab2.R">Lab 5.2</a>, <a href="Chap5_Lab3.R">Lab 5.3</a><br />
 Chapter 6: <a href="Chap6_Lab1.R">Lab 6.1</a></p>
+</p>
+<p>
+Note that these Labs are only guaranteed to run and give the expected results with the package versions current of 2019. If you are having trouble running any of the Labs, we recommend trying to run the Labs in the online platform (see below) which uses the required package versions.
   
 <h2>Run the R Labs in your browser!</h2>
   
@@ -35,12 +38,19 @@ This link will load RStudio (slowly the first time) in your browser; you will fi
 Click on "scripts," then double click on a script to open it, and advance through it line-by-line (press Ctrl+Enter successively to do this quickly) to enter it into the Console below. 
 Just pressing the "Source" button at the top to run the Lab immediately doesnot always work. 
 Note that a couple of Labs that run FRK have been changed slightly from the original version, to satisfy memory limits on this online platform
-(a warning is issued so you know where we did the change). The online platform may take a while to load the first time you click on it, but it is worth the wait!
+(a warning is issued so you know where we did the change). The online platform uses packages that were current when the book was published in 2019, and so all Labs should run without any problems. The platform may take a while to load the first time you click on it, but it is worth the wait!
 </p>
 <p>
 We would like to thank <a href="https://zzheng93.github.io/" target="_blank">Zhonghua Zheng</a> for coming up with the idea and making the initial prototype,
 and Yi Cao for ironing out the wrinkles and verifying that all Labs can run.  
 </p>
+
+<h2>Raw Sweave code for the Labs</h2>
+
+We have made the raw Sweave (.Rnw) files for the Labs available on <a href="https://www.github.com/andrewzm/STRbook_Labs" target="_blank">this Github page</a>. In order for these Labs can be independent from the rest of the book, they are compiled with a *standalone* switch set to `TRUE`. This switch mainly rewords sentences that refer to places in the book so that there are no broken references in the compiled document.
+</p>
+<p>
+The Labs on this github page are meant to be *Live Labs*, in the sense that they should work with the latest *R* packages. Users are also invited to contribute to the Labs by providing suggestions, fixes, and/or Lab extensions by supplying a pull request.
   
 <h2>Other Code</h2>
 
