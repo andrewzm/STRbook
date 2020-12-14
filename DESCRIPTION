@@ -10,4 +10,4 @@ Description: Provides data and helper functions for the Labs in the book.
 Imports: ggplot2, fields, Matrix
 License: GPL (>2.1)
 LazyData: TRUE
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
