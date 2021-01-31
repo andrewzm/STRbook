@@ -14,7 +14,8 @@ title: Errata
   
 **p. 140, line 22 (2020-07-22)**: Change “(*p* + 1) matrix given by…” to “*p* matrix given by…”  
   
-**p. 152, Technical Note 4.2 (2020-07-22)**: Change “…column space of the *m*&times;(*p* + 1) design matrix **X**.” to “…column space of the *m*&times;*p* design matrix **X**.”   
+**p. 152, Technical Note 4.2 (2020-07-22)**: Change “…column space of the *m*&times;(*p* + 1) design matrix **X**.” to “…column space of the *m*&times;*p* design matrix **X**.”  
+  
 **p. 223, line 3 (2020-07-22)**: Change “…is an *n*&times;(*p* + 1) matrix that could be time-varying…” to “…is an *n*&times;*p* matrix that could be time-varying…”  
   
 **p. 277 (2020-12-24)**: On the line directly below (6.23), **Z** should be **Z’**, a row vector. 
