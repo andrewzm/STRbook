@@ -40,7 +40,7 @@ This book is a treasure trove of ideas for fitting, exploring and comparing stat
 to fit as example code and software for them were not easily available (or scattered at best). It is a great feature that the book is freely available as pdf, and that the
 reproduction material is available from the book’s web site, as well as from GitHub repositories. In the epilogue the authors express that this book is a mere stage
 towards developing further statistical approaches for ST data. I hope that future versions will not only focus on more advanced statistics, but also be more dedicated on
-handling space and time, and maybe even handle more types of spatiotemporal data.<br />--[**Edzer Pebesma (February 2021, *Statistical Papers*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Institute for Geoinformatics, University of Münster, Germany 
+handling space and time, and maybe even handle more types of spatiotemporal data.<br />-- [**Edzer Pebesma (February 2021, *Statistical Papers*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Institute for Geoinformatics, University of Münster, Germany 
 <br/><br/><br/>
 
 ## Endorsements
