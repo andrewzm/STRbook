@@ -34,7 +34,7 @@ Overall, this book provides a great overview of current spatio-temporal methodol
 This book can be seen as a companion to *Statistics for Spatiotemporal data* (Cressie and Wikle <span style="color: blue;">2015</span>). In addition to what it also shows *how* to do things in practice, with R. Noel Cressie and Chris Wikle are joined by Andrew Zammit-Mangion (author of the FRK package; Zammit-Mangion and Cressie, forthcoming), who
 brings in much of the expertise for the R content.  
   
-……………The complete review is available [here](https://doi.org/10.1007/s00362-021-01224-5)………………  
+………………The complete review is available [here](https://doi.org/10.1007/s00362-021-01224-5)………………  
   
 This book is a treasure trove of ideas for fitting, exploring and comparing statistical models for *continuous* spatiotemporal processes. So far, these models were hard
 to fit as example code and software for them were not easily available (or scattered at best). It is a great feature that the book is freely available as pdf, and that the
