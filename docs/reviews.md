@@ -31,15 +31,10 @@ Chapters 4 and 5 are the book’s core sections: models that account for spatio-
 Overall, this book provides a great overview of current spatio-temporal methodology and practices. It could easily be used in a graduate course, by someone interested in learning the fundamentals of spatio-temporal statistics, or as a resource for practitioners of spatio-temporal statistics. The text reads smoothly, and concepts are introduced at a level that should be understandable even to those who are relatively new to the field. Each chapter builds on the previous chapters, which produces a practical framework for how to do spatio-temporal statistics. In the sections lacking in-depth discussion, the authors supply enough references to guide readers seeking more information. The R Labs are an excellent component that allow readers not only to make the connection between theory and application, but also to try new techniques with guided examples.<br />-- [**Nicholas W. Bussberg (January 2021, *The American Statistician*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Department of Mathematics and Statistics, Elon University, North Carolina
 <br/><br/>  
   
-This book can be seen as a companion to *Statistics for Spatiotemporal data* (Cressie and Wikle <span style="color: blue;">2015</span>). In addition to *what* it also shows *how* to do things in practice, with R. Noel Cressie and Chris Wikle are joined by Andrew Zammit-Mangion (author of the FRK package; Zammit-Mangion and Cressie, forthcoming), who brings in much of the expertise for the R content.  
+Christopher K. Wikle, Andrew Zammit-Mangion and Noel Cressie (2019): Spatio-temporal Statistics with R. Chapman and Hall/CRC, 396 pp. … PDF free for download, along with additional material (Rnw files with scripts for the labs, R package with all the datasets used) from [https://spacetimewithr.org/](https://spacetimewithr.org/)  
   
-………………The complete review is available [here](https://doi.org/10.1007/s00362-021-01224-5)………………  
-  
-This book is a treasure trove of ideas for fitting, exploring and comparing statistical models for *continuous* spatiotemporal processes. So far, these models were hard
-to fit as example code and software for them were not easily available (or scattered at best). It is a great feature that the book is freely available as pdf, and that the
-reproduction material is available from the book’s web site, as well as from GitHub repositories. In the epilogue the authors express that this book is a mere stage
-towards developing further statistical approaches for ST data. I hope that future versions will not only focus on more advanced statistics, but also be more dedicated on
-handling space and time, and maybe even handle more types of spatiotemporal data.<br />-- [**Edzer Pebesma (February 2021, *Statistical Papers*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Institute for Geoinformatics, University of Münster, Germany 
+………………The two-page book review published in *Statistical Papers* (2021) is available [here](https://doi.org/10.1007/s00362-021-01224-5)………………  
+<br />-- [**Edzer Pebesma (February 2021, *Statistical Papers*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Institute for Geoinformatics, University of Münster, Germany 
 <br/><br/><br/>
 
 ## Endorsements
