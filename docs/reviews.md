@@ -31,9 +31,9 @@ Chapters 4 and 5 are the book’s core sections: models that account for spatio-
 Overall, this book provides a great overview of current spatio-temporal methodology and practices. It could easily be used in a graduate course, by someone interested in learning the fundamentals of spatio-temporal statistics, or as a resource for practitioners of spatio-temporal statistics. The text reads smoothly, and concepts are introduced at a level that should be understandable even to those who are relatively new to the field. Each chapter builds on the previous chapters, which produces a practical framework for how to do spatio-temporal statistics. In the sections lacking in-depth discussion, the authors supply enough references to guide readers seeking more information. The R Labs are an excellent component that allow readers not only to make the connection between theory and application, but also to try new techniques with guided examples.<br />-- [**Nicholas W. Bussberg (January 2021, *The American Statistician*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Department of Mathematics and Statistics, Elon University, North Carolina
 <br/><br/>  
   
-Christopher K. Wikle, Andrew Zammit-Mangion and Noel Cressie (2019): Spatio-temporal Statistics with R. Chapman and Hall/CRC, 396 pp. … PDF free for download, along with additional material (Rnw files with scripts for the labs, R package with all the datasets used) from [https://spacetimewithr.org/](https://spacetimewithr.org/)  
+Two-page book review: Christopher K. Wikle, Andrew Zammit-Mangion and Noel Cressie (2019): Spatio-temporal Statistics with R. Chapman and Hall/CRC, 396 pp.  
   
-………………The two-page book review published in *Statistical Papers* (2021) is available [here](https://doi.org/10.1007/s00362-021-01224-5)………………  
+………………Book review published in *Statistical Papers* (2021) available [here](https://doi.org/10.1007/s00362-021-01224-5)………………  
 <br />-- [**Edzer Pebesma (February 2021, *Statistical Papers*)**](https://www.tandfonline.com/doi/full/10.1080/00031305.2020.1865066), Institute for Geoinformatics, University of Münster, Germany 
 <br/><br/><br/>
 
