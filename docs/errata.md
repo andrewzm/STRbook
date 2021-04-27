@@ -4,9 +4,11 @@ title: Errata
 ---
 **p. 20 (2019-03-28)**: Caption of Figure 2.3 should say “…is proportional to the number of observed birds…”  
   
-**p. 71 (2019-09-19)**: Penultimate line should say "...of size 80km"  
+**p. 38 (2021-04-27)**: The right-hand side of equation (2.8) should be divided by 2.   
   
 **p. 54 (2019-10-31)**: Second paragraph, last line should start with "precipitation,..."  
+
+**p. 71 (2019-09-19)**: Penultimate line should say "...of size 80km"  
   
 **Explanatory note for 2020-07-22 errata**: In Ch. 1 &ndash; 3, the intercept variable “1” is listed along with *p* covariates. From Ch. 4 onwards, the intercept is absorbed into the covariate vector, **x**(**s**; *t*), which is specified there to be *p*-dimensional, in line with standard notation for multivariable regression. This leads to a slight abuse of notation and requires the following errata in Ch. 4 &ndash; 5.   
 
