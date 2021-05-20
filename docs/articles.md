@@ -13,9 +13,7 @@ Cressie, N. and Suesse, T. (2020). Great expectations and even greater exceedanc
   
 Cressie, N. and Wikle, C.K. (2020). Measuring, mapping, and uncertainty quantification in the space-time cube. *Revista Matemática Complutense*, **33**, 643-660. [https://doi.org/10.1007/s13163-020-00359-7](https://doi.org/10.1007/s13163-020-00359-7).   
   
-Hooten, M.B., Wikle, C.K., and M.R. Schwob, M.R. (2020). Statistical implementations of agent-based demographic models. *International Statistical Review*, **88**, 2, 441–461. [https://doi.org/10.1111/insr.12399](https://doi.org/10.1111/insr.12399).  
-  
-North, J.S., Schliep, E.M., and C.K. Wikle, C.K. (2020). On the spatial and temporal shift in the archetypal seasonal temperature cycle as driven by annual and semi-annual harmonic, *Environmetrics*. [https://doi.org/10.1002/env.2665](https://doi.org/10.1002/env.2665).  
+Hooten, M.B., Wikle, C.K., and M.R. Schwob, M.R. (2020). Statistical implementations of agent-based demographic models. *International Statistical Review*, **88**, 441–461. [https://doi.org/10.1111/insr.12399](https://doi.org/10.1111/insr.12399).  
       
 Zammit-Mangion, A. and Wikle, C.K. (2020). Deep integro-difference equation models for spatio-temporal forecasting. *Spatial Statistics*, **37**, 100408. [https://doi.org/10.1016/j.spasta.2020.100408](https://doi.org/10.1016/j.spasta.2020.100408). 
 
