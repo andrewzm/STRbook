@@ -12,6 +12,8 @@ Grieshop, N., and Wikle, C.K. (2024). Data-driven modeling of wildfire spread wi
 
 Bertolacci, M., Zammit-Mangion, A., Schuh, A., Bukosa, B., Fisher, J. A., Cao, Y., Kaushik, A., and Cressie, N. (2024). Inferring changes to the global carbon cycle with WOMBAT v2.0, a hierarchical flux-inversion framework. *The Annals of Applied Statistics*, **18**, 303–327 [(doi:10.1214/23-AOAS1790)](https://doi.org/10.1214/23-AOAS1790).
 
+Sainsbury-Dale, M., Zammit-Mangion, A., and Huser R. (2024). Likelihood-Free Parameter Estimation with Neural Bayes Estimators. *The American Statistician*, **78**, 1-14 [(doi:10.1080/00031305.2023.2249522)](https://doi.org/10.1080/00031305.2023.2249522).
+
 <br/>
 
 ### 2023
@@ -20,6 +22,8 @@ North, J.S., Wikle, C.K., and Schliep, E.M. (2023). A Bayesian approach for spat
 North, J.S., Wikle, C.K. and Schliep, E.M. (2023). A Review of data-driven discovery for dynamic systems. *International Statistical Review*, **91**, 464-492 [(doi:10.1111/insr.12554)](https://doi.org/10.1111/insr.12554).
 
 Cressie, N. (2023). Adapting statistical science for a fast-changing climate. *CHANCE*, **36.1**,  9-13 [(doi:10.1080/09332480.2023.2179263)](https://doi.org/10.1080/09332480.2023.2179263).
+
+Vu., Q., Zammit-Mangion, A., and Chuter S. (2023). Constructing large nonstationary spatio-temporal covariances via compositional warpings. *Spatial Statistics*, **54**, 100742 [(doi:10.1016/j.spasta.2023.100742)](https://doi.org/10.1016/j.spasta.2023.100742).
 
 Schliep, E., Wikle, C.K., and Daw, R. (2023). Correcting for informative sampling in spatial covariance estimation and kriging predictions. *Journal of Geographical Systems*, **25**, 587-613. [(doi:10.1007/s10109-023-00426-9)](https://doi.org/10.1007/s10109-023-00426-9).
 
@@ -35,9 +39,13 @@ Simpson, M., Holan, S.H., C.K. Wikle, and Bradley, J.R. (2023). Interpolating Po
 
 Byrne, B. et al. (with 60 co-authors including Cressie, N. and Zammit-Mangion, A.). (2023). National CO2 budgets (2015-2020) inferred from atmospheric CO2 observations in support of the global stocktake. *Earth System Science Data*, **15**, 963-1004 [(doi.org:10.5194/essd-15-963-2023)](https://doi.org/10.5194/essd-15-963-2023).
 
+Ng, T.L.J.  and Zammit-Mangion, A. (2023). Non-homogeneous Poisson process intensity modelling and estimation using measure transport. *Bernoulli*, **29**, 815-838 [(doi:10.3150/22-BEJ1480)](https://doi.org/10.3150/22-BEJ1480).
+
 Daw, R., and  Wikle, C.K. (2023). REDS: Random ensemble deep spatial prediction. *Environmetrics*, **34** [(doi:110.1002/env.2780)](https://doi.org/110.1002/env.2780).
 
 Cressie, N. (2023). Robodebt not only broke the laws of the land – it also broke laws of mathematics. *The Conversation*, published March 17, 2023 [(https://theconversation.com/robodebt-not-only-broke-the-laws-of-the-land-it-also-broke-laws-of-mathematics-201299)](https://theconversation.com/robodebt-not-only-broke-the-laws-of-the-land-it-also-broke-laws-of-mathematics-201299).
+
+Wikle, C.K., and Zammit-Mangion, A. (2023). Statistical deep learning for spatial and spatio-temporal data. *Annual Review of Statistics and Its Application*, **10**, 247-270 [(doi:10.1146/annurev-statistics-033021-112628)](https://doi.org/10.1146/annurev-statistics-033021-112628).
 
 Cressie, N. and Moores, M. T. (2023). Spatial statistics, in *Encyclopedia of Mathematical Geosciences*, eds B. S. Daya Sagar, Q. Cheng, J. McKinley, and F. Agterberg. Springer, Cham, CH, pp.1362-1373 [(doi:10.1007/978-3-030-26050-7_31-2)](https://doi.org/10.1007/978-3-030-26050-7_31-2).
 
@@ -59,6 +67,8 @@ Wikle, C.K., Datta, A., Hari, B.V., Boone, E.L., Sahoo, I., Kavila, I., Castrucc
 Cressie, N., Sainsbury-Dale, M., and Zammit-Mangion, A. (2022). Basis-function models in spatial statistics. *Annual Review of Statistics and its Application*, **9**, 373-400 [(doi:10.1146/annurev-statistics-040120-020733)](https://doi.org/10.1146/annurev-statistics-040120-020733).
 
 Schafer, T.L.J., Wikle, C.K., and Hooten, M.B. (2022) Bayesian inverse reinforcement learning for collective animal movement. *Annals of Applied Statistics*, **16**(2), 999-1013 [(doi:10.1214/21-AOAS1529)](https://doi.org/10.1214/21-AOAS1529).
+
+Zammit-Mangion, A., Ng, T.L.J., Vu, Q., and Filippone, M. (2022). Deep compositional spatial models. *Journal of the American Statistical Association*, **117**, 1787-1808 [(doi:10.1080/01621459.2021.1887741)](https://doi.org/10.1080/01621459.2021.1887741).
 
 Zhang, B., Li, F., Sang, H., and Cressie, N. (2022). Inferring changes in Arctic sea ice through a spatio-temporal logistic autoregression fitted to remote-sensing data. *Remote Sensing*, **14**, 5995 [(doi:10.3390/rs14235995)](https://doi.org/10.3390/rs14235995).
 
@@ -122,6 +132,8 @@ Hooten, M.B., Wikle, C.K., and M.R. Schwob, M.R. (2020). Statistical implementat
 <br/>
 
 ### 2019
+Heaton, M.J. et al. (2019). A case study competition among methods for analyzing large spatial data. *Journal of Agricultural, Biological, and Environmental Statistics*, **24**,  398-425 [(doi:10.1007/s13253-018-00348-w)](https://doi.org/10.1007/s13253-018-00348-w).
+
 Cressie, N. and Hardouin, C. (2019). A diagonally weighted matrix norm between two covariance matrices. *Spatial Statistics*, **29**, 316-328 [(doi:10.1016/j.spasta.2019.01.001)](https://doi.org/10.1016/j.spasta.2019.01.001).
 
 Gopalan, G., Hrafnkelsson, B., Wikle, C.K., Rue, H., Aoalgeirsdottir, G., Jarosch, A., and Paisson, F. (2019). A hierarchical spatio-temporal statistical model motivated by glaciology. *Journal of Agricultural, Biological, and Environmental Statistics*, **24**, 669-692 [(doi:10.1007/s13253-019-00367-1)](https://doi.org/10.1007/s13253-019-00367-1).
