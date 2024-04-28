@@ -37,7 +37,7 @@ Berliner, L.M., Herbei, R., Wikle, C.K., and  Milliff, R.F. (2023). Excursions i
 
 Simpson, M., Holan, S.H., C.K. Wikle, and Bradley, J.R. (2023). Interpolating Population Distributions using Public-use Data: An Application to Income Segregation using American Community Survey Data. *Journal of the American Statistical Association*, **118:541**, 84-96 [(doi:10.1080/01621459.2022.2126779)](https://doi.org/10.1080/01621459.2022.2126779).
 
-Byrne, B. et al. (with 60 co-authors including Cressie, N. and Zammit-Mangion, A.). (2023). National CO2 budgets (2015-2020) inferred from atmospheric CO2 observations in support of the global stocktake. *Earth System Science Data*, **15**, 963-1004 [(doi.org:10.5194/essd-15-963-2023)](https://doi.org/10.5194/essd-15-963-2023).
+Byrne, B. et al. (with 60 co-authors including Cressie, N. and Zammit-Mangion, A.). (2023). National CO2 budgets (2015-2020) inferred from atmospheric CO2 observations in support of the global stocktake. *Earth System Science Data*, **15**, 963-1004 [(doi:10.5194/essd-15-963-2023)](https://doi.org/10.5194/essd-15-963-2023).
 
 Ng, T.L.J.  and Zammit-Mangion, A. (2023). Non-homogeneous Poisson process intensity modelling and estimation using measure transport. *Bernoulli*, **29**, 815-838 [(doi:10.3150/22-BEJ1480)](https://doi.org/10.3150/22-BEJ1480).
 
