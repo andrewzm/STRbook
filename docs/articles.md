@@ -15,6 +15,8 @@ Bonas, M., Wikle, C.K., and Castruccio, S. (2024). Calibrated forecasts of quasi
 
 Grieshop, N. and Wikle, C.K. (2024). Data-driven modeling of wildfire spread with stochastic cellular automata and latent spatio-temporal dynamics. *Spatial Statistics*, **59**, 100794 <span class="ref-link">[(doi:10.1016/j.spasta.2023.100794)](https://doi.org/10.1016/j.spasta.2023.100794).</span>
 
+Grieshop, N. and Wikle, C.K. (2024). Echo state network-enhanced symbolic regression for spatio-temporal binary stochastic cellular automata. *Spatial Statistics*, **60**, 100827 <span class="ref-link">[(doi:10.1016/j.spasta.2024.100827)](https://doi.org/10.1016/j.spasta.2024.100827).</span>
+
 North, J.S., Wikle, C.K., and Schliep, E.M. (2024). A Bayesian approach for spatio-temporal data-driven dynamic equation discovery. *Bayesian Analysis* <span class="ref-link">[(doi:10.1214/23-BA1406)](https://doi.org/10.1214/23-BA1406).</span>
 
 Pearse, A. R., Cressie, N., and Gunawan, D. (2024). Optimal prediction of positive-valued spatial processes: Asymmetric power-divergence loss.  *Spatial Statistics*, **60**, 100829 <span class="ref-link">[(doi:10.1016/j.spasta.2024.100829)](https://doi.org/10.1016/j.spasta.2024.100829).</span>
@@ -23,7 +25,7 @@ Sainsbury-Dale, M., Zammit-Mangion, A., and Cressie, N. (2024). Modeling big, he
 
 Sainsbury-Dale, M., Zammit-Mangion, A., and Huser, R. (2024). Likelihood-free parameter estimation with neural Bayes estimators. *The American Statistician*, **78**, 1-14 <span class="ref-link">[(doi:10.1080/00031305.2023.2249522)](https://doi.org/10.1080/00031305.2023.2249522).</span>
 
-Yoo, M. and Wikle, C.K. (2024). A Bayesian spatio-temporal level set dynamical model and application to fire front propagation. *Annals of Applied Statistics*, **18**, 404-423 <span class="ref-link">[(doi:10.48550/arXiv.2210.14978)](https://doi.org/10.48550/arXiv.2210.14978).</span>
+Yoo, M. and Wikle, C.K. (2024). A Bayesian spatio-temporal level set dynamical model and application to fire front propagation. *Annals of Applied Statistics*, **18**, 404-423 <span class="ref-link">[(doi:10.1214/23-AOAS1794)](https://doi.org/10.1214/23-AOAS1794).</span>
 
 Zammit-Mangion, A., Kaminski, M. D., Tran, B-H., Filippone, M., and Cressie, N. (2024). Spatial Bayesian neural networks. *Spatial Statistics*, **60**, 100825 <span class="ref-link">[(doi:10.1016/j.spasta.2024.100825)](https://doi.org/10.1016/j.spasta.2024.100825).</span>
 
