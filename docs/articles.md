@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Articles
+title: Articles (of authors)
 ---
 <style>
     a { display: inline-block; }
@@ -33,7 +33,7 @@ Zammit-Mangion, A., Kaminski, M. D., Tran, B-H., Filippone, M., and Cressie, N. 
 
 ### 2023
 
-Berliner, L.M., Herbei, R., Wikle, C.K., and  Milliff, R.F. (2023). Excursions in the Bayesian treatment of model error. *PLoS ONE*, **18**(6), e0286624 <span class="ref-link">[(doi:10.1371/journal.pone.0286624)](https://doi.org/10.1371/journal.pone.0286624).</span>
+Berliner, L.M., Herbei, R., Wikle, C.K., and  Milliff, R.F. (2023). Excursions in the Bayesian treatment of model error. *PLoS ONE*, **18**, e0286624 <span class="ref-link">[(doi:10.1371/journal.pone.0286624)](https://doi.org/10.1371/journal.pone.0286624).</span>
 
 Byrne, B. et al. (with 60 co-authors including Cressie, N. and Zammit-Mangion, A.). (2023). National CO<sub>2</sub> budgets (2015-2020) inferred from atmospheric CO<sub>2</sub> observations in support of the global stocktake. *Earth System Science Data*, **15**, 963-1004 <span class="ref-link">[(doi:10.5194/essd-15-963-2023)](https://doi.org/10.5194/essd-15-963-2023).</span>
 
@@ -53,7 +53,7 @@ Ng, T.L.J.  and Zammit-Mangion, A. (2023). Non-homogeneous Poisson process inten
 
 North, J.S., Wikle, C.K., and Schliep, E.M. (2023). A review of data-driven discovery for dynamic systems. *International Statistical Review*, **91**, 464-492 <span class="ref-link">[(doi:10.1111/insr.12554)](https://doi.org/10.1111/insr.12554).</span>
 
-Schliep, E., Wikle, C.K., and Daw, R. (2023). Correcting for informative sampling in spatial covariance estimation and kriging predictions. *Journal of Geographical Systems*, **25**, 587-613. <span class="ref-link">[(doi:10.1007/s10109-023-00426-9)](https://doi.org/10.1007/s10109-023-00426-9).</span>
+Schliep, E., Wikle, C.K., and Daw, R. (2023). Correcting for informative sampling in spatial covariance estimation and kriging predictions. *Journal of Geographical Systems*, **25**, 587-613 <span class="ref-link">[(doi:10.1007/s10109-023-00426-9)](https://doi.org/10.1007/s10109-023-00426-9).</span>
 
 Simpson, M., Holan, S.H., Wikle, C.K., and Bradley, J.R. (2023). Interpolating population distributions using public-use data: An application to income segregation using American Community Survey data. *Journal of the American Statistical Association*, **118**, 84-96 <span class="ref-link">[(doi:10.1080/01621459.2022.2126779)](https://doi.org/10.1080/01621459.2022.2126779).</span>
 
@@ -63,7 +63,7 @@ Wikle, C.K. and Zammit-Mangion, A. (2023). Statistical deep learning for spatial
 
 Wikle, C.K., Mateu, J., and Zammit-Mangion, A. (2023). Deep learning and spatial statistics. *Spatial Statistics*, **57**, 100774 <span class="ref-link">[(doi:10.1016/j.spasta.2023.100774)](https://doi.org/10.1016/j.spasta.2023.100774).</span>
 
-Yoo, M. and Wikle, C.K. (2023). Using echo state networks to inform physical models for fire front propagation. *Spatial Statistics*, **54** <span class="ref-link">[(doi:10.1016/j.spasta.2023.100732)](https://doi.org/10.1016/j.spasta.2023.100732).</span>
+Yoo, M. and Wikle, C.K. (2023). Using echo state networks to inform physical models for fire front propagation. *Spatial Statistics*, **54**, 100732 <span class="ref-link">[(doi:10.1016/j.spasta.2023.100732)](https://doi.org/10.1016/j.spasta.2023.100732).</span>
 
 <br/>
 
