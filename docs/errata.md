@@ -24,7 +24,7 @@ title: Errata
 
 **p. 152, Technical Note 4.2 (2020-07-22)**: Change "...column space of the *m*&times;(*p* + 1) design matrix **X**." to "...column space of the *m*&times;*p* design matrix **X**."
 
-**p. 200 (2024-05-15):** The penultimate sentence begins as "The posterior distribution of the marginal variance of the latent field is largest between 2 and 4, These values..." and should have a period between *"4"* and *"These"* rather than a comma.
+**p. 200 (2024-05-15):** The penultimate sentence begins as "The posterior distribution of the marginal variance of the latent field is largest between 2 and 4, These values..." and should have a period between "4" and "These" rather than a comma.
 
 **p. 218 (2024-05-15):** First paragraph of section 5.3 begins "The latent linear Gaussian DSTM described in Section 5.2 above has unknown parameters associated with the data model Cη, ..." and should say "process model" instead of "data model."
 
