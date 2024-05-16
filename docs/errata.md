@@ -26,15 +26,15 @@ title: Errata
 
 **p. 200 (2024-05-15):** The penultimate sentence begins as "The posterior distribution of the marginal variance of the latent field is largest between 2 and 4, These values..." and should have a period between "4" and "These" rather than a comma.
 
-**p. 218 (2024-05-15):** First paragraph of section 5.3 begins "The latent linear Gaussian DSTM described in Section 5.2 above has unknown parameters associated with the data model Cη, ..." and should say "process model" instead of "data model."
+**p. 218 (2024-05-15):** First paragraph of Section 5.3 begins "The latent linear Gaussian DSTM described in Section 5.2 above has unknown parameters associated with the data model Cη, ..." and should say "process model" instead of "data model".
 
-**p. 218 (2024-05-15):** Final paragraph beginning "Generally, the transition-matrix parameters in the DSTM process model require the most care, as there there could be ..." and one "there" should be removed.
+**p. 218 (2024-05-15):** Final paragraph beginning, "Generally, the transition-matrix parameters in the DSTM process model require the most care, as there there could be ...", and one "there" should be removed.
 
 **p. 223, line 3 (2020-07-22)**: Change "...is an *n*&times;(*p* + 1) matrix that could be time-varying..." to "...is an *n*&times;*p* matrix that could be time-varying..."
 
-**p. 226 (2024-05-15):** An example of a GQN DSTM to accompany Equation 5.22 is Hooten and Wikle, 2010 <https://doi.org/10.1198/jasa.2009.tm09036>
+**p. 226 (2024-05-15):** An example of a GQN DSTM to accompany Equation (5.22) is Hooten and Wikle (2010): <https://doi.org/10.1198/jasa.2009.tm09036>
 
-**p. 269 (2024-05-15):** In the unnumbered equation for a p-value, 𝑝<sub>B</sub>, "B" refers to "Bayes".
+**p. 269 (2024-05-15):** In the unnumbered equation for a p-value 𝑝<sub>B</sub>, "B" refers to "Bayes".
 
 **p. 277 (2020-12-24)**: On the line directly below (6.23), **Z** should be **Z’**, a row vector.
 
