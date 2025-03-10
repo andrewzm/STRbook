@@ -1,0 +1,118 @@
+
+---
+title: Linked Brushing
+output: html_document
+runtime: shiny
+---
+
+```{r, echo = FALSE}
+## Wikle, C. K., Zammit-Mangion, A., and Cressie, N. (2023), 
+## Spatio-Temporal Statistics with R, Boca Raton, FL: Chapman & Hall/CRC
+## Copyright (c) 2019 Wikle, Zammit-Mangion, Cressie
+##
+## This program is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation; either version 2
+## of the License, or (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+```
+
+
+Please install `shiny`. Then set working directory to the source file location and click `Run Document` in `Rstudio`.
+
+
+```{r, message = FALSE, echo = FALSE}
+library(shiny)
+library(STRbook)
+library(dplyr)
+
+data("NOAA_df_1990", package = "STRbook")      # load dataset
+Tmax <- subset(NOAA_df_1990,    # subset dataset
+              proc=="Tmax" &
+              month %in% 5:9 &
+              year == 1993)
+```
+
+
+The spatial distribution of the stations is shown in the first panel and the time series plots are shown in the second panel. Highlight stations in the first panel using the mouse; the corresponding time series will be highlighted in red in the second panel. This form of visualization is known as `linked brushing.'
+
+```{r fig.width = 4, fig.height = 3, echo = FALSE, results = "hold"}
+library("shiny")
+library("dplyr")
+library("ggplot2")
+library("shiny")
+library("STRbook")
+
+## based on https://krisrs1128.github.io/stat679_notes/2022/06/01/week3-3.html
+
+data("NOAA_df_1990", package = "STRbook")      # load dataset
+Tmax <- subset(NOAA_df_1990,    # subset dataset
+               proc=="Tmax" &
+                 month %in% 5:9 &
+                 year == 1993)
+
+Tmax_sp <- Tmax %>%
+           select(lon, lat, id) %>%
+           unique()
+
+reset_selection <- function(x, brush) {
+  brushedPoints(x, brush, allRows = TRUE)$selected_
+}
+
+scatterplot <- function(Tmax, selected_) {
+  
+  Tmax_sub <- Tmax %>%
+    filter(selected_)
+  
+  Tmax %>%
+    mutate(selected_ = selected_) %>%
+    ggplot() +
+    geom_point(aes(lon, lat)) +
+    geom_point(data = Tmax_sub, aes(lon, lat), colour = "red") +
+    scale_alpha(range = c(0.05, 0.6))
+}
+
+lineplot <- function(Tmax, selected_) {
+  Tmax_sub <- Tmax %>%
+    filter(selected_)
+  
+  Tmax %>%
+    ggplot() +
+    geom_line(aes(x = date, y = z, group = id)) +
+    geom_line(data = Tmax_sub, aes(x = date, y =z, group = id), col = "red")
+}
+
+data_table <- function(Tmax, selected_) {
+  Tmax %>%
+    filter(selected_) %>%
+    summary()
+}
+
+
+ui <- fluidPage(
+  fluidRow(
+    column(6, plotOutput("scatterplot", brush = brushOpts("plot_brush"))),
+    column(6, plotOutput("lineplot", brush = "plot_brush"))
+  )
+  #dataTableOutput("table")
+)
+
+server <- function(input, output) {
+  selected <- reactiveVal(rep(TRUE, nrow(Tmax)))
+  
+  observeEvent(
+    input$plot_brush,
+    selected(reset_selection(Tmax, input$plot_brush))
+  )
+  
+  output$scatterplot <- renderPlot(scatterplot(Tmax, selected()))
+  output$lineplot <- renderPlot(lineplot(Tmax, selected()))
+  output$table <- renderDataTable(data_table(select(Tmax, z), selected()))
+}
+
+shinyApp(ui, server)
+```

@@ -1,2 +1,5 @@
-theme: minima
+remote_theme: jekyll/minima
+plugins:
+- jekyll-remote-theme
 title: Spatio-Temporal Statistics with R
+google_analytics: G-3HJJCZE2G6
