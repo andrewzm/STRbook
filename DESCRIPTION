@@ -7,6 +7,7 @@ Authors@R: c(
     person("Patrick", "McDermott", , "plmyt7@gmail.com", role = "ctb"))
 Maintainer: Andrew Zammit-Mangion <andrewzm@gmail.com>
 Description: Provides data and helper functions for the Labs in the book.
+Depends: R (>= 3.5.0)
 Imports: ggplot2, fields, Matrix
 License: GPL (>2.1)
 LazyData: TRUE
