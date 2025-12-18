@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Introduction to Spatio-Temporal Statistics – Spatio-Temporal Statistics with R (1st edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Chapter2.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b719d3d4935f2b08311a76135e2bf442.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d2e1f8220df954187ab24ed36a0da9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Chapter1.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatio-Temporal Statistics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Spatio-Temporal Statistics with R (1st edition)</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatio-Temporal Statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Exploring Spatio-Temporal Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Descriptive Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Evaluating Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterPergimus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Appendices</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterRPackages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">List of <code>R</code> packages</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-why" id="toc-sec-why" class="nav-link active" data-scroll-target="#sec-why"><span class="header-section-number">1.1</span> Why Should Spatio-Temporal Models Be <em>Statistical?</em></a></li>
+  <li><a href="#sec-goals" id="toc-sec-goals" class="nav-link" data-scroll-target="#sec-goals"><span class="header-section-number">1.2</span> Goals of Spatio-Temporal Statistics</a>
+  <ul class="collapse">
+  <li><a href="#sec-approaches" id="toc-sec-approaches" class="nav-link" data-scroll-target="#sec-approaches"><span class="header-section-number">1.2.1</span> The Two Ds of Spatio-Temporal Statistical Modeling</a></li>
+  <li><a href="#sec-Tobler" id="toc-sec-Tobler" class="nav-link" data-scroll-target="#sec-Tobler"><span class="header-section-number">1.2.2</span> Descriptive Modeling</a></li>
+  <li><a href="#dynamic-modeling" id="toc-dynamic-modeling" class="nav-link" data-scroll-target="#dynamic-modeling"><span class="header-section-number">1.2.3</span> Dynamic Modeling </a></li>
+  </ul></li>
+  <li><a href="#sec-HMs" id="toc-sec-HMs" class="nav-link" data-scroll-target="#sec-HMs"><span class="header-section-number">1.3</span> Hierarchical Statistical Models</a></li>
+  <li><a href="#structure-of-the-book" id="toc-structure-of-the-book" class="nav-link" data-scroll-target="#structure-of-the-book"><span class="header-section-number">1.4</span> Structure of the Book</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatio-Temporal Statistics</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><em>“I feel all things as dynamic events, being, changing, and interacting with each other in space and time even as I photograph them.”</em><br>
+— Wynn Bullock (1902–1975), American photographer</p>
+</blockquote>
+<p>Wynn Bullock was an early pioneer of modern photography, and this quote captures the essence of what we are trying to get across in our book — except in our case the <em>“photographs”</em> are fuzzy and the pictures are incomplete! The top panel of <a href="#fig-OCO2" class="quarto-xref">Figure&nbsp;<span>1.1</span></a> shows the July 2014 launch of the US National Aeronautics and Space Administration (NASA) <em>Orbiting Carbon Observatory-2</em> (OCO-2) satellite, and the bottom panel shows the <em>photographer</em> in action. OCO-2 reached orbit successfully and, at the time of writing, is taking pictures of the dynamic world below. They are taken every fraction of a second, and each <em>“photograph”</em> is made up of measurements of the sun’s energy in selected spectral bands, reflected from Earth’s surface.</p>
+<div id="fig-OCO2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-OCO2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><img src="img/Chapter_1/image1a_Launch_smoke.png" style="height:3in" class="figure-img"></p>
+<p><img src="img/Chapter_1/image1b_OCO2artist2.png" style="height:2in" class="figure-img"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-OCO2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: Top: Launch of NASA’s OCO-2 satellite, on 02 July 2014 (credit: NASA/JPL). Bottom: An artist’s impression of the OCO-2 satellite in orbit (credit: NASA/JPL).
+</figcaption>
+</figure>
+</div>
+<p>After NASA processes these measurements, an estimate is obtained of the fraction of carbon dioxide (CO<span class="math inline">\(_2\)</span>) molecules in an atmospheric column between Earth’s surface and the OCO-2 satellite. The top panel of <a href="#fig-OCO2data" class="quarto-xref">Figure&nbsp;<span>1.2</span></a> shows these estimates in the boreal winter at locations determined by the geometry of the satellite’s 16-day repeat cycle (the time interval after which the satellite retraces its orbital path). (They are color-coded according to their value in units of parts per million, or ppm.) Plainly, there are gaps caused by OCO-2’s orbit geometry, and notice that the higher northern latitudes have very few data (caused by the sun’s low angle at that time of the year). The bottom panel of <a href="#fig-OCO2data" class="quarto-xref">Figure&nbsp;<span>1.2</span></a> shows 16 days of OCO-2 data obtained six months later, in the boreal summer, where the same comments about coverage apply, except that now the higher southern latitudes have very few data. Data incompleteness here is a moving target in both space and time. Furthermore, any color-coded “dot” on the map represents a datum that should not be totally believed, since it is an estimate obtained from measurements made through 700 km of atmosphere with clouds, water vapor, and dust getting in the way. That is, there is “noise” in the data.</p>
+<div id="fig-OCO2data" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-OCO2data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><img src="img/Chapter_1/figure2top.png" style="height:3in" class="figure-img"></p>
+<p><img src="img/Chapter_1/figure2bottom.png" style="height:3in" class="figure-img"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-OCO2data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: Sixteen days of CO<span class="math inline">\(_{2}\)</span> data from the OCO-2 satellite. Top: Data from 25 December 2016 to 09 January 2017 (boreal winter). Bottom: Data from 24 June 2017 to 09 July 2017 (boreal summer). The panel titles identify the eighth day of the 16-day window..
+</figcaption>
+</figure>
+</div>
+<p>There is a “+” on the global maps shown in <a href="#fig-OCO2data" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>, which marks the location of the Mauna Loa volcano, Hawaii. Near the top of this volcano, at an altitude of 4.17 km, is the US National Oceanic and Atmospheric Administration (NOAA) Mauna Loa Observatory, which has been taking monthly measurements of CO<span class="math inline">\(_2\)</span> since the late 1950s. The data are shown as a time series in <a href="#fig-meanCO2" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>. Now, for the moment, put aside issues associated with measurements being taken with different instruments, on different parcels of air, at different locations, and for different blocks of time; these can be dealt with using quite advanced spatio-temporal statistical methodology found in, for example, <span class="citation" data-cites="cressie2011statistics">N. Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>. What is fundamental here is that underlying these imperfect observations is a spatio-temporal process that itself is not perfectly understood, and we propose to capture this uncertainty in the process with a spatio-temporal statistical model.</p>
+<div id="fig-meanCO2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-env="figure" data-fig-pos="t!">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meanCO2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_1/figure3_co2_data_mlo.png" style="height:2in" data-fig-env="figure" data-fig-pos="t!" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meanCO2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.3: Monthly mean atmospheric CO<span class="math inline">\(_2\)</span> (ppm) at the NOAA Mauna Loa Observatory, Hawaii. The smooth line represents seasonally corrected data.<br>
+(Credit: Scripps Institution of Oceanography and NOAA Earth System Research Laboratory.)
+</figcaption>
+</figure>
+</div>
+<p>The atmospheric CO<span class="math inline">\(_2\)</span> process varies in space and in time, but the extent of its spatio-temporal domain means that exhaustive measurement of it is not possible; and even if it were possible, it would not be a good use of resources (a conclusion you should find evident after reading our book). This is a generic problem in spatio-temporal statistics—our noisy data traverse different paths through the “space-time cube”, but we want to gain knowledge about unobserved (and even observed) parts of it. We shall address this problem in the chapters, the Labs, and the technical notes that follow, drawing on a number of data sets introduced in Chapter 2.</p>
+<p>Humans have a longing to understand their place (temporally and spatially) in the universe. In an Einsteinian universe, space and time interact in a special, “curved” way; however, in this book our methodology and applications are for a Newtonian world. Rick Delmonico, author of <em>The Philosophy of Fractals</em> <span class="citation" data-cites="delmonico2017fractals">(<a href="references.html#ref-delmonico2017fractals" role="doc-biblioref">Delmonico 2017</a>)</span>, has been quoted elsewhere as saying that “light is time at maximum compression and matter is space at maximum compression.” Our Newtonian world is definitely more relaxed than this! Nevertheless, it is fascinating that images of electron motion at a scale of <span class="math inline">\(10^{-11}\)</span> meters look very much like images of the cosmos at a scale of <span class="math inline">\(10^{17}\)</span> meters <span class="citation" data-cites="morrison1982powers">(<a href="references.html#ref-morrison1982powers" role="doc-biblioref">Morrison and Morrison 1982</a>)</span>.</p>
+<p>Trying to understand spatio-temporal data and how (and ultimately why) they vary in space and time is not new — just consider trying to describe the growth and decline of populations, the territorial expansion and contraction of empires, the spread of world religions, species (including human) migrations, the dynamics of epidemics, and so on. Indeed, history and geography are inseparable. From this “big picture” point of view, there is a complex system of interacting physical, biological, and social processes across a range of spatial/temporal scales.</p>
+<p>How does one do spatio-temporal statistics? Well, it is not enough to consider just spatial snapshots of a process at a given time, nor just time-series profiles at a given spatial location—the behavior at spatial locations at one time point will almost certainly affect the behavior at nearby spatial locations at the next time point. Only by considering time and space together can we address how spatially coherent entities change over time or, in some cases, why they change. It turns out that a big part of the <em>how</em> and <em>why</em> of such change is due to <em>interactions</em> across space and time, and across multiple processes.</p>
+<p>For example, consider an influenza epidemic, which is generally in the winter season. Individuals in the population at risk can be classified as susceptible (S), infected (I), or recovered (R), and a well-known class of multivariate temporal models, called SIR models, capture the transition of susceptibles to infecteds to recovereds and then possibly back to susceptibles. At a micro level, infection occurs in the household, in the workplace, and in public places due to the interaction (contact) between infected and susceptible individuals. At a macro level, infection and recovery rates can be tracked and fitted to an SIR model that might also account for the weather, demographics, and vaccination rates. Now suppose we can disaggregate the total-population SIR rates into health-district SIR rates. This creates a spatio-temporal data set, albeit at a coarse spatial scale, and the SIR rates can be visualized dynamically on a map of the health districts. Spatio-temporal interactions may then become apparent, and the first steps of spatio-temporal modeling can be taken.</p>
+<p>Spatio-temporal interactions are not limited to similar types of processes nor to spatial and temporal scales of variability that seem obvious. For example, El Niño and La Niña phenomena in the tropical Pacific Ocean correspond to periods of warmer-than-normal and colder-than-normal sea surface temperatures (SST), respectively. These SST “events” occur every two to seven years, although the exact timing of their appearance and their end is not regular. But it is well known that they have a tremendous impact on the weather across the globe, and weather affects a great number of things! For example, the El Niño and La Niña events can affect the temperature and rainfall over the Midwest USA, which can affect, say, the soil moisture in the state of Iowa, which would likely affect corn production and could lead to a stressed USA agro-economy during that period. Simultaneously, these El Niño and La Niña events can also affect the probability of tornado outbreaks in the famed “tornado alley” region of the central USA, and they can even affect the breeding populations of waterfowl in the USA.</p>
+<p>Doing some clever smoothing and sharp visualizations of the spatial, temporal, and spatio-temporal variability in the data is a great start. But the information we glean from these data analyses needs to be organized, and this is done through models. In the next section, we make the case for spatio-temporal models that are <em>statistical</em>.</p>
+<section id="sec-why" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-why"><span class="header-section-number">1.1</span> Why Should Spatio-Temporal Models Be <em>Statistical?</em></h2>
+<p>In the physical world, phenomena evolve in space and time following deterministic, perhaps “chaotic,” physical rules (except at the quantum level), so why do we need to consider randomness and uncertainty? The primary reason comes from the uncertainty resulting from incomplete knowledge of the science and of the mechanisms driving a spatio-temporal phenomenon. In particular, <em>statistical</em> spatio-temporal models give us the ability to model components in a physical system that appear to be random and, even if they are not, the models are useful if they result in accurate and precise predictions. Such models introduce the notion of uncertainty, but they are able to do so without obscuring the salient trends or regularities of the underlying process (that are typically of primary interest).</p>
+<p>Take, for instance, the raindrops falling on a surface; to predict exactly where and when each drop will fall would require an inconceivably complex, deterministic, meteorological model, incorporating air pressure, wind speed, water-droplet formation, and so on. A model of this sort at a large spatial scale is not only infeasible but also unnecessary for many purposes. By studying the temporal intensity of drops on a regular spatial grid, one can test for spatio-temporal interaction or look for dynamic changes in spatial intensity (given in units of “per area”) for each cell of the grid. The way in which the intensity evolves over time may reveal something about the driving mechanisms (e.g., wind vectors) and be useful for prediction, even though the exact location and time of each incident raindrop is uncertain.</p>
+<p>Spatio-temporal statistical models are <em>not</em> at odds with deterministic ones. Indeed, the most powerful (in terms of predictive performance) spatio-temporal statistical models are those that are constructed based on an understanding of the biological or physical mechanisms that give rise to spatio-temporal variability and interactions. Hence, we sometimes refer to them as <em>physical-statistical models</em> <span class="citation" data-cites="kuhnert2014physical">(see the editorial by <a href="references.html#ref-kuhnert2014physical" role="doc-biblioref">Kuhnert 2014</a>)</span>, or generally as <em>mechanistically motivated statistical models</em>. To this understanding, we add the reality that observations may have large gaps between them (in space and in time), they are observed with error, our understanding of the physical mechanisms is incomplete, we have limited knowledge about model parameters, and so on. Then it becomes clear that incorporating statistical distributions into the model is a very natural way to solve complex problems. Answers to the problems come as estimates or predictions along with a quantification of their uncertainties. These physical-statistical models, in the temporal domain, the spatial domain, and the spatio-temporal domain, have immense use in everything from anthropology to zoology and all the “ologies” in-between.</p>
+</section>
+<section id="sec-goals" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="sec-goals"><span class="header-section-number">1.2</span> Goals of Spatio-Temporal Statistics</h2>
+<p>What are we trying to accomplish with spatio-temporal data analysis and statistical modeling? Sometimes we are just trying to gain more understanding of our data. We might be interested in looking for relationships between two spatio-temporally varying processes, such as temperature and rainfall. This can be as simple as visualizing the data or exploring them through various summaries (Chapter 2). Augmenting these data with scientific theories and statistical methodologies allows valid inferences to be made (Chapter 3). For example, successive reports from the United Nations Intergovernmental Panel on Climate Change have concluded from theory and data that a build-up of atmospheric CO<span class="math inline">\({_2}\)</span> leads to a greenhouse effect that results in global warming. Models can then be built to answer more focused questions. For example, the CO<span class="math inline">\({_2}\)</span> data shown in <a href="#fig-OCO2data" class="quarto-xref">Figure&nbsp;<span>1.2</span></a> are a manifestation of Earth’s carbon cycle: can we find precisely the spatio-temporal “places” on Earth’s surface where carbon moves in and out of the atmosphere? Or, how might this warming affect our ability to predict whether an El Ni~no event will occur within 6 months?</p>
+<p>Broadly speaking, there are three main goals that one might pursue with a spatio-temporal statistical model: (1) prediction in space and time (filtering and smoothing); (2) inference on parameters; and (3) forecasting in time. More specific goals might include data assimilation, computer-model emulation, and design of spatio-temporal monitoring networks. These are all related through the presence of a spatio-temporal statistical model, but they have their own nuances and may require different methodologies (Chapters 4 and 5).</p>
+<section id="sec-approaches" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-approaches"><span class="header-section-number">1.2.1</span> The Two Ds of Spatio-Temporal Statistical Modeling</h3>
+<p>There have been two approaches to spatio-temporal statistical modeling that address the goals listed above. These are the “two Ds” referred to in the title of this subsection, namely the <em>descriptive</em> approach and the <em>dynamic</em> approach. Both are trying to capture statistical dependencies in spatio-temporal phenomena, but they go about it in quite different ways.</p>
+<p>Probably the simplest example of this is in time-series modeling. Suppose that the dependence between any two data at different time points is modeled with a stationary first-order autoregressive process (AR(1)). <em>Dynamically</em>, the model says that the value at the current time is equal to a “propagation factor” (or “transition factor”) times the value at the previous time, plus an independent “innovation error.” This is a mechanistic way of presenting the model that is easy to simulate and easy to interpret.</p>
+<p><em>Descriptively</em>, the same probability structure can be obtained by defining the correlation between two values at any two given time points to be an exponentially decreasing function of the lag between the two time points. (The rate of decrease depends on the AR(1) propagation factor.) Viewing the model this way, it is not immediately obvious how to simulate from it nor what the behavior of the correlation function means physically.</p>
+<p>The “take-home” message here is that, while there is a single underlying probability model common to the two specifications, the dynamic approach has some attractive interpretable features that the descriptive approach does not have. Nevertheless, in the absence of knowledge of the dynamics, it can be the descriptive approach that is more “fit for purpose.” With mean and covariance functions that are sufficiently flexible, a good fit to the data can be obtained and, consequently, the spatio-temporal variability can be well described.</p>
+</section>
+<section id="sec-Tobler" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="sec-Tobler"><span class="header-section-number">1.2.2</span> Descriptive Modeling</h3>
+<p>The descriptive approach typically seeks to characterize the spatio-temporal process in terms of its mean function and its covariance function. When these are sufficient to describe the process, we can use “optimal prediction” theory to obtain predictions and, crucially, their associated prediction uncertainties. This approach has a distinguished history in spatial statistics and is the foundation of the famed <em>kriging</em> methodology. <span class="citation" data-cites="cressie1990origins">(<a href="references.html#ref-cressie1990origins" role="doc-biblioref">Noel Cressie 1990</a>, presents the early history of kriging.)</span> In a spatio-temporal setting, the descriptive approach is most useful when we do not have a strong understanding of the mechanisms that drive the spatio-temporal phenomenon being modeled. Or perhaps we are more interested in studying how covariates in a regression are influencing the phenomenon, but we also recognize that the errors that occur when fitting that relationship are statistically dependent in space and time. That is, the standard assumption given in Chapter 3, that errors are independent and identically distributed (<span class="math inline">\(iid\)</span>), is <em>not</em> tenable. In this case, knowing spatio-temporal covariances between the data is enough for statistically efficient inferences (via generalized least squares) on regression coefficients (see Chapter 4). But, as you might suspect, it can be quite difficult to specify all possible covariances for complex spatio-temporal phenomena (and, for nonlinear processes, covariances are not sufficient to describe the spatio-temporal statistical dependence within the process).</p>
+<p>Sometimes we can describe spatio-temporal dependence in a phenomenon by including in our model covariates that capture spatio-temporal “trends.” This large-scale spatio-temporal variability leaves behind smaller-scale variability that can be modeled statistically with spatio-temporal covariances. The descriptive approach often relies on an important statistical characteristic of dependent data, namely that nearby (in space and time) observations tend to be more alike than those far apart. In spatial modeling, this is often referred to as “Tobler’s first law of geography” <span class="citation" data-cites="tobler1970computer">Tobler (<a href="references.html#ref-tobler1970computer" role="doc-biblioref">1970</a>)</span>, and it is often a good guiding principle. It is fair to point out, though, that there are exceptions: there might be “competition” (e.g., only smaller trees are likely to grow close to or under bigger trees as they compete over time for light and nutrients), or things may be more alike on two distant mountain peaks at the same elevation than they are on the same mountain peak at different elevations.</p>
+<p>It is important to take a look back at the writings of the pioneers in statistics and ask why spatio-temporal statistical dependencies were not present in early statistical models if they are so ubiquitous in real-world data. Well, we know that some people definitely were aware of these issues. For example, in his ground-breaking treatise on the design of experiments in agriculture, R. A. Fisher (<span class="citation" data-cites="fisher1935design">Fisher (<a href="references.html#ref-fisher1935design" role="doc-biblioref">1935</a>)</span>, p.&nbsp;66) wrote:</p>
+<blockquote class="blockquote">
+<p><em>“After choosing the area we usually have no guidance beyond the widely verified fact that patches in close proximity are commonly more alike, as judged by the yield of crops, than those which are further apart.”</em></p>
+</blockquote>
+<p>In this case, the spatial variability between plots is primarily due to the fact that the soil properties vary relatively smoothly across space at the field level. Unfortunately, Fisher could not implement complex error models that included spatial statistical dependence due to modeling and computational limitations at that time. So he came up with the brilliant solution of introducing randomization into the experimental design in order to avoid confounding plot effects and treatment effects (but note, only at the plot scale). This was one of the most important innovations in twentieth-century science, and it revolutionized experimentation, not only in agriculture but also in industrial and medical applications. Readers interested in more details behind the development of spatial and spatio-temporal statistics could consult Chapter 1 of <span class="citation" data-cites="cressie1993statistics">Noel Cressie (<a href="references.html#ref-cressie1993statistics" role="doc-biblioref">1993</a>)</span> and Chapter 1 of <span class="citation" data-cites="cressie2011statistics">N. Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>, respectively.</p>
+</section>
+<section id="dynamic-modeling" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="dynamic-modeling"><span class="header-section-number">1.2.3</span> Dynamic Modeling </h3>
+<p>Dynamic modeling in the context of spatio-temporal data is simply the notion that we build statistical models that posit (either probabilistically or mechanistically) how a spatial process changes through time. It is inherently a conditional approach, in that we condition on knowing the past, and then we model how the past statistically evolves into the present. If the spatio-temporal phenomenon is what we call “stationary,” we could take what we know about it in the present (and the past) and forecast what it will look like in the future.</p>
+<p>Building spatio-temporal models using the dynamic approach is closer to how scientists think about the etiology of processes they study – that is, most spatio-temporal data <em>really do</em> correspond to a mechanistic real-world process that can be thought of as a spatial process evolving through time. This connection to the mechanism of the process allows spatio-temporal dynamic models a better chance to establish answers to the “why” questions (causality) – is this not the ultimate goal of science? Yet, there is no free lunch – the power of these models comes from established knowledge about the process’s behavior, which may not be available for the problem at hand. In that case, one might specify more flexible classes of dynamic models that can adapt to various types of evolution, or turn to the descriptive approach and fit flexible mean and covariance functions to the data.</p>
+<p>From a statistical perspective, dynamic models are closer to the kinds of statistical models studied in time series than to those studied in spatial statistics. Yet, there are two fundamental differences between spatio-temporal statistical models that are dynamic, and the usual multivariate time-series models. The first is that dynamic spatio-temporal models have to represent realistically the kinds of spatio-temporal interactions that take place in the phenomenon being studied – not all relationships that one might put into a multivariate time-series model make physical (or biological or economic or <span class="math inline">\(\ldots\)</span>) sense. The second reason has to do with dimensionality. It is very often the case in spatio-temporal applications that the dimensionality of the spatial component of the model prohibits standard inferential methods. That is, there would be too much “multi” if one chose a multivariate time-series representation of the phenomenon. Special care has to be taken as to how the model is parameterized in order to obtain realistic yet parsimonious dynamics. As discussed in Chapter 5, this has been facilitated to a large extent by the development of basis function expansions within hierarchical statistical models.</p>
+<p>Irrespective of which “D” is used to model a spatio-temporal data set, its sheer size can overwhelm computations. Model formulations that use basis functions are a powerful way to leap-frog the computational bottleneck caused by inverting a very large covariance matrix of the data. The general idea is to represent a spatio-temporal process as a mixed linear model with known covariates whose coefficients are unknown and non-random, together with known basis functions whose coefficients are unknown and <em>random</em> (Chapters 4 and 5). Usually the basis functions are functions of space and their coefficients define a multivariate time series of dependent random vectors. Depending on the type of basis functions considered, this formulation gives computational advantages due to reduced dimensions and/or sparse covariance/precision matrices that facilitate or eliminate the need for matrix inversions.</p>
+<p>There are many classes of basis functions to choose from (e.g., Fourier, wavelets, bisquares) and many are multi-resolutional, although physically based functions (e.g., elevation) can easily be added to the class. If the basis functions are spatial and their random coefficients depend only on time, then the temporal dependence of the coefficients can capture complex spatio-temporal interactions. These include phenomena for which fine spatial scales affect coarse spatial scales and, importantly, vice versa.</p>
+</section>
+</section>
+<section id="sec-HMs" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sec-HMs"><span class="header-section-number">1.3</span> Hierarchical Statistical Models</h2>
+<p>We believe that we are seeing the end of the era of constructing marginal-probability-based models for complex data. Such models are typically based on the specification of likelihoods from which unknown parameters are estimated. However, these likelihoods can be extremely difficult (or impossible) to compute when there are complex dependencies, and they cannot easily deal with the reality that the data are noisy versions of an underlying real-world process that we care about.</p>
+<p>An alternative way to introduce statistical uncertainty into a model is to think conditionally and build complexity through a series of conditional-probability models. For example, if most of the complex dependencies in the data are due to the underlying process of interest, then one should model the distribution of the data <em>conditioned</em> on that process (data model), followed by a model of the process’ behavior and its uncertainties (process model). There will typically be unknown parameters present, in both the statistical model for the data (conditioned on the process) and the statistical model for the process. %How to deal with those parameters will be discussed below.</p>
+<p>When a dynamic model of one or several variables is placed within a hierarchical model formulation (see below), one obtains what has been historically called a <em>state-space model</em> in the time-series literature. That is, one has data that are collected sequentially in time (i.e., a time series), and they are modeled as “noisy” observations of an underlying <em>state process</em> evolving (statistically) through time. These models are at the core of a number of engineering applications (e.g., space missions), and the challenge is to find efficient approaches to perform inference on the underlying state process of interest while accounting for the noise.</p>
+<p>In general, there are three such situations of interest when considering state-space models: <em>smoothing</em>, <em>filtering</em>, and <em>forecasting</em>. <em>Smoothing</em> refers to inference on the hidden state process during a fixed time period in which we have observations throughout the time period. (The reader might note that this is the temporal analog of spatial prediction on a bounded spatial domain.) Now consider a time period that always includes the most current time, at which the latest observation is available. <em>Filtering</em> refers to inference on the hidden state value at the most current time based on the current and all past data. The most famous example of filtering in this setting is a methodology known widely as the Kalman filter <span class="citation" data-cites="kalman1960new">Kalman (<a href="references.html#ref-kalman1960new" role="doc-biblioref">1960</a>)</span>. Finally, <em>forecasting</em> refers to inference on the hidden state value at any time point beyond the current time, where data are either not available or not considered in the forecast. In this book, instead of modeling the evolution of a single variable or several variables, we model entire spatial processes evolving through time, which often adds an extra layer of modeling complexity and computational difficulty. Chapter 5 discusses how basis-function representations can deal with these difficulties.</p>
+<p>In addition to uncertainty associated with the data and the underlying spatio-temporal process, there might be uncertainties in the parameters. These uncertainties could be accounted for statistically by putting a prior distribution on the parameters. To make sense of all this, we use <em>hierarchical (statistical) models</em> (HMs), and follow the terminology of <span class="citation" data-cites="berliner1996hierarchical">Berliner (<a href="references.html#ref-berliner1996hierarchical" role="doc-biblioref">1996</a>)</span>, who defined an HM to include a <em>data model</em>, a <em>process model</em>, and a <em>parameter model</em>. <a href="#nte-BerlinerBHM" class="quarto-xref">Note&nbsp;<span>1.1</span></a> gives the conditional-probability structure that ties these models together into a coherent joint probability model of all the uncertainties. The key to the Berliner HM framework is that, at any level of a spatio-temporal HM, it is a good strategy to put as much of the dependence structure as possible in the conditional-mean specification in order to simplify the conditional-covariance specification.</p>
+<p>When the parameters are given prior distributions (i.e., a parameter model is posited) at the bottom level of the hierarchy, then we say that the model is a <em>Bayesian hierarchical model</em> (BHM). A BHM is often necessary for complex-modeling situations, because the parameters themselves may exhibit quite complex (e.g., spatial or temporal) structure. Or they may depend on other covariates and hence could be considered as processes in their own right. In simpler models, an alternative approach is to estimate the parameters present in the top two levels in some way using the data or other sources of data; then we like to say that the hierarchical model is an <em>empirical hierarchical model</em> (EHM). When applicable, an EHM may be preferred if the modeler is reluctant to put prior distributions on parameters about which little is known, or if computational efficiencies can be gained.</p>
+<p>It is clear that the BHM approach allows very complex processes to be modeled by going deeper and deeper in the hierarchy, but at each level the conditional-probability model can be quite simple. Machine learning uses a similar approach with its <em>deep models</em>. A cascade of levels, where the processing of output from the previous level is relatively simple, results in a class of machine-learning algorithms known as <em>deep learning</em>. A potential advantage of the BHM approach over deep learning is that it provides a unified probabilistic framework that allows one to account for uncertainty in data, model, and parameters.</p>
+<p>A very important advantage of the data–process–parameter modeling paradigm in an HM is that, while marginal-dependence structures are difficult to model directly, conditional-dependence structures usually come naturally. For example, it is often reasonable to assume that the <em>data covariance matrix</em> (given the corresponding values of the hidden process) is simply a diagonal matrix of measurement-error variances. This frees up the <em>process covariance matrix</em> to capture the “pure” spatio-temporal dependence, ideally (but, not necessarily) from physical or mechanistic knowledge. Armed with these two covariance matrices, the seemingly complex <em>marginal covariance matrix</em> of the data can be simply obtained. This same idea is used in mixed-effects modeling (e.g., in longitudinal data analysis), and it is apparent in the spatio-temporal statistical models described in Chapters 4 and 5.</p>
+<p>The product of the conditional-probability components of the HM gives the joint probability model for all random quantities (i.e., all “unknowns”). The HM could be either a BHM or an EHM, depending on whether, respectively, a prior distribution is put on the parameters (i.e., a parameter model is posited) or the parameters are estimated. (A hybrid situation arises when some but not all parameters are estimated and the remaining have a prior distribution put on them.) In this book, we are primarily interested in obtaining the (finite-dimensional) distribution of the hidden (discretized) spatio-temporal process given the data, which we call the <em>predictive distribution</em>. The BHM also allows one to obtain the posterior distribution of the parameters given the data, whereas the EHM requires an estimate of the parameters. Predictive and posterior distributions are obtained using <em>Bayes’ Rule</em> (<a href="#nte-BerlinerBHM" class="quarto-xref">Note&nbsp;<span>1.1</span></a>).</p>
+<p>Since predictive and posterior distributions must have total probability mass equal to 1, there is a critical normalizing constant to worry about. Generally, it cannot be calculated in closed form, in which case we rely on computational methods to deal with it. Important advances in the last 30 years have alleviated this problem by making use of Monte Carlo samplers from a Markov chain whose stationary distribution is the predictive (or the posterior) distribution of interest. These <em>Markov chain Monte Carlo</em> (MCMC) methods have revolutionized the use of HMs for complex modeling applications, such as those found in spatio-temporal statistics.</p>
+<div id="nte-BerlinerBHM" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1.1: Berliner’s Bayesian Hierarchical Model (BHM) paradigm
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>First, the fundamental notion of the <em>law of total probability</em> allows one to decompose a joint distribution into a series of conditional distributions: <span class="math inline">\({[A,B,C] = [A\mid B,C][B\mid C][C]}\)</span>, where the “bracket notation” is used to denote probability distributions; for example, <span class="math inline">\([A,B,C]\)</span> is the <em>joint distribution</em> of random variables <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, and <span class="math inline">\([A \mid B, C]\)</span> is the <em>conditional distribution</em> of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>.</p>
+<p>Mark Berliner’s insight <span class="citation" data-cites="berliner1996hierarchical">(<a href="references.html#ref-berliner1996hierarchical" role="doc-biblioref">Berliner 1996</a>)</span> was that one should use this simple decom-posi-tion as a way to formulate models for complex dependent processes. That is, the joint distribution, [data, process, parameters], can be factored into three levels.</p>
+<p>At the top level is the <em>data model</em>, which is a probability model that specifies the distribution of the data given an underlying “true” process (sometimes called the hidden or latent process) and given some parameters that are needed to specify this distribution. At the next level is the <em>process model</em>, which is a probability model that describes the hidden process (and, thus, its uncertainty) given some parameters. Note that at this level the model does not need to account for measurement uncertainty. The process model can then use science-based theoretical or empirical knowledge, which is often physical or mechanistic. At the bottom level is the parameter model, where uncertainty about the parameters is modeled. From top to bottom, the levels of a BHM are:</p>
+<p><span class="math display">\[
+\begin{aligned}
+1.\quad &amp; \text{Data model:}      &amp;\quad [\text{data} \mid \text{process, parameters}] \\
+2.\quad &amp; \text{Process model:}   &amp;\quad [\text{process} \mid \text{parameters}] \\
+3.\quad &amp; \text{Parameter model:} &amp;\quad [\text{parameters}]
+\end{aligned}
+\]</span> Importantly, each of these levels could have sub-levels, for which conditional-probability models could be given.</p>
+<p>Ultimately, we are interested in the posterior distribution, [process, parameters <span class="math inline">\(\mid\)</span> data] which, conveniently, is proportional to the product of the levels of the BHM given above:</p>
+<p><span class="math display">\[
+\begin{aligned}
+~[\text{process, parameters} \mid \text{data}] \;\propto\; &amp; [\text{data} \mid \text{process, parameters}] \\
+                                            &amp; \times\; [\text{process} \mid \text{parameters}] \\
+                                            &amp; \times\; [\text{parameters}],
+\end{aligned}
+\]</span></p>
+<p>where “<span class="math inline">\(\propto\)</span>” means “is proportional to.” (Dividing the right-hand side by the normalizing constant, [data], makes it equal to the left-hand side.) Note that this result comes from application of Bayes’ Rule, applied to the hierarchical model. Inference based on complex models typically requires numerical evaluation of the posterior (e.g., MCMC methods), because the normalizing constant cannot generally be calculated in closed form.</p>
+<p>An empirical hierarchical model (EHM) uses just the first two levels, from which the predictive distribution is</p>
+<p><span class="math display">\[
+\begin{aligned}
+~[\text{process} \mid \text{data, parameters}] \;\propto\; &amp; [\text{data} \mid \text{process, parameters}] \\
+                                                          &amp; \times\; [\text{process} \mid \text{parameters}],
+\end{aligned}
+\]</span></p>
+<p>where <em>parameter estimates</em> are substituted in for “parameters.” Numerical evaluation of this (empirical) predictive distribution is also typically needed, since the EHM’s normalizing constant cannot generally be calculated in closed form.</p>
+</div>
+</div>
+</section>
+<section id="structure-of-the-book" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="structure-of-the-book"><span class="header-section-number">1.4</span> Structure of the Book</h2>
+<p>The remaining chapters in this book are arranged in the way that we often approach stat-ist-ical modeling in general and spatio-temporal modeling in particular. That is, we begin by exploring our data. So, Chapter 2 gives ways to do this through visualization and through various summaries of the data. We note that both of these types of exploration can be tricky with spatio-temporal data, because we have one or more dimensions in space and one in time. It can be difficult to visualize information in more than two dimensions, so it often helps to slice through or aggregate over a dimension, or use color, or build animations through time. Similarly, when looking at numerical summaries of the data, we have to come up with innovative ways to help reduce the inherent dimensionality and to examine dependence structures and potential relationships in time and space.</p>
+<p>After having explored our data, it is often the case that we would like to fit some fairly simple models – sometimes to help us do an initial filling-in of missing observations that will assist with further exploration, or sometimes just to see if we have enough covariates to adequately explain the important dependencies in the data. This is the spirit of Chapter 3, which presents some ways to do spatial prediction that are not based on a statistical model or are based on very basic statistical models that do not explicitly account for spatio-temporal structure (e.g., linear regression, generalized linear models, and generalized additive models).</p>
+<p>If the standard models presented in Chapter 3 are not sufficient to accomplish the goals we gave in <a href="#sec-goals" class="quarto-xref"><span>Section 1.2</span></a>, what are we to do? This is when we start to consider the descriptive and dynamic approaches to spatio-temporal modeling discussed above. The descriptive approach has been the “workhorse” of spatio-temporal statistical modeling for most of the history of the discipline, and these methods (e.g., kriging) are described in Chapter 4. But, as mentioned above, when we have strong mechanistic knowledge about the underlying process and/or are interested in complex prediction or forecasting scenarios, we often bene-fit from the dynamic approach described in Chapter 5. Take note that Chapters 4 and 5 will require a bit more patience to go through, because process models that incorporate statistical dependence require more mathematical machinery. Hence, in these two chapters, the notation and motivation will be somewhat more technical than for the models presented in Chapter 3. It should be kept in mind, though, that the aim here is not to make you an expert, rather it is to introduce you (via the text, the Labs, and the technical notes) to the motivations, main concepts, and practicalities behind spatio-temporal statistical modeling.</p>
+<p>After building a model, we would like to know how good it is. There are probably as many ways to evaluate models as there are models! So, it is safe to say that there is no standard way to evaluate a spatio-temporal statistical model. However, there are some common approaches that have been used in the past to carry out model evaluation and model comparison, some of which apply to spatio-temporal models (see Chapter 6). We note that the aim there is not to show you how to obtain the “best” model (as there isn’t one!). Rather, it is to show you how a model or a set of models can be found that does a reasonable job with regard to the goals outlined in <a href="#sec-goals" class="quarto-xref"><span>Section 1.2</span></a>.</p>
+<p>Last, but certainly not least, each of Chapters 2–6 contain Lab vignettes that go through the implementation of many of the important methods presented in each chapter using the <code>R</code>~programming language. This book represents the first time such a comprehensive collection of <code>R</code>~examples for spatio-temporal data have been collected in one place. We believe that it is essential to “get your hands dirty” with data, but we recognize that quite a few of the methods and approaches used in spatio-temporal statistics can be complicated and that it can be daunting to program them yourself from scratch. Therefore, we have tried to identi-fy some useful (and stable) <code>R</code>~functions from existing <code>R</code>~packages (see the list following the appendices) that can be used to implement the methods discussed in Chapters 2–6. We have also put a few functions of our own, along with the data sets that we have used, in the <code>R</code>~package, <strong>STRbook</strong>, associated with this book (instructions for obtaining this package are available at <a href="https://spacetimewithr.org">https://spacetimewithr.org</a>. We note that there are many other <code>R</code>~packages that implement various spatio-temporal methods, whose approaches could arrive at the same result with more or less effort, depending on familiarity. As is often the case with <code>R</code>,~ one gets used to doing things a certain way, and so most of our choices are representative of this.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-berliner1996hierarchical" class="csl-entry" role="listitem">
+Berliner, L Mark. 1996. <span>“Hierarchical <span>B</span>ayesian Time Series Models.”</span> In <em>Maximum Entropy and Bayesian Methods</em>, edited by K. M. Hanson and R. N. Silver, 15–22. Fundamental Theories of Physics, 79. Dordecht: Kluwer.
+</div>
+<div id="ref-cressie1990origins" class="csl-entry" role="listitem">
+Cressie, Noel. 1990. <span>“The Origins of Kriging.”</span> <em>Mathematical Geology</em> 22: 239–52.
+</div>
+<div id="ref-cressie1993statistics" class="csl-entry" role="listitem">
+———. 1993. <em>Statistics for Spatial Data</em>. Revised. New York: John Wiley &amp; Sons.
+</div>
+<div id="ref-cressie2011statistics" class="csl-entry" role="listitem">
+Cressie, N., and C. K. Wikle. 2011. <em>Statistics for Spatio-Temporal Data</em>. Hoboken, NJ: John Wiley &amp; Sons.
+</div>
+<div id="ref-delmonico2017fractals" class="csl-entry" role="listitem">
+Delmonico, Rick. 2017. <em>The Philosophy of Fractals</em>.
+</div>
+<div id="ref-fisher1935design" class="csl-entry" role="listitem">
+Fisher, Ronald A. 1935. <em>The Design of Experiments</em>. 8th ed. Edinburgh: Oliver; Boyd.
+</div>
+<div id="ref-kalman1960new" class="csl-entry" role="listitem">
+Kalman, Rudolph Emil. 1960. <span>“A New Approach to Linear Filtering and Prediction Problems.”</span> <em>Journal of Basic Engineering</em> 82: 35–45.
+</div>
+<div id="ref-kuhnert2014physical" class="csl-entry" role="listitem">
+Kuhnert, Petra. 2014. <span>“Editorial: Physical-Statistical Modelling.”</span> <em>Environmetrics</em> 25: 201–2.
+</div>
+<div id="ref-morrison1982powers" class="csl-entry" role="listitem">
+Morrison, Philip, and Phylis Morrison. 1982. <em>Powers of Ten: About the Relative Size of Things in the Universe</em>. Redding, CT: Scientific American Library, distributed by WH Freeman.
+</div>
+<div id="ref-tobler1970computer" class="csl-entry" role="listitem">
+Tobler, Waldo R. 1970. <span>“A Computer Movie Simulating Urban Growth in the <span>D</span>etroit Region.”</span> <em>Economic Geography</em> 46 (sup1): 234–40.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Chapter2.html" class="pagination-link" aria-label="Exploring Spatio-Temporal Data">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Exploring Spatio-Temporal Data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

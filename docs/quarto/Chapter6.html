@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Evaluating Spatio-Temporal Statistical Models – Spatio-Temporal Statistics with R (1st edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ChapterPergimus.html" rel="next">
+<link href="./Chapter5.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b719d3d4935f2b08311a76135e2bf442.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d2e1f8220df954187ab24ed36a0da9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Chapter6.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Evaluating Spatio-Temporal Statistical Models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Spatio-Temporal Statistics with R (1st edition)</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatio-Temporal Statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Exploring Spatio-Temporal Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Descriptive Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter6.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Evaluating Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterPergimus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Appendices</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterRPackages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">List of <code>R</code> packages</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-ModComp" id="toc-sec-ModComp" class="nav-link active" data-scroll-target="#sec-ModComp"><span class="header-section-number">6.1</span> Comparing Model Output to Data- What Do We Compare?</a>
+  <ul class="collapse">
+  <li><a href="#sec-CompsimY" id="toc-sec-CompsimY" class="nav-link" data-scroll-target="#sec-CompsimY"><span class="header-section-number">6.1.1</span> Comparison to a Simulated “True” Process</a></li>
+  <li><a href="#sec-PredDist" id="toc-sec-PredDist" class="nav-link" data-scroll-target="#sec-PredDist"><span class="header-section-number">6.1.2</span> Predictive Distributions of the Data</a></li>
+  <li><a href="#sec-ValCrosVal" id="toc-sec-ValCrosVal" class="nav-link" data-scroll-target="#sec-ValCrosVal"><span class="header-section-number">6.1.3</span> Validation and Cross-Validation</a></li>
+  </ul></li>
+  <li><a href="#sec-ModCheck" id="toc-sec-ModCheck" class="nav-link" data-scroll-target="#sec-ModCheck"><span class="header-section-number">6.2</span> Model Checking</a>
+  <ul class="collapse">
+  <li><a href="#sec-ModAssDiag" id="toc-sec-ModAssDiag" class="nav-link" data-scroll-target="#sec-ModAssDiag"><span class="header-section-number">6.2.1</span> Extensions of Regression Diagnostics</a></li>
+  <li><a href="#sec-GraphDiag" id="toc-sec-GraphDiag" class="nav-link" data-scroll-target="#sec-GraphDiag"><span class="header-section-number">6.2.2</span> Graphical Diagnostics</a></li>
+  <li><a href="#sec-ModRobust" id="toc-sec-ModRobust" class="nav-link" data-scroll-target="#sec-ModRobust"><span class="header-section-number">6.2.3</span> Sensitivity Analysis</a></li>
+  </ul></li>
+  <li><a href="#sec-ModValidate" id="toc-sec-ModValidate" class="nav-link" data-scroll-target="#sec-ModValidate"><span class="header-section-number">6.3</span> Model Validation</a>
+  <ul class="collapse">
+  <li><a href="#sec-PostPredCheck" id="toc-sec-PostPredCheck" class="nav-link" data-scroll-target="#sec-PostPredCheck"><span class="header-section-number">6.3.1</span> Predictive Model Validation</a></li>
+  <li><a href="#sec-STvalididate" id="toc-sec-STvalididate" class="nav-link" data-scroll-target="#sec-STvalididate"><span class="header-section-number">6.3.2</span> Spatio-Temporal Validation Statistics</a></li>
+  <li><a href="#sec-ModValCV" id="toc-sec-ModValCV" class="nav-link" data-scroll-target="#sec-ModValCV"><span class="header-section-number">6.3.3</span> Spatio-Temporal Cross-Validation Measures</a></li>
+  <li><a href="#sec-scoringrules" id="toc-sec-scoringrules" class="nav-link" data-scroll-target="#sec-scoringrules"><span class="header-section-number">6.3.4</span> Scoring Rules</a></li>
+  <li><a href="#sec-fieldcomparison" id="toc-sec-fieldcomparison" class="nav-link" data-scroll-target="#sec-fieldcomparison"><span class="header-section-number">6.3.5</span> Field Comparison</a></li>
+  </ul></li>
+  <li><a href="#sec-ModSelect" id="toc-sec-ModSelect" class="nav-link" data-scroll-target="#sec-ModSelect"><span class="header-section-number">6.4</span> Model Selection</a>
+  <ul class="collapse">
+  <li><a href="#sec-ModAvg" id="toc-sec-ModAvg" class="nav-link" data-scroll-target="#sec-ModAvg"><span class="header-section-number">6.4.1</span> Model Averaging</a></li>
+  <li><a href="#sec-BayesFac" id="toc-sec-BayesFac" class="nav-link" data-scroll-target="#sec-BayesFac"><span class="header-section-number">6.4.2</span> Model Comparison via Bayes Factors</a></li>
+  <li><a href="#sec-ModCompVal" id="toc-sec-ModCompVal" class="nav-link" data-scroll-target="#sec-ModCompVal"><span class="header-section-number">6.4.3</span> Model Comparison via Validation</a></li>
+  <li><a href="#sec-informationcriteria" id="toc-sec-informationcriteria" class="nav-link" data-scroll-target="#sec-informationcriteria"><span class="header-section-number">6.4.4</span> Information Criteria</a></li>
+  </ul></li>
+  <li><a href="#chapter-6-wrap-up" id="toc-chapter-6-wrap-up" class="nav-link" data-scroll-target="#chapter-6-wrap-up"><span class="header-section-number">6.5</span> Chapter 6 Wrap-Up</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Evaluating Spatio-Temporal Statistical Models</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>How do you know that the model you fitted actually fits well? At the core of our approach to the analysis of spatio-temporal data is a more or less detailed model containing statistical components that are designed to capture the spatio-temporal variability in the data. This chapter is about evaluating the spatio-temporal model that you fitted to describe (or to some extent explain) the variability in your data.</p>
+<p>Model building is an iterative process. We have data and/or a scientific hypothesis and we build the model around them (e.g., using the methods of Chapters 3–5). Then we must evaluate whether that model is a reasonable representation of the real world, and we should modify it accordingly if it is not. Sometimes this process is called <em>model criticism</em> because we are <em>critiquing</em> the strengths and weaknesses of our model, analogously to a movie critic summing up a film in terms of the things that work and the things that do not. In our case, we already know our model is wrong (recall Box’s aphorism), but we do not know just <em>how wrong</em> it is. Just as there is no correct model, there is no correct way to do model evaluation either. Rather, think of it as an <em>investigation</em>, using evidence from a variety of sources, into whether the model is reasonable or not. In this sense, we are “detectives” searching for evidence that our model can represent what we hope it represents in our particular application, or we are like medical doctors running tests on their patients. With that in mind, this chapter is about providing helpful suggestions on how to evaluate models for spatio-temporal data.</p>
+<p>We split our model-evaluation suggestions into three primary components: <em>model checking</em>, <em>model validation</em>, and <em>model selection</em>. From our perspective, <em>model checking</em> consists of evaluating our model diagnostically to check its assumptions and its sensitivity to these assumptions and/or model choices. <em>Model validation</em> consists of evaluating how well our model actually reproduces the real-world quantities that we care about. <em>Model selection</em> is a framework in which to compare several plausible models. We consider each of these in some detail in this chapter.</p>
+<p>It is important to note that the boundaries between these three components of model evaluation are fairly “fluid,” and the reader may well notice that there is a great deal of overlap in the sense that approaches discussed in one of these sections could be applied in other sections. Such is the nature of the topic, especially in the context of spatio-temporal modeling where, we must say, it is not all that well developed.</p>
+<p>In this chapter, we focus less on how to implement the methods in <code>R</code> and more on the methods themselves. The reasons for this are twofold. First, several diagnostics are straightforward to calculate once predictive distributions are available. Second, there are only a few packages that have a comprehensive suite of diagnostic tools. We also note that quite a few more primary literature citations are included in this chapter than are given in the other chapters of the book, because there has not been extensive discussion of the topic in the spatio-temporal modeling literature.</p>
+<p>In the next section, we digress slightly to discuss how model-based predictions can be compared to observations appropriately, since the two have different statistical properties.</p>
+<section id="sec-ModComp" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sec-ModComp"><span class="header-section-number">6.1</span> Comparing Model Output to Data- What Do We Compare?</h2>
+<p>Before we can talk about model evaluation, we have to decide what we will compare our model to. Hierarchical spatio-temporal modeling procedures give us the predictive distribution of the latent spatio-temporal process, <span class="math inline">\(Y\)</span>, given a (training) set of observations, <span class="math inline">\(\mathbf{Z}\)</span>, which we represent as <span class="math inline">\([Y | \mathbf{Z}]\)</span>. Because we are most often interested in this latent process, we would like to evaluate our model based on its ability to provide reasonable representations of <span class="math inline">\(Y\)</span>. But by definition, this process is <em>hidden</em> or <em>latent</em>—meaning that it is not observed directly—and thus we cannot directly evaluate our <em>modeled</em> process against the <em>true</em> process unless we do it through simulation (see <a href="#sec-CompsimY" class="quarto-xref"><span>Section 6.1.1</span></a> below). Alternatively, we can evaluate our model using <em>predictive distributions of data</em>, where we compare predictions of data (not of <span class="math inline">\(Y\)</span>), based on our model, against the actual observed data. In particular, there are four types of predictive distributions of the data that we might use: the <em>prior predictive distribution</em>, the <em>posterior predictive distribution</em>, what we might call the <em>empirical predictive distribution</em>, and the <em>empirical marginal distribution</em>. Note that considering predictions of the data <span class="math inline">\(Z\)</span> instead of <span class="math inline">\(Y\)</span> involves the additional uncertainty associated with the measurement process. This is similar to standard regression modeling where the uncertainty of the prediction of an unobserved response is higher than the uncertainty of inferring the corresponding mean response. The four types of predictive distributions are defined in <a href="#sec-PredDist" class="quarto-xref"><span>Section 6.1.2</span></a>. Finally, given that we have simulated predictive distributions of either the data or the latent process, there is still the issue of which samples to compare. We touch on this in <a href="#sec-ValCrosVal" class="quarto-xref"><span>Section 6.1.3</span></a>, with a brief discussion of various types of validation and cross-validation samples that we might use to evaluate our model.</p>
+<section id="sec-CompsimY" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="sec-CompsimY"><span class="header-section-number">6.1.1</span> Comparison to a Simulated “True” Process</h3>
+<p>Although we do not have access to the latent process, <span class="math inline">\(Y\)</span>, for evaluating our model, there is a well-established simulation-based alternative for complex processes known as an <em>observation system simulation experiment</em> (OSSE; see <a href="#nte-technote-OSSE" class="quarto-xref">Note&nbsp;<span>6.1</span></a>). The basic idea of an OSSE is that one uses a complex simulation model to generate the true underlying process, say <span class="math inline">\(Y_{\mathrm{osse}}\)</span>, and then, one generates simulated data, say <span class="math inline">\(\mathbf{Z}_{\mathrm{osse}}\)</span>, by applying an observation/sampling scheme to this true process that mimics the real-world sampling design and measurement technology. One can then use these OSSE-simulated observations in the statistical model and compare <span class="math inline">\(Y\)</span> obtained from the predictive distribution based on the statistical model (i.e., <span class="math inline">\([Y | \mathbf{Z}_{\mathrm{osse}}]\)</span>) against the simulated <span class="math inline">\(Y_{\mathrm{osse}}\)</span>. The metrics used for such a comparison could be any of the metrics that are described in the following sections of this chapter. Not surprisingly, OSSEs are very useful when exploring different sampling schemes and, in the geophysical sciences, they are important for studying complex earth observing systems <em>before</em> expensive observing-system hardware is deployed. They are also very useful for comparing competing methodologies that infer <span class="math inline">\(Y\)</span> or scientifically meaningful functions of <span class="math inline">\(Y\)</span>.</p>
+<div id="nte-technote-OSSE" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;6.1: Observation System Simulation Experiment, OSSE
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Observation system simulation experiments are model-based simulation experiments that are designed to consider the effect of potential observing systems on the ability to recover the true underlying process of interest, especially when real-world observations are not available. For example, these are used extensively in the geophysical sciences to evaluate new remote sensing observation systems and new data assimilation forecast systems. However, they can also be used to evaluate the effectiveness of process modeling for complex real-world processes in the presence of incomplete observations, or when observations come at different levels of spatial and temporal support . The typical OSSE consists of the following steps. Steps 1 and 2 correspond to simulation, and steps 3–5 are concerned with the subsequent statistical analysis.</p>
+<ol type="1">
+<li><p>Simulate the spatio-temporal process of interest with a well-established (usually mechanistic) model. This simulation corresponds to the “true process.” Note that this is usually <em>not</em> a simulation from the statistical model of interest, since as much real-world complexity as possible is put into the simulation; call it <span class="math inline">\(Y_{\mathrm{osse}}\)</span>.</p></li>
+<li><p>Apply an observation-sampling protocol to the simulated true process to obtain synthetic observations. This sampling protocol introduces realistic observation error (bias, uncertainty, and change of support) and typically considers various missing-data scenarios; call the observations <span class="math inline">\(\mathbf{Z}_{\mathrm{osse}}\)</span>.</p></li>
+<li><p>Use <span class="math inline">\(\mathbf{Z}_{\mathrm{osse}}\)</span> from step 2 in the spatio-temporal statistical model of interest, and obtain the predictive distribution <span class="math inline">\([Y | \mathbf{Z}_{\mathrm{osse}}]\)</span> of the true process given the synthetic observations.</p></li>
+<li><p>Compare features of the predictive distribution of the true process from step 3 to <span class="math inline">\(Y_{\mathrm{osse}}\)</span> simulated in step 1.</p></li>
+<li><p>Use the results of step 4 to either (a) refine the statistical model that was used to obtain <span class="math inline">\([Y | \mathbf{Z}_{\mathrm{osse}}]\)</span>, or (b) refine the observation process, or both.</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="sec-PredDist" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="sec-PredDist"><span class="header-section-number">6.1.2</span> Predictive Distributions of the Data</h3>
+<p>The <em>posterior predictive distribution</em> (ppd) is best thought of in the context of a <strong>Bayesian hierarchical model</strong> (BHM) and is given by <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">2014</a>)</span></p>
+<p><span id="eq-ppd"><span class="math display">\[
+[\mathbf{Z}_{\mathrm{ppd}} | \mathbf{Z}] = \iint [\mathbf{Z}_{\mathrm{ppd}} | \mathbf{Y}, \boldsymbol{\theta}][\mathbf{Y}, \boldsymbol{\theta}| \mathbf{Z}] \textrm{d}\mathbf{Y}\textrm{d}\boldsymbol{\theta},
+\tag{6.1}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> is a vector of predictions at some chosen spatio-temporal locations. We have assumed that if we are given the true process, <span class="math inline">\(\mathbf{Y}\)</span>, and parameters, <span class="math inline">\(\boldsymbol{\theta}\)</span>, then <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> is independent of the observations <span class="math inline">\(\mathbf{Z}\)</span>. (Note that we are using the vector <span class="math inline">\(\mathbf{Y}\)</span> to represent the process here to emphasize the fact that we are dealing with high-dimensional spatio-temporal processes.) In the models considered in this book, one can easily generate samples of <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> through <em>composition sampling</em>. For example, generating posterior samples of <span class="math inline">\(\mathbf{Y}\)</span> and <span class="math inline">\(\boldsymbol{\theta}\)</span> in the BHM context comes naturally with <strong>Markov chain Monte Carlo</strong> (MCMC) implementations, and these samples are just “plugged into” the data model <span class="math inline">\([\mathbf{Z}_{\mathrm{ppd}} | \mathbf{Y}, \boldsymbol{\theta}]\)</span> to generate the random draws of <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span>.</p>
+<p>The <em>prior predictive distribution</em> (pri) corresponds to the marginal distribution of the data and is given by</p>
+<p><span id="eq-pripreddist"><span class="math display">\[
+[\mathbf{Z}_{\mathrm{pri}}] = \iint [\mathbf{Z}_{\mathrm{pri}} | \mathbf{Y}, \boldsymbol{\theta}][\mathbf{Y}| \boldsymbol{\theta}][\boldsymbol{\theta}] \textrm{d}\mathbf{Y}\textrm{d}\boldsymbol{\theta},
+\tag{6.2}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{Z}_{\mathrm{pri}}\)</span> is a vector of predictions at selected spatio-temporal locations. As with the ppd, realizations from this distribution can be easily generated through composition sampling, where in this case we simply generate samples of <span class="math inline">\(\boldsymbol{\theta}\)</span> from its prior distribution, use those to generate samples of the process <span class="math inline">\(\mathbf{Y}\)</span> from the process model, and then use these samples in the data model to generate realizations of the data, <span class="math inline">\(\mathbf{Z}_{\mathrm{pri}}\)</span>. In contrast to the ppd, no MCMC posterior samples need to be generated for this distribution.</p>
+<p>Finally, in the empirical hierarchical model (EHM) context we define the <em>empirical predictive distribution</em> (epd) as</p>
+<p><span id="eq-epd"><span class="math display">\[
+[\mathbf{Z}_{\mathrm{epd}} | \mathbf{Z}] = \int [\mathbf{Z}_{\mathrm{epd}}| \mathbf{Y}, \widehat{\boldsymbol{\theta}}][\mathbf{Y}| \mathbf{Z}, \widehat{\boldsymbol{\theta}}] \textrm{d}\mathbf{Y},
+\tag{6.3}\]</span></span></p>
+<p>and the <em>empirical marginal distribution</em> (emp) as</p>
+<p><span id="eq-upd"><span class="math display">\[
+[\mathbf{Z}_{\mathrm{emp}}] = \int [\mathbf{Z}_{\mathrm{emp}}| \mathbf{Y}, \widehat{\boldsymbol{\theta}}][\mathbf{Y}| \widehat{\boldsymbol{\theta}}] \textrm{d}\mathbf{Y},
+\tag{6.4}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{Z}_{\mathrm{epd}}\)</span> and <span class="math inline">\(\mathbf{Z}_{\mathrm{emp}}\)</span> are vectors of predictions at selected spatio-temporal locations. The difference between <a href="#eq-epd" class="quarto-xref">Equation&nbsp;<span>6.3</span></a> and <a href="#eq-ppd" class="quarto-xref">Equation&nbsp;<span>6.1</span></a>, and between <a href="#eq-upd" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> and <a href="#eq-pripreddist" class="quarto-xref">Equation&nbsp;<span>6.2</span></a>, is that instead of integrating over <span class="math inline">\(\boldsymbol{\theta}\)</span> (which is assumed to be random in the BHM framework), we substitute an estimate <span class="math inline">\(\widehat{\boldsymbol{\theta}}\)</span> (e.g., a ML or REML estimate). Again, it is easy to sample from <a href="#eq-epd" class="quarto-xref">Equation&nbsp;<span>6.3</span></a> and <a href="#eq-upd" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> by composition sampling since, once <span class="math inline">\(\widehat{\boldsymbol{\theta}}\)</span> is obtained, we can generate samples of <span class="math inline">\(\mathbf{Y}\)</span> easily from <span class="math inline">\([\mathbf{Y}| \mathbf{Z}, \widehat{\boldsymbol{\theta}}]\)</span> and from <span class="math inline">\([\mathbf{Y}| \widehat{\boldsymbol{\theta}}]\)</span> with an MCMC. In the spatio-temporal Gaussian case, these are known multivariate normal distributions. Then <span class="math inline">\(\widehat{\boldsymbol{\theta}}\)</span> and the samples of <span class="math inline">\(\mathbf{Y}\)</span> are “plugged into” the data model to obtain samples of <span class="math inline">\(\mathbf{Z}_{\mathrm{epd}}\)</span> and <span class="math inline">\(\mathbf{Z}_{\mathrm{emp}}\)</span>, respectively.</p>
+<p>For illustration, consider the IDE model fitted to the Sydney radar data set in Lab 5.2. The top panels of <a href="#fig-epd" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> show two samples from the epd empirical predictive distribution for the time points 08:45, 08:55, and 09:05, while the bottom panels show two samples from the emp empirical marginal distribution at the same time points. We shall discuss model validation using the predictive distributions of the data in <a href="#sec-PostPredCheck" class="quarto-xref"><span>Section 6.3.1</span></a>, but simply “eyeballing” the plots may also reveal interesting features of the fitted model. First, the two samples from the epd are qualitatively quite similar, and this is usually an indication that the data have considerable influence on our predictive distributions. These epd samples are also very different from the emp samples, adding weight to the argument that the predictions in the top panels are predominantly data driven. Second, the samples from emp are very useful in revealing potential flaws and strengths of the model. For example, in this case the samples reveal that negative values for dBZ (green and blue) are just as likely as positive values for dBZ (orange and red), while we know that this is not a true reflection of the underlying science. On the other hand, the spatial length scales, and the persistence of the spatial features in time are similar to what one would expect just by looking at the data (see <a href="Chapter2.html#sec-STdata" class="quarto-xref"><span>Section 2.1</span></a>). These qualitative impressions, which will be made rigorous in the following sections, play a big role in selecting and tuning spatio-temporal models to improve their predictive ability.</p>
+<div id="fig-epd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-epd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/empirical_simulations.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-epd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: Two samples from the empirical predictive distribution (top) and the empirical marginal distribution (bottom), respectively, using the IDE model fitted to the Sydney radar data set in Lab 5.2.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Several <strong>R</strong> packages contain built-in functionality for sampling from one or more of the predictive distributions listed in <a href="#eq-ppd" class="quarto-xref">Equation&nbsp;<span>6.1</span></a>–<a href="#eq-upd" class="quarto-xref">Equation&nbsp;<span>6.4</span></a>. For example, the function <code>krige</code> in the package <strong>gstat</strong> can be used to generate simulations from both epd and emp, while the function <code>simIDE</code> in the package <strong>IDE</strong> can be used to generate simulations from emp after fitting an IDE model.</p>
+</div>
+</div>
+</section>
+<section id="sec-ValCrosVal" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="sec-ValCrosVal"><span class="header-section-number">6.1.3</span> Validation and Cross-Validation</h3>
+<p>Most often we will have to compare real-world validation observations, say <span class="math inline">\(\mathbf{Z}_v\)</span>, to observations predicted from our model, say <span class="math inline">\(\mathbf{Z}_p\)</span>, from one (or all) of the four possibilities (ppd, pri, epd, emp) given in the previous section. The question here is, to which observations do we compare <span class="math inline">\(\mathbf{Z}_p\)</span>? The <em>generalization</em> ability of a model is a property that says how well it can predict a test data set (also referred to as a validation data set) that is different from the data used to train the model. (Note that the words “test” and “validation” are often used interchangeably in this context; we prefer to use “validation.”) So, assume that we have used a sample of data, <span class="math inline">\(\mathbf{Z}\)</span>, to train our model. Before we describe the different possibilities for selecting validation data <span class="math inline">\(\mathbf{Z}_v\)</span>, note that spatio-temporal processes have certain properties that should be considered when comparing model predictions to real-world observations. In particular, as with time series, spatio-temporal processes have a unidirectional time dependence and, like spatial processes, they have various degrees of spatial dependence. These dependencies should be considered whenever possible when evaluating a spatio-temporal model.</p>
+<p>In general, the choice for validation observations <span class="math inline">\(\mathbf{Z}_v\)</span> can then be one of the following.</p>
+<ul>
+<li><ol type="a">
+<li><em>Training-data validation</em>. It can be informative to use predicted observations of the training data set (<span class="math inline">\(\mathbf{Z}_v = \mathbf{Z}\)</span>) to evaluate our model, particularly when evaluating the model’s ability to fit the data and for checking model assumptions via diagnostics. However, in the context of prediction, it is not typically recommended to use the training data for validating the model’s predictive ability, as the model’s <em>training error</em> is typically <em>optimistic</em> in the sense that it underestimates the predictive error that would be observed in an independent sample. Perhaps not surprisingly, the amount of this optimism is related to how strongly a predicted value from the training data set affects its own prediction <span class="citation" data-cites="hastie2009elements">(see <a href="references.html#ref-hastie2009elements" role="doc-biblioref">Hastie, Tibshirani, and Friedman 2009, chap. 7</a>, for a comprehensive overview)</span>.</li>
+</ol></li>
+<li><ol start="2" type="a">
+<li><em>Within-sample validation</em>. It is often useful to consider validation samples in which one leaves out a collection of spatial observations at time(s) within the spatio-temporal window defined by the extent of the training data set. Although one can leave out data at random in such settings, a more appropriate evaluation of spatio-temporal models results from leaving out “chunks” of data. This is because the spatio-temporal dependence structure must be very well characterized to adequately fill in large gaps for spatio-temporal processes (particularly dynamic processes). We saw such an example in Chapter 4, where we left out one period of the NOAA maximum temperature data but had observations both before and after that period.</li>
+</ol></li>
+<li><ol start="3" type="a">
+<li><em>Forecast validation</em>. One of the most-used validation methods for time-dependent data is to leave out validation data beyond the last time period of the training period, and then to use the model to forecast at these future time periods. To predict the evolution of spatial features through time, the spatio-temporal model must adequately account for (typically non-separable) spatio-temporal dependence. Hence, forecast validation provides a gold standard for such evaluations.</li>
+</ol></li>
+<li><ol start="4" type="a">
+<li><em>Hindcast validation</em>. <em>Hindcasting</em> (sometimes known as <em>backtesting</em>) refers to using the model to predict validation data at time periods <em>before</em> the first time period in the training sample. Of course, this presumes that we have access to data that pre-dates our training sample! This type of out-of-sample validation has similar advantages to forecast validations.</li>
+</ol></li>
+<li><ol start="5" type="a">
+<li><em>Cross-validation</em>. There are many modeling situations where one needs all of the available observations to train the model, especially at the beginning and end of the data record. Or perhaps one is not certain that the periods in the forecast or hindcast validation sample are representative of the entire period (e.g., when the process is non-stationary in time). This is a situation where cross-validation can be quite helpful. Recall that we described cross-validation in <a href="Chapter3.html#nte-technote-CV" class="quarto-xref">Note&nbsp;<span>3.1</span></a>. In the context of spatio-temporal models with complex dependence, one has to be careful that the cross-validation scheme chosen respects the dependence structure. In addition, many implementations of spatio-temporal models are computationally demanding, which can make traditional cross-validation very expensive.</li>
+</ol></li>
+</ul>
+<p>In Lab 6.1 we provide an example of within-sample validation, where a 20-minute interval from the Sydney radar data set is treated as validation data, and a model using spatio-temporal basis functions is compared to an IDE model through their prediction performances in this 20-minute interval.</p>
+<section id="spatio-temporal-support-of-validation-data-and-model-predictions" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="spatio-temporal-support-of-validation-data-and-model-predictions">Spatio-Temporal Support of Validation Data and Model Predictions</h4>
+<p>So far we have assumed that the validation data set, <span class="math inline">\(\mathbf{Z}_v\)</span>, and the model-predicted observations, <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> (say), are available at the same spatial and temporal support. In many applications, this is not the case. For example, our model may produce spatial fields (defined over a grid) at daily time increments, but observations may be station data observed every hour. In some sense, if our data model is realistic, then we may have already accounted for these types of change of support. In other cases, one may perform <em>ad hoc</em> interpolation or aggregation to bring the validation and model support into agreement. This is a standard approach in many meteorological forecasting studies <span class="citation" data-cites="brown2012forecasts">(see, for example, <a href="references.html#ref-brown2012forecasts" role="doc-biblioref">Brown, Gilleland, and Ebert 2012</a>)</span>. The hierarchical modeling paradigm discussed here does provide the flexibility for incorporating formal change of support, but this is beyond the scope of this book <span class="citation" data-cites="cressie2011statistics">(for more details, see <a href="references.html#ref-cressie2011statistics" role="doc-biblioref">N. Cressie and Wikle 2011, chap. 7</a>, and the references therein)</span>. In the remainder of this chapter, we shall assume that the validation sample and the associated model predictions are at the same spatio-temporal support.</p>
+</section>
+</section>
+</section>
+<section id="sec-ModCheck" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-ModCheck"><span class="header-section-number">6.2</span> Model Checking</h2>
+<p>Now that we know what to compare to what, consider the first of our three types of model evaluation: <em>model checking</em>. From our perspective, this corresponds to checking model assumptions and the sensitivity of the model output to these assumptions and/or model choices. That is, we evaluate our spatio-temporal model using statistical <em>diagnostics</em>. We begin with a brief description of possible extensions of standard regression diagnostics, followed by some simple graphical diagnostics, and then we give a brief description of robustness checks.</p>
+<section id="sec-ModAssDiag" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="sec-ModAssDiag"><span class="header-section-number">6.2.1</span> Extensions of Regression Diagnostics</h3>
+<p>As in any statistical-modeling problem, one should evaluate spatio-temporal modeling assumptions by employing various diagnostic tools. In regression models and GLMs, one often begins such an analysis by evaluating residuals, usually obtained by subtracting the estimated or predicted response from the data. Looking at residuals may bring our attention to certain aspects of the data that we have missed in our model.</p>
+<p>As discussed in Chapter 3, for additive Gaussian measurement error, we can certainly do this in the spatio-temporal case by evaluating the spatio-temporal residuals,</p>
+<p><span id="eq-STresidual"><span class="math display">\[
+\widehat{e}(\mathbf{s}_i;t_j) \equiv Z(\mathbf{s}_i;t_j) - \widehat{Z}_p(\mathbf{s}_i;t_j),
+\tag{6.5}\]</span></span></p>
+<p>for <span class="math inline">\(i=1,\ldots,m\)</span> and <span class="math inline">\(j=1,\ldots,T\)</span>, where <span class="math inline">\(\widehat{Z}_p(\mathbf{s}_i;t_j)\)</span> is the mean of the ppd or epd as discussed in <a href="#sec-PredDist" class="quarto-xref"><span>Section 6.1.2</span></a>. Note that for notational simplicity we assume in this chapter that we have the same number of observations (<span class="math inline">\(m\)</span>) at the same spatial locations for each time point. This need not be the case, and the equations can easily be modified to represent the more general setting of a different number of observations at different locations for each time point.</p>
+<p>In <a href="#fig-error_hists" class="quarto-xref">Figure&nbsp;<span>6.2</span></a> we show the histograms of the spatio-temporal residuals obtained for the two models evaluated in Lab 6.1 using validation data for an entire 20-minute block (left panel) and at random locations (right panel). It is clear from these histograms that for both types of missingness, the variance of the residuals based on the IDE model is slightly lower than that based on the model used by the <strong>FRK</strong> model.</p>
+<div id="fig-error_hists" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-error_hists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/error_hists.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-error_hists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: Histograms of errors at validation locations for the fitted IDE (blue) and <strong>FRK</strong> (red) models for the time points that are omitted from the data (left) and for space-time locations that are missing at random (right).
+</figcaption>
+</figure>
+</div>
+<p>In addition to the classical residuals given in <a href="#eq-STresidual" class="quarto-xref">Equation&nbsp;<span>6.5</span></a>, we can consider deviance or Pearson chi-squared residuals for non-Gaussian data models (as discussed in Chapter 3). Given spatio-temporal residuals, it is usually helpful to visualize them using the various tools discussed in Chapter 2 (see Lab 6.1). In addition, as discussed in Chapter 3, one can consider quantitative summaries to evaluate residual temporal, spatial, or spatio-temporal dependence, such as with the PACF, Moran’s <span class="math inline">\(I\)</span>, and S-T covariogram summaries. In the case of the latter, one may also consider more localized summaries, known as <em>local indicators of spatial association (LISAs)</em> or their spatio-temporal equivalents (<em>ST-LISAs</em>) where the component pieces of a summary statistic are indexed by their location and evaluated individually <span class="citation" data-cites="cressie2011statistics">(see <a href="references.html#ref-cressie2011statistics" role="doc-biblioref">N. Cressie and Wikle 2011, sec. 5.1</a>)</span>.</p>
+<p>Diagnostics have also been developed specifically for models with spatial dependence that are easily extended to spatio-temporal models. For example, building on the ground-breaking work of <span class="citation" data-cites="cook1977detection">Cook (<a href="references.html#ref-cook1977detection" role="doc-biblioref">1977</a>)</span>, <span class="citation" data-cites="haslett1999simple">Haslett (<a href="references.html#ref-haslett1999simple" role="doc-biblioref">1999</a>)</span> considered a simple approach for “deletion diagnostics” in models with correlated errors. For example, if one has a model such as <span class="math inline">\(\mathbf{Z}\sim Gau(\mathbf{X}\boldsymbol{\beta}, \mathbf{C}_z)\)</span>, then interest is in the effect of leaving out elements of <span class="math inline">\(\mathbf{Z}\)</span> on the estimation of <span class="math inline">\(\boldsymbol{\beta}\)</span>. Analogously to <span class="math inline">\(K\)</span>-fold cross-validation discussed in Chapter 3, assume we split our observations into two groups, <span class="math inline">\(\mathbf{Z}= \{\mathbf{Z}_b, \mathbf{Z}_v\}\)</span>, and then we predict <span class="math inline">\(\mathbf{Z}_v\)</span> based only on training data <span class="math inline">\(\mathbf{Z}_b\)</span>, which we denote by <span class="math inline">\(\widehat{\mathbf{Z}}^{(-v)}\)</span>. Then, as with standard (independent and identically distributed (<span class="math inline">\(iid\)</span>) errors) regression, one can form diagnostics in the correlated-error context, analogous to the well-known <em>DFBETAS</em> and <em>Cook’s distance</em> diagnostics. These compare the regression coefficients estimated under the hold-out scenario (say, <span class="math inline">\(\widehat{\boldsymbol{\beta}}^{(-v)}\)</span>) to the parameters estimated using all of the data (<span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span>), and <span class="citation" data-cites="haslett1999simple">Haslett (<a href="references.html#ref-haslett1999simple" role="doc-biblioref">1999</a>)</span> provides some efficient approaches to obtain <span class="math inline">\(\widehat{\boldsymbol{\beta}}^{(-v)}\)</span>. It is important to note that these diagnostics are based on the cross-validated residuals,</p>
+<p><span id="eq-CVSTresidual"><span class="math display">\[
+\widehat{\mathbf{e}}_v \equiv \mathbf{Z}_v - \widehat{\mathbf{Z}}^{(-v)},
+\tag{6.6}\]</span></span></p>
+<p>rather than the within-sample residuals given by <a href="#eq-STresidual" class="quarto-xref">Equation&nbsp;<span>6.5</span></a>.</p>
+</section>
+<section id="sec-GraphDiag" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="sec-GraphDiag"><span class="header-section-number">6.2.2</span> Graphical Diagnostics</h3>
+<p>Several diagnostic plots have proven useful for evaluating predictive models, and these largely depend on the observation type. Recall, from our discussions in Chapters 3–5, that it is fairly straightforward to model spatio-temporal binary or count data using the techniques we described within a GLM framework. Our discussion below on graphical diagnostics covers the most common types of data encountered in practice.</p>
+<p>When considering binary outcomes, which are common when observing processes such as occupancy (presence–absence) in ecology, and precipitation (rain or no rain) in meteorology, there is a long tradition in statistics and engineering of considering a <em>receiver operating characteristic</em> (ROC) curve. For binary data, a statistical model (say, a Bernoulli data model with a logit link function) provides an estimate of the probability that the outcome is a 1 (versus a 0). Then, for predictions, a threshold probability is typically set, and the predicted outcome is put equal to 1 if the estimated probability is larger than the threshold, and put equal to 0 if not. Clearly, the performance of the predictions will depend on the threshold. The ROC plot presents the true positive rate (i.e., sensitivity, namely the percentage of 1s that were correctly predicted) on the <span class="math inline">\(y\)</span>-axis versus the false positive rate (i.e., 1 minus the specificity, namely the percentage of 0s that were incorrectly predicted to be 1s) on the <span class="math inline">\(x\)</span>-axis as the value of the threshold probability changes (from 0 to 1). Since we prefer a model that gives a high true positive rate and low false positive rate, we like to see ROC curves that are well above the 45-degree line. One often summarizes an ROC curve by the <em>area under the ROC</em> curve (sometimes abbreviated as “area under the curve” (AUC)), with the best possible area being 1.0 and with a value of 0.5 corresponding to a “no information” (i.e., a coin-flipping) model. <a href="#fig-ROCexample" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> shows two ROC curves for a data set based on 100 simulated Bernoulli responses from a logistic regression model with simulated covariates. The black ROC curve corresponds to a simple model (a logistic regression model with fewer covariates than used for the simulation) and the red ROC curve corresponds to flipping a coin (random guessing). The AUCs for the two models are 0.89 and 0.59, respectively. Although useful for evaluating prediction, the ROC curve is limited in that it is generally insensitive to prediction biases <span class="citation" data-cites="wilks2011statistical">(<a href="references.html#ref-wilks2011statistical" role="doc-biblioref">Wilks 2011, chap. 8</a>)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>ROC curves can be easily generated in <code>R</code> using the functions <code>prediction</code> and <code>performance</code> from the package <strong>ROCR</strong> or the function <code>roc.plot</code> from the package <strong>verification</strong>.</p>
+</div>
+</div>
+<div id="fig-ROCexample" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ROCexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/ROCexampleplot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ROCexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: ROC curves for two models fitted to a simulated Bernoulli (binary) data set with 100 observations that was generated from a logistic regression model with simulated covariates. The black line corresponds to the ROC curve for a simpler logistic regression model (“Model A”) with a corresponding AUC = 0.89, and the red line is the ROC curve for a model (“Model B”) based just on random guessing with AUC = 0.59. This figure was obtained using the <code>roc.plot</code> function in the <strong>verification</strong> <code>R</code> package.
+</figcaption>
+</figure>
+</div>
+<p>There are several diagnostic plots that are used for meteorological forecast validation but are less commonly used in statistics <span class="citation" data-cites="wilks2011statistical">(see <a href="references.html#ref-wilks2011statistical" role="doc-biblioref">Wilks 2011, chap. 8</a>)</span>. Some of these plots attempt to show elements of the joint distribution of the prediction and the corresponding validation observation. As an example, <em>conditional quantile plots</em> are used for continuous responses (e.g., temperature). In particular, these plots consider predicted values on the <span class="math inline">\(x\)</span>-axis and the associated quantiles from the <em>empirical predictive distribution of the observations associated with the predictions</em> on the <span class="math inline">\(y\)</span>-axis. This allows one to observe potential problems with the predictive model (e.g., biases). This is better seen in an example. The left panel of <a href="#fig-CondQuantexample" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> shows a conditional quantile plot for simulated data in a situation where the predictive model is, on average, biased high relative to the observations by about 3 units. This can easily be seen in this plot since the conditional distribution of the observations given the predictions is shifted below the 45-degree line. In the right panel of <a href="#fig-CondQuantexample" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> we show the conditional quantile plot for the IDE model predictions in Lab 6.1 for the missing 20-minute interval. The predictions appear to be unbiased except when the observed reflectivity is close to zero.</p>
+<p>Similar decomposition-based plots can be used for probabilistic predictions of discrete events (e.g., the <em>reliability diagram</em> and the <em>discrimination diagram</em>; see <span class="citation" data-cites="wilks2011statistical">Wilks (<a href="references.html#ref-wilks2011statistical" role="doc-biblioref">2011</a>)</span>, Chapter 8, and the <code>R</code> package <strong>verification</strong>) and have an advantage over the ROC plot since they display the joint distribution of prediction and corresponding observations and thus can reveal forecast biases.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Conditional quantile plots can be generated in <code>R</code> using the function <code>conditional.quantile</code> from the package <strong>verification</strong>.</p>
+</div>
+</div>
+<div id="fig-CondQuantexample" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CondQuantexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/CQplotcopy_combined.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CondQuantexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: Left: Conditional quantile plot for 1000 simulated observations and predictions in which the model produces predictions that are biased approximately 3 units high relative to the observations. Right: Conditional quantile plot for the IDE model predictions in the missing 20-minute gap in Lab 6.1. These figures were obtained using the <code>conditional.quantile</code> function in the <strong>verification</strong> <code>R</code> package. Note that the <span class="math inline">\(x\)</span>-axis gives the histogram associated with the verification observations <span class="math inline">\(\{Z_v^i,\ i=1,\ldots,n_f\}\)</span> and the colored lines in the plot correspond to smooth quantiles from the conditional distribution of predicted values for each of these verification observations .
+</figcaption>
+</figure>
+</div>
+<p>When one has samples from a predictive distribution (as described in <a href="#sec-PredDist" class="quarto-xref"><span>Section 6.1.2</span></a>) or an ensemble forecasting model (such as described in <a href="ChapterAppendices.html#sec-QESNapp" class="quarto-xref"><span>Section 8.6</span></a>), there are additional graphical assessments that can be informative to evaluate a model’s predictive performance. Consider the so-called <em>verification ranked histogram</em>. Suppose we have <span class="math inline">\(n_f\)</span> different predictive situations, each with an observation (an element of <span class="math inline">\(\mathbf{Z}_v\)</span>, say <span class="math inline">\(Z^i_{v}\)</span>, for <span class="math inline">\(i=1,\ldots,n_f\)</span>) to be used in verification, and for each of these predictions we have <span class="math inline">\(n_s\)</span> samples from the predictive distribution, say <span class="math inline">\([\mathbf{Z}_{\mathrm{epd}}^{i} | \mathbf{Z}_b]\)</span>, <span class="math inline">\(i=1,\ldots,n_f\)</span>, where <span class="math inline">\(\mathbf{Z}_{\mathrm{epd}}\)</span> is a sample of size <span class="math inline">\(n_s\)</span> (note that we could just as easily consider the ppd here). For each of the <span class="math inline">\(n_f\)</span> predictive situations we calculate the rank of the observation relative to the ordered <span class="math inline">\(n_s\)</span> samples; for example, if the observation is less than the smallest sample member, then it gets a rank of 1, if it is larger than the largest sample member, it gets a rank of <span class="math inline">\(n_s +1\)</span>, and so on. If the observation and the samples are from the same distribution, then the rank of the observation should be uniformly distributed (since it is equally likely to fall anywhere in the sample). Thus, we plot the <span class="math inline">\(n_f\)</span> ranks in a histogram and look for deviations from uniformity. As shown in <span class="citation" data-cites="wilks2011statistical">Wilks (<a href="references.html#ref-wilks2011statistical" role="doc-biblioref">2011, chap. 8</a>)</span>, deviations from uniformity can suggest problems such as bias or over-/under-dispersion.</p>
+<p>As an example, <a href="#fig-VerifHistEx" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> shows verification histograms for three cases of (simulated) observations using the <code>Rankhist</code> and <code>PlotRankhist</code> functions in the package <strong>SpecsVerification</strong>. Each example is based on <span class="math inline">\(n_f = 2000\)</span> verification observations (i.e., <span class="math inline">\(\{Z^i_v,\ i=1,\ldots,2000\}\)</span>) and <span class="math inline">\(n_s = 20\)</span> samples from the associated predictive distribution <span class="math inline">\([\mathbf{Z}^i_{\mathrm{epd}} | \mathbf{Z}_b]\)</span> for each of these verification observations. The left panel shows a case where the predictive distribution is under-dispersed relative to the observations and the right panel shows a case where the predictions are biased low relative to the observations. The center panel shows a case where the observations and predictions are from the same distribution, which implies <em>rank uniformity</em>. Note that there is a reasonable amount of sampling variability in these rank histograms. It is fairly straightforward to use a chi-squared test to test a null hypothesis that the histogram corresponds to a uniform distribution <span class="citation" data-cites="weigel2012ensemble">(see <a href="references.html#ref-weigel2012ensemble" role="doc-biblioref">Weigel 2012</a>)</span>. The <strong>SpecsVerification</strong> package will implement this test in the context of the rank histogram. For the simulated example, the <span class="math inline">\(p\)</span>-values for the left-panel and right-panel cases in <a href="#fig-VerifHistEx" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> are very close to 0, resulting in rejection of the null hypothesis of rank uniformity, whereas the case represented by the center panel has a <span class="math inline">\(p\)</span>-value close to 0.8, so that rank uniformity is not rejected.</p>
+<div id="fig-VerifHistEx" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-VerifHistEx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/VerifHist_combined.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-VerifHistEx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.5: Verification ranked histograms corresponding to <span class="math inline">\(n_f = 2000\)</span> simulated observations and <span class="math inline">\(n_s = 20\)</span> samples from the associated predictive distribution for these 2000 observations. Left: the predictive distribution is under-dispersed relative to the observations; Center: the predictive distribution and the observation distribution appear the same (rank uniformity); Right: the predictive distribution is biased low relative to the observations. This figure was obtained using the <code>Rankhist</code> function in the <strong>SpecsVerification</strong> R package.
+</figcaption>
+</figure>
+</div>
+<p>The graphical methods described here are not really designed for spatio-temporal data. One might be able to consider predictions at different time periods and spatial locations as different cases for comparison, but spatio-temporal dependence is not explicitly accounted for in such comparisons. This could be problematic as predictions in close proximity in space and time are spatio-temporally correlated, and it is therefore relatively easy to select a subset of points that indicate that predictions are biased, when in reality they are not. Any apparent bias could be a fortuitous outcome of the space-time locations chosen for validation. One way to get around this issue is to consider predictions at different (well-separated) time points at the same location in space (so as to break the spatio-temporal dependence). Then one could look at several such plots for different locations in space to gain an appreciation for the geographical influence on model performance. In the context of the rank histogram, there have been some attempts to consider multivariate predictands (e.g., multiple locations in space and/or multivariate responses), but the challenge then is to develop ranks in this multivariate setting. Perhaps the most useful such approach is based on the so-called <em>minimum spanning tree</em> histograms; see the summary in <span class="citation" data-cites="wilks2011statistical">Wilks (<a href="references.html#ref-wilks2011statistical" role="doc-biblioref">2011</a>)</span>. The development of graphical diagnostics for spatio-temporal data is very much a research topic at the time of writing.</p>
+</section>
+<section id="sec-ModRobust" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="sec-ModRobust"><span class="header-section-number">6.2.3</span> Sensitivity Analysis</h3>
+<p>An important part of model evaluation is the notion of <em>robustness</em>. Informally, we might say that model robustness is an evaluation of whether certain model assumptions have too much influence on model predictions. (This is a bit different from the more classical topic of robust estimation of model parameters.) Here we focus on the relatively simple notion of <em>sensitivity analysis</em> in the context of spatio-temporal modeling. In a sensitivity analysis, we evaluate how much our predictions change as we vary some aspect of our model (e.g., the number of basis functions or the degree of spatial dependence in an error distribution). We briefly describe some heuristic approaches to sensitivity analysis in this section, but we note that the validation statistics described below in <a href="#sec-ModValidate" class="quarto-xref"><span>Section 6.3</span></a> could also be used as metrics to evaluate model sensitivity.</p>
+<p>In the case where we fix certain parameters at their estimates (e.g., covariance parameters in S-T kriging), we should evaluate the sensitivity of the model predictions to the estimated values. Note that a common criticism of such empirical plug-in approaches (used in an EHM implementation) is that they do not capture sufficient variability (e.g., relative to a BHM implementation) because they do not take the uncertainty of the parameter estimates directly into account. Nonparametric bootstrapping could be used, but it can be challenging to take bootstrap samples that adequately represent the dependence structure in the spatio-temporal data. So, to evaluate the sensitivity of model predictions to fixing parameters at their data-based estimates, one might consider how sensitive the prediction errors are to the fixed parameters, <span class="math inline">\(\boldsymbol{\theta}\)</span>, being estimated by two different methods, say using MLE and REML. Then, as in the spatial setting of <span class="citation" data-cites="kang2009statistical">Kang, Liu, and Cressie (<a href="references.html#ref-kang2009statistical" role="doc-biblioref">2009</a>)</span>, we can consider heuristic measures such as the ratio of predictive standard deviations. In the spatio-temporal setting, this can be written as</p>
+<p><span id="eq-rat_pred_sd"><span class="math display">\[
+\left[\frac{\textrm{var}(Y(\mathbf{s};t) | \mathbf{Z}, \widehat{\boldsymbol{\theta}}_a )}{\textrm{var}(Y(\mathbf{s};t) | \mathbf{Z}, \widehat{\boldsymbol{\theta}}_b) }   \right]^{1/2},
+\tag{6.7}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{Z}\)</span> represents the data, <span class="math inline">\(\widehat{\boldsymbol{\theta}}_a\)</span> and <span class="math inline">\(\widehat{\boldsymbol{\theta}}_b\)</span> are two parameter estimates (e.g., ML and REML estimates), and <span class="math inline">\(\textrm{var}(Y(\mathbf{s};t) | \mathbf{Z}, \boldsymbol{\theta})\)</span> represents the process’ predictive variance at <span class="math inline">\((\mathbf{s};t)\)</span> for fixed <span class="math inline">\(\boldsymbol{\theta}\)</span>. Clearly, if the ratio in <a href="#eq-rat_pred_sd" class="quarto-xref">Equation&nbsp;<span>6.7</span></a> is close to 1, then it suggests that there is little sensitivity in the predictive standard deviations relative to differences in the parameter estimates <span class="math inline">\(\widehat{\boldsymbol{\theta}}_a\)</span> and <span class="math inline">\(\widehat{\boldsymbol{\theta}}_b\)</span>.</p>
+<p>Similarly, we might compare the standardized differences in predictive means,</p>
+<p><span id="eq-stand_pred"><span class="math display">\[
+\frac{E(Y(\mathbf{s};t) | \mathbf{Z}, \widehat{\boldsymbol{\theta}}_a ) - E(Y(\mathbf{s};t) | \mathbf{Z}, \widehat{\boldsymbol{\theta}}_b) }{\{\textrm{var}(Y(\mathbf{s};t) | \mathbf{Z}, \widehat{\boldsymbol{\theta}}_b)\}^{1/2} },
+\tag{6.8}\]</span></span></p>
+<p>where <span class="math inline">\(E(Y(\mathbf{s};t) | \mathbf{Z}, \boldsymbol{\theta})\)</span> is the predictive mean for fixed <span class="math inline">\(\boldsymbol{\theta}\)</span>. In this case, if <a href="#eq-stand_pred" class="quarto-xref">Equation&nbsp;<span>6.8</span></a> is close to 0, it suggests that the predictive means are not overly sensitive to these parameter-estimate differences. We also note that <a href="#eq-rat_pred_sd" class="quarto-xref">Equation&nbsp;<span>6.7</span></a> and <a href="#eq-stand_pred" class="quarto-xref">Equation&nbsp;<span>6.8</span></a> are given for an individual location <span class="math inline">\((\mathbf{s};t)\)</span> in space and time, but one could do additional averaging over regions in space and/or time periods and/or produce plots in space and time.</p>
+<p>For illustration, consider the maximum temperature in the NOAA data set fitted using a Gaussian process, as in Lab 4.1. One can fit the theoretical semivariogram to the data using either least squares or weighted least squares. What, then, is the sensitivity of our predictions to the choice of fitting method? With <strong>gstat</strong>, one can call <code>fit.StVariogram</code> with <code>fit.method = 6</code> (default) for least squares, or <code>fit.method = 2</code> for weights based on the number of data pairs in the spatio-temporal bins used to construct the empirical semivariogram <span class="citation" data-cites="cressie1993statistics">(see <a href="references.html#ref-cressie1993statistics" role="doc-biblioref">Noel Cressie 1993, chap. 2</a>)</span>. For a grid cell at (100<span class="math inline">\(^\circ\)</span>W, 34.9<span class="math inline">\(^\circ\)</span>N) on 14 July 1993, the ratio of the predictive standard deviations is 1.03, while the standardized difference in the predictive means is 0.00529. When can a spatio-temporal model be considered <em>robust</em> in terms of its predictions? The answer to this question largely depends on the reason why the model was fitted in the first place and is application-dependent, but, in the context of these maximum-temperature data, it is reasonable to say that the estimation method chosen does not seem to impact the predictions at the chosen space-time location in a substantial way.</p>
+<p>In Bayesian implementations of spatio-temporal models, we may still be interested in the sensitivity of our posterior distributions to certain parameters or model assumptions. In this case, we could make different model assumptions and compare samples of <span class="math inline">\(Y\)</span> from the posterior distribution or samples of <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> from the ppd. Comparisons could be made using measures analogous to <a href="#eq-rat_pred_sd" class="quarto-xref">Equation&nbsp;<span>6.7</span></a> and <a href="#eq-stand_pred" class="quarto-xref">Equation&nbsp;<span>6.8</span></a> or more general measures of distributional comparisons discussed below in <a href="#sec-ModValidate" class="quarto-xref"><span>Section 6.3</span></a>. In the context of MCMC algorithms that generate posterior samples, this can be costly in complex models as it requires that one fit the full model with possibly many different data-model, process-model, and parameter-model distributions.</p>
+</section>
+</section>
+<section id="sec-ModValidate" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-ModValidate"><span class="header-section-number">6.3</span> Model Validation</h2>
+<p>Recall that <em>model validation</em> is simply an attempt to determine how closely our model represents the real-world process of interest, as manifested by the data we observe. Specifically, after checking our model assumptions through diagnostics and sensitivity analysis, we can validate it against the real world. Although by no means exhaustive, this section presents some of the more common model-validation approaches that are used in practice.</p>
+<section id="sec-PostPredCheck" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="sec-PostPredCheck"><span class="header-section-number">6.3.1</span> Predictive Model Validation</h3>
+<p>One of the simplest ideas in model validation is to assess whether the data that are generated from our fitted model “look” like data that we have observed. That is, we can consider samples of <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> or <span class="math inline">\(\mathbf{Z}_{\mathrm{epd}}\)</span> from the ppd or the epd, respectively, as described in <a href="#sec-PredDist" class="quarto-xref"><span>Section 6.1.2</span></a>. Given that we have samples of <span class="math inline">\(\mathbf{Z}_{\mathrm{ppd}}\)</span> or of <span class="math inline">\(\mathbf{Z}_{\mathrm{epd}}\)</span>, what do we do with them?</p>
+<p>As in <a href="#sec-ModCheck" class="quarto-xref"><span>Section 6.2</span></a>, we refer to these samples simply as <span class="math inline">\(\mathbf{Z}_p\)</span>. We can look at any diagnostics we like to help us discern how similar these draws from the ppd or the epd are to the observed data – remember, we are trying to answer the question as to whether the observed data look reasonable based on the predictive distribution obtained from our model. These diagnostics are sometimes called <em>predictive diagnostics</em>. Here, discussion focuses on <em>posterior predictive diagnostics</em> based on the ppd, but there is an obvious analog of empirical predictive diagnostics where one considers the epd rather than the ppd.</p>
+<p>As outlined in <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">2014</a>)</span>, a formalization of this notion is to consider a <em>discrepancy measure</em>, <span class="math inline">\(T(\mathbf{Z}; \mathbf{Y}, \boldsymbol{\theta})\)</span>. The discrepancy <span class="math inline">\(T(\cdot)\)</span> is specified by the modeler and may be a measure of overall fit (e.g., a scoring rule such as described in <a href="#sec-scoringrules" class="quarto-xref"><span>Section 6.3.4</span></a>) or any other feature of the data, the process, and the parameters. So, one calculates <span class="math inline">\(T(\cdot)\)</span> for each of <span class="math inline">\(L\)</span> replicates of the simulated data, and also for the observed data.</p>
+<p>We now change notation slightly to show in detail how posterior predictive diagnostics can be constructed. Specifically, for the simulated observations, we calculate <span class="math inline">\(\{T(\mathbf{Z}^{(\ell)}_{p}; \mathbf{Y}^{(\ell)}, \boldsymbol{\theta}^{(\ell)}):\)</span> <span class="math inline">\(\ell = 1,\ldots,L\}\)</span> for the <span class="math inline">\(L\)</span> replicates <span class="math inline">\(\{\mathbf{Z}^{(\ell)}_{p}\}\)</span> sampled from <span class="math inline">\([\mathbf{Z}_p | \mathbf{Z}]\)</span> based on the samples <span class="math inline">\(\{\mathbf{Y}^{(\ell)}, \boldsymbol{\theta}^{(\ell)}\}\)</span> from <span class="math inline">\([\mathbf{Y}, \boldsymbol{\theta}| \mathbf{Z}]\)</span>. Simple scatter plots of the discrepancy measures from the replicated data samples, <span class="math inline">\(T(\mathbf{Z}^{(\ell)}_{p}; \mathbf{Y}^{(\ell)}, \boldsymbol{\theta}^{(\ell)})\)</span>, versus the discrepancy measure from the observed data, <span class="math inline">\(T(\mathbf{Z}_{p}; \mathbf{Y}^{(\ell)}, \boldsymbol{\theta}^{(\ell)})\)</span>, can be informative. For example, if the points are scattered far from a 45-degree line, then we can assume that for this choice of <span class="math inline">\(T\)</span> the model is not generating data that behave like the observations <span class="citation" data-cites="gelman2013bayesian">(e.g., see <a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">Gelman et al. 2014, sec. 6.3</a>)</span>.</p>
+<p>We can make this procedure less subjective by considering <em>posterior predictive <span class="math inline">\(p\)</span>-values</em>, which are given by</p>
+<p><span class="math display">\[
+p_B = \Pr(T(\mathbf{Z}_p; \mathbf{Y}, \boldsymbol{\theta}) \ge T(\mathbf{Z}; \mathbf{Y}, \boldsymbol{\theta}) | \mathbf{Z}),
+\]</span></p>
+<p>where the probability is calculated based on the samples <span class="math inline">\(\{T(\mathbf{Z}^{(\ell)}_{p}; \mathbf{Y}^{(\ell)}, \boldsymbol{\theta}^{(\ell)}): \ell = 1,\ldots,L\}\)</span>; note, the “B” subscript in <span class="math inline">\(p_B\)</span> refers to “Bayes.” In general, values of <span class="math inline">\(p_B\)</span> close to 0 or 1 cast doubt on whether the model produces data similar to the observed <span class="math inline">\(\mathbf{Z}\)</span> (relative to the chosen discrepancy measure), in which case one may need to reconsider the model formulation. It is important to reiterate that this “<span class="math inline">\(p\)</span>-value” is best used as a diagnostic procedure, not for formal statistical testing. As mentioned, one can also construct analogous predictive diagnostics based on the prior predictive distribution (i.e., <em>prior predictive <span class="math inline">\(p\)</span>-values</em>), the empirical predictive distribution (i.e., <em>empirical predictive <span class="math inline">\(p\)</span>-values</em>), and the empirical marginal distribution (i.e., <em>empirical marginal <span class="math inline">\(p\)</span>-values</em>). In the epd context, this has been formulated as a Monte Carlo test for validation <span class="citation" data-cites="kornak2006spatial">(e.g., <a href="references.html#ref-kornak2006spatial" role="doc-biblioref">Kornak, Irwin, and Cressie 2006</a>)</span>.</p>
+<p>For illustration, consider the example of <a href="#sec-PredDist" class="quarto-xref"><span>Section 6.1.2</span></a> (Sydney radar data set and the IDE model). We chose discrepancy measures to be the minimum (<span class="math inline">\(T_{\min}\)</span>) and maximum (<span class="math inline">\(T_{\max}\)</span>) radar reflectivity across the grid boxes with centroid at <span class="math inline">\(s_1 = 26.25\)</span> (i.e., a vertical transect) over the three time points shown in <a href="#fig-epd" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>. In <a href="#fig-pppvalues" class="quarto-xref">Figure&nbsp;<span>6.6</span></a> we plot the empirical marginal distributions and empirical predictive distributions for these two discrepancy measures as obtained from <span class="math inline">\(L=500\)</span> replications, together with the observed minimum and maximum. In both of these cases, and for both distributions, the <span class="math inline">\(p\)</span>-values are greater than 0.05, suggesting a reasonable fit. Specifically, the empirical marginal <span class="math inline">\(p\)</span>-value and empirical predictive <span class="math inline">\(p\)</span>-value for <span class="math inline">\(T_{\min}\)</span> were 0.09 and 0.442, respectively, while the <span class="math inline">\(p\)</span>-values for <span class="math inline">\(T_{\max}\)</span> were 0.364 and 0.33, respectively (note that the <span class="math inline">\(p\)</span>-values we report are <span class="math inline">\(\min(p_B, 1-p_B)\)</span>).</p>
+<div id="fig-pppvalues" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pppvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/pppvalues.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pppvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.6: Empirical marginal distribution (green) and empirical predictive distribution (blue) densities for the minimum (<span class="math inline">\(T_{\min}\)</span>, left) and maximum (<span class="math inline">\(T_{\max}\)</span>, right) radar reflectivities across all grid boxes with centroid at <span class="math inline">\(s_1 = 26.25\)</span> (i.e., a vertical transect) for the times shown in <a href="#fig-epd" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>. In both panels, the red line denotes the observed statistic.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-STvalididate" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="sec-STvalididate"><span class="header-section-number">6.3.2</span> Spatio-Temporal Validation Statistics</h3>
+<p>Perhaps the most common scalar validation statistic for continuous-valued spatio-temporal processes is the mean squared prediction error (MSPE), which for spatio-temporal validation sample <span class="math inline">\(\{Z_v(\mathbf{s}_i;t_j): j=1,\ldots,T;\ i=1,\ldots,m\}\)</span>, and corresponding predictions <span class="math inline">\(\{\widehat{Z}_v(\mathbf{s}_i;t_j) \}\)</span>, is given by</p>
+<p><span class="math display">\[
+MSPE = \frac{1}{T m} \sum_{j=1}^T \sum_{i=1}^m \{Z_v(\mathbf{s}_i;t_j) - \widehat{Z}_v(\mathbf{s}_i;t_j)\}^2,
+\]</span></p>
+<p>where again, for convenience, we have assumed the same number of spatial observations for each time period (which simplifies the notation, but different numbers of spatial locations for each time are easily accommodated). In this section we assume that <span class="math inline">\(\{\widehat{Z}_v(\mathbf{s}_i;t_j)\}\)</span> are predictions based on <em>all</em> of the data, <span class="math inline">\(\mathbf{Z}\)</span> (we relax that assumption in <a href="#sec-ModValCV" class="quarto-xref"><span>Section 6.3.3</span></a>). Sometimes one might be interested in looking at MSPE for a particular time point, averaged across space, or for a particular spatial location (or region), averaged across time. The MSPE summary is so popular because it is an empirical measure of <em>expected squared error loss</em> which, when minimized, results in the S-T kriging predictor. In addition, the MSPE can be decomposed into a term corresponding to the bias (squared) of the predictor plus a term corresponding to the variance of the predictor. This is important because a large part of model-building consists of exploring the trade-offs between bias and variance. It is equally common to consider the <em>root mean squared prediction error</em> (RMSPE), which is simply the square root of the MSPE. This is sometimes favored because the units of the RMSPE are the same as those of the observations.</p>
+<p>In cases where one wishes to protect against the influence of outliers, it is common to consider the <em>mean absolute prediction error</em> (MAPE), which can be computed from</p>
+<p><span class="math display">\[
+MAPE = \frac{1}{T  m} \sum_{j=1}^T \sum_{i=1}^m |Z_v(\mathbf{s}_i;t_j) - \widehat{Z}_v(\mathbf{s}_i;t_j)|.
+\]</span></p>
+<p>Although a useful summary for validation, the MAPE does not have the natural decomposition into bias and variance components that the MSPE does. But we note that for errors that do not exhibit bias, the MAPE can be interpreted as a robust version of the RMSPE.</p>
+<p>Another common scalar validation statistic for spatio-temporal data is the so-called <em>anomaly correlation coefficient</em> (ACC). This is the usual <em>Pearson product moment</em> formula for correlation (i.e., the empirical correlation) applied to <em>anomalies</em> of the observations and predictions. Anomalies (a term that comes from the atmospheric sciences) are just deviations with respect to a long-term average of the observations (e.g., climatology in atmospheric applications). That is, let <span class="math inline">\(Z'_v(\mathbf{s}_i;t_j) \equiv Z_v(\mathbf{s}_i;t_j) - Z_a(\mathbf{s}_i)\)</span> and <span class="math inline">\(\widehat{Z}'_v(\mathbf{s}_i;t_j) \equiv \widehat{Z}_v(\mathbf{s}_i;t_j) - Z_a(\mathbf{s}_i)\)</span> be the anomalies of the validation observations and corresponding predictions relative to the time-averaged observation, <span class="math inline">\(Z_a(\mathbf{s}_i)\)</span>, at location <span class="math inline">\(\mathbf{s}_i\)</span>, for <span class="math inline">\(i=1,\ldots,m\)</span>. Then the ACC is just the empirical correlation between <span class="math inline">\(\{Z'_v(\mathbf{s}_i;t_j)\}\)</span> and <span class="math inline">\(\{\widehat{Z}_v'(\mathbf{s}_i;t_j)\}\)</span>. This can be calculated across all time periods and spatial locations, or across time for each spatial location separately (and plotted on a map), or across space for each time period separately (and plotted as a time series). As with any correlation measure, the ACC does not account for bias in predictions relative to the observations, but it is still useful for spatial-field validation as it does detect phase differences (shifts) between fields. In contrast, the MSPE captures bias and variance and is not invariant to linear association.</p>
+<p>The statistics literature has considered several simple heuristic validation metrics for spatio-temporal data. For example, in the context of within-sample validation, for spatio-temporal validation data <span class="math inline">\(\{Z_v(\mathbf{s}_i;t_j)\}\)</span> and corresponding mean predictions <span class="math inline">\(\{\widehat{Z}_v(\mathbf{s}_i;t_j)\}\)</span>, one can consider the following spatial validation statistics based on residuals and predictive variances as outlined in <span class="citation" data-cites="carroll1996comparison">Carroll and Cressie (<a href="references.html#ref-carroll1996comparison" role="doc-biblioref">1996</a>)</span>:</p>
+<p><span id="eq-V1"><span class="math display">\[
+V_1(\mathbf{s}_i) = \frac{(1/T) \sum_{j=1}^T \{Z_v(\mathbf{s}_i;t_j) - \widehat{Z}_v(\mathbf{s}_i;t_j)\}}{(1/T) \{\sum_{j=1}^T \textrm{var}(Z_v(\mathbf{s}_i;t_j) | \mathbf{Z})\}^{1/2}},
+\tag{6.9}\]</span></span></p>
+<p><span id="eq-V2"><span class="math display">\[
+V_2(\mathbf{s}_i) = \left[\frac{(1/T) \sum_{j=1}^T \{Z_v(\mathbf{s}_i;t_j) - \widehat{Z}_v(\mathbf{s}_i;t_j)\}^2}{(1/T) \sum_{j=1}^T  \textrm{var}(Z_v(\mathbf{s}_i;t_j) | \mathbf{Z})}\right]^{1/2},
+\tag{6.10}\]</span></span></p>
+<p><span id="eq-V3"><span class="math display">\[
+V_3(\mathbf{s}_i) = \left[ \frac{1}{T} \sum_{j=1}^T \{Z_v(\mathbf{s}_i;t_j) - \widehat{Z}_v(\mathbf{s}_i;t_j)\}^2   \right]^{1/2},
+\tag{6.11}\]</span></span></p>
+<p>where <span class="math inline">\(\textrm{var}(Z_v(\mathbf{s}_i;t_j) | \mathbf{Z})\)</span> is the predictive variance. The summary <span class="math inline">\(V_1(\mathbf{s}_i)\)</span> provides a sense of the bias of the predictors in space (i.e., we expect this value to be close to 0 if there is no predictive bias). Similarly, <span class="math inline">\(V_2(\mathbf{s}_i)\)</span> provides a measure of the accuracy of the MSPEs and should be close to 1 if the model estimate of prediction error is reasonable. Finally, <span class="math inline">\(V_3(\mathbf{s}_i)\)</span> is a measure of goodness of prediction, with smaller values being better – this is more useful when our model is compared to some baseline model or when there is a comparison of several models. It is often helpful to plot these summary measures as a function of space to identify if certain regions in space show better predictive performance. Note that equivalent temporal validation statistics, in obvious notation <span class="math inline">\(V_1(t), V_2(t), V_3(t)\)</span>, can be obtained by replacing the averages over the time points with averages over the spatial locations. These can then be evaluated analogously to the spatial versions, and plotted as time series to see if certain time periods show better performance than others.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Several <strong>R</strong> packages contain functionality for computing these simple validation statistics. However, these can be implemented directly by the user with a few lines of code using functions that take three arguments (the data, the predictions, and the prediction standard errors) as input. For example,</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>V1 <span class="ot">&lt;-</span> <span class="cf">function</span>(z, p, pse) <span class="fu">sum</span>(z <span class="sc">-</span> p) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(pse<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>implements <a href="#eq-V1" class="quarto-xref">Equation&nbsp;<span>6.9</span></a>. Our suggestion is to implement them once and keep them handy!</p>
+</div>
+</div>
+</section>
+<section id="sec-ModValCV" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="sec-ModValCV"><span class="header-section-number">6.3.3</span> Spatio-Temporal Cross-Validation Measures</h3>
+<p>The validation measures presented in <a href="#sec-STvalididate" class="quarto-xref"><span>Section 6.3.2</span></a> above are often used for within-sample validation, and thus they are naturally optimistic measures in the sense that the data are being used twice (once to train the model and once again to validate the model). As we have discussed in <a href="#sec-ValCrosVal" class="quarto-xref"><span>Section 6.1.3</span></a>, it is much better to use a hold-out validation sample if possible, but such validation may be difficult to come by (or, in the case of spatio-temporal dependence, difficult to select). In that case, it is common to use cross-validation methods (recall <a href="Chapter3.html#nte-technote-CV" class="quarto-xref">Note&nbsp;<span>3.1</span></a>) with your favorite validation measures (e.g., <span class="math inline">\(MSPE\)</span>, <span class="math inline">\(MAPE\)</span>, <a href="#eq-V1" class="quarto-xref">Equation&nbsp;<span>6.9</span></a>–<a href="#eq-V3" class="quarto-xref">Equation&nbsp;<span>6.11</span></a> above or the scoring rules presented in <a href="#sec-scoringrules" class="quarto-xref"><span>Section 6.3.4</span></a>). There have been a few examples in the literature of specific cross-validation statistics for spatio-temporal data, which we briefly describe here.</p>
+<p>As a direct example in the case of leave-one-out-cross-validation (LOOCV), one might extend the notion of cross-validation residuals given in <a href="#eq-CVSTresidual" class="quarto-xref">Equation&nbsp;<span>6.6</span></a>&nbsp;<span class="citation" data-cites="kang2009statistical">(e.g., <a href="references.html#ref-kang2009statistical" role="doc-biblioref">Kang, Liu, and Cressie 2009</a>)</span> to</p>
+<p><span class="math display">\[
+\left\{\frac{Z(\mathbf{s}_i;t_j) - E(Z(\mathbf{s}_i;t_j) | \mathbf{Z}^{(-i,-t_j)})}{\{\textrm{var}(Z(\mathbf{s}_i;t_j) | \mathbf{Z}^{(-i,-t_j)})\}^{1/2}}  \right\},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{Z}^{(-i,-t_j)}\)</span> corresponds to the data with observation <span class="math inline">\(Z(\mathbf{s}_i;t_j)\)</span> removed. These residuals can be explored for outliers and potential spatio-temporal dependence (as described in <a href="#sec-ModAssDiag" class="quarto-xref"><span>Section 6.2.1</span></a> above). Similarly, we can consider <em>predictive cross-validation</em> (PCV) and <em>standardized cross-validation</em> (SCV) measures <span class="citation" data-cites="kang2009statistical">(e.g., <a href="references.html#ref-kang2009statistical" role="doc-biblioref">Kang, Liu, and Cressie 2009</a>)</span>,</p>
+<p><span id="eq-PCV"><span class="math display">\[
+PCV \equiv \left(\frac{1}{mT}\right) \sum_{j=1}^T \sum_{i=1}^m \{Z(\mathbf{s}_i;t_j) - E(Z(\mathbf{s}_i;t_j) | \mathbf{Z}^{(-i,-t_j)})\}^2
+\tag{6.12}\]</span></span></p>
+<p>and</p>
+<p><span id="eq-SCV"><span class="math display">\[
+SCV \equiv \left(\frac{1}{mT}\right)  \sum_{j=1}^T \sum_{i=1}^m  \frac{\{Z(\mathbf{s}_i;t_j) - E(Z(\mathbf{s}_i;t_j) | \mathbf{Z}^{(-i,-t_j)})\}^2}{\textrm{var}(Z(\mathbf{s}_i;t_j) | \mathbf{Z}^{(-i,-t_j)})  }.
+\tag{6.13}\]</span></span></p>
+<p>Note the similarity between <a href="#eq-V3" class="quarto-xref">Equation&nbsp;<span>6.11</span></a> and <a href="#eq-PCV" class="quarto-xref">Equation&nbsp;<span>6.12</span></a>, and between <a href="#eq-V2" class="quarto-xref">Equation&nbsp;<span>6.10</span></a> and <a href="#eq-SCV" class="quarto-xref">Equation&nbsp;<span>6.13</span></a>. If our model is performing well, we would like to see values of PCV near 0 and values of SCV close to 1. Of course, these evaluation criteria can be considered from a <span class="math inline">\(K\)</span>-fold cross-validation perspective as well.</p>
+</section>
+<section id="sec-scoringrules" class="level3" data-number="6.3.4">
+<h3 data-number="6.3.4" class="anchored" data-anchor-id="sec-scoringrules"><span class="header-section-number">6.3.4</span> Scoring Rules</h3>
+<p>One of the benefits of the statistical methods presented in Chapters 4 and 5 is that they give probabilistic predictions – that is, we do not just get a single prediction but, rather, a predictive distribution. This is a good thing as it allows us to account for various sources of uncertainty in our predictions. However, it presents a bit of a problem in that ideally we want to verify a distributional prediction but we have just one set of observations. We need to find a way to compare a distribution of predictions to a single realized (validation) observation. Formally, this can be done through the notion of a <em>score</em>, where the predictive distribution, say <span class="math inline">\(p(z)\)</span>, is compared to the validation value, say <span class="math inline">\(Z\)</span>, with the <em>score function</em> <span class="math inline">\(S(p(z),Z)\)</span>. There is a long history in probabilistic forecast “verification,” originating in the meteorology community, of favoring scoring functions that are <em>proper</em>; see <a href="#nte-technote-scorerules" class="quarto-xref">Note&nbsp;<span>6.2</span></a> for a description of proper scoring rules and <span class="citation" data-cites="gneiting2007strictly">Gneiting and Raftery (<a href="references.html#ref-gneiting2007strictly" role="doc-biblioref">2007</a>)</span> for technical details.</p>
+<p>Intuitively, proper scoring rules are expressed in such a way that a forecaster receives the best score (on average) if their forecast distribution aligns with their true beliefs. This relates to the notion of “forecast consistency” discussed in <span class="citation" data-cites="murphy1993good">Murphy (<a href="references.html#ref-murphy1993good" role="doc-biblioref">1993</a>)</span>, which concerns how closely the forecaster’s prediction matches up with their judgement. The point here is that there may be incentives for a forecaster to <em>hedge</em> their forecast away from their true beliefs, and this should be discouraged. For example, <span class="citation" data-cites="carvalho2016overview">Carvalho (<a href="references.html#ref-carvalho2016overview" role="doc-biblioref">2016</a>)</span> and <span class="citation" data-cites="nakazono2013strategic">Nakazono (<a href="references.html#ref-nakazono2013strategic" role="doc-biblioref">2013</a>)</span> describe a situation where an expert with an established reputation might tend to report a forecast closer to the consensus of a particular group, whereas a forecaster who is just starting out might seek to increase her reputation by overstating the probabilities of particular outcomes that she thinks might be understated in the consensus. Proper scoring rules are designed such that there is no reward for this type of hedging.</p>
+<p>Three common, and related, (strictly) proper scoring rules used in spatial and spatio-temporal prediction are the <em>Brier score</em> (BRS), the <em>ranked probability score</em> (RPS), and the <em>continuous ranked probability score</em> (CRPS). The BRS can be used to compare probability predictions for categorical variables. It is most often used when the outcomes are binary, <span class="math inline">\(\{0,1\}\)</span>, events. Assuming <span class="math inline">\(Z\)</span> is a binary observation and <span class="math inline">\(p=\Pr(Z=1 | \mbox{data})\)</span> comes from the model, the BRS is defined as</p>
+<p><span id="eq-BrierScore"><span class="math display">\[
+BRS(p,Z) = (Z - p)^2,
+\tag{6.14}\]</span></span></p>
+<p>where, as in golf, small scores are good. (Note that in this section, where possible, we omit the space and time labels for notational simplicity and just present the rules in terms of arbitrary predictive distributions and observations.) In practice, we calculate the average BRS for a number of predictions and associated observations in the validation data set. The BRS can be decomposed into components associated with prediction “reliability, resolution, and uncertainty” . Note that there are several other skill scores that could also be used for binary responses (e.g., the Heidke skill score, Peirce skill score, Clayton skill score, and Gilbert skill score) that are based on comparing components of a <span class="math inline">\(2 \times 2\)</span> contingency table <span class="citation" data-cites="wilks2011statistical">(see <a href="references.html#ref-wilks2011statistical" role="doc-biblioref">Wilks 2011, chap. 8</a>)</span>.</p>
+<p>Some of the scoring rules used for binary data can be extended to multi-category predictions, although in the case of ordinal data one should take into account the relative “distance” (spread or dispersion) between categories (see, for example, the Gandin–Murphy skill score and Gerrity skill score described in <span class="citation" data-cites="wilks2011statistical">Wilks (<a href="references.html#ref-wilks2011statistical" role="doc-biblioref">2011</a>)</span>, Chapter 8). The ranked probability score is a multi-category extension to the BRS given by</p>
+<p><span id="eq-RPS"><span class="math display">\[
+RPS(p,Z) = \frac{1}{J-1} \sum_{i=1}^J \left(\sum_{j=1}^i Z_j - \sum_{j=1}^i p_j\right)^2,
+\tag{6.15}\]</span></span></p>
+<p>where <span class="math inline">\(J\)</span> is the number of outcome categories, <span class="math inline">\(p_j\)</span> is the predicted probability of the <span class="math inline">\(j\)</span>th category, and <span class="math inline">\(Z_j=1\)</span> if the category occurred, and <span class="math inline">\(Z_j = 0\)</span> otherwise. Note that <a href="#eq-RPS" class="quarto-xref">Equation&nbsp;<span>6.15</span></a> depends on an ordering of the categories and, when <span class="math inline">\(J=2\)</span>, we recover the Brier score (<a href="#eq-BrierScore" class="quarto-xref">Equation&nbsp;<span>6.14</span></a>). A perfect prediction leads to the case where <span class="math inline">\(RPS = 0\)</span> and the worst possible score is <span class="math inline">\(RPS = 1\)</span>. RPS is strictly proper and accounts for the distance between groups, which is important for ordinal data. As with the BRS, in practice we typically calculate the average RPS for a number of predictions at different spatio-temporal locations in the validation data set.</p>
+<div id="fig-CRPS" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CRPS-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/CRPS.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CRPS-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.7: Left: The cumulative distribution function, <span class="math inline">\(F(x)\)</span>, of a prediction with mean 6.5 and prediction standard error 1. The observation is <span class="math inline">\(Z = 6\)</span>, and the shaded area denotes the difference between the cumulative distribution function of the observation (a step function) and the predictive distribution. Right: The integrand used to compute the CRPS, the area under the curve.
+</figcaption>
+</figure>
+</div>
+<p>A natural extension of the RPS to the case of a continuous response occurs if we imagine that we bin the continuous response into <span class="math inline">\(J\)</span> ordered categories and let <span class="math inline">\(J \rightarrow \infty\)</span>. The continuous ranked probability score has become one of the more popular proper scoring rules in spatio-temporal statistics. It is formulated in terms of the predictive cumulative distribution function (cdf), say <span class="math inline">\(F(z)\)</span>, and is given by</p>
+<p><span class="math display">\[
+CRPS(F,Z) = \int (\mathbb{1}\{Z \leq x\} - F(x))^2 \textrm{d}x,
+\]</span></p>
+<p>where <span class="math inline">\(\mathbb{1}\{Z \leq x\}\)</span> is an indicator variable that takes the value 1 if <span class="math inline">\(Z \leq x\)</span>, and the value 0 otherwise. An illustration of the procedure by which the CRPS is evaluated is shown in <a href="#fig-CRPS" class="quarto-xref">Figure&nbsp;<span>6.7</span></a>, for an observation <span class="math inline">\(Z = 6\)</span> and <span class="math inline">\(F(x)\)</span> the normal distribution function with mean 6.5 and standard deviation 1. In this example, <span class="math inline">\(CRPS = 0.331\)</span>.</p>
+<p>In the case where the cdf <span class="math inline">\(F\)</span> has a finite first moment, the CRPS can be written as</p>
+<p><span id="eq-CRPS2"><span class="math display">\[
+CRPS(F,Z) = E_F | z - Z | - \frac{1}{2} E_F |z - z'|,
+\tag{6.16}\]</span></span></p>
+<p>where <span class="math inline">\(z\)</span> and <span class="math inline">\(z'\)</span> are independent random variables with distribution function <span class="math inline">\(F\)</span> . Thus, analytical forms for the CRPS can be derived for many standard predictive cumulative distribution functions, and hence for these functions it can be computed efficiently (see, for example, the <strong>scoringRules</strong> <code>R</code> package). However, the CRPS can be difficult to compute for complex predictive distributions such as one might get from a BHM. In such situations, one can approximate the CRPS by using an empirical predictive cdf.</p>
+<p>For example, given samples of predictions, <span class="math inline">\(Z_1,\ldots,Z_m\)</span>, from <span class="math inline">\(F\)</span>, one can show that <span class="citation" data-cites="jordan2017evaluation">(e.g., <a href="references.html#ref-jordan2017evaluation" role="doc-biblioref">Jordan, Krüger, and Lerch 2017</a>)</span></p>
+<p><span id="eq-CRPScalc"><span class="math display">\[
+CRPS(\widehat{F}_m,Z) = \frac{1}{m} \sum_{i=1}^m | Z_i - Z | - \frac{1}{2 m^2} \sum_{i=1}^m \sum_{j=1}^m | Z_i - Z_j|,
+\tag{6.17}\]</span></span></p>
+<p>where the empirical cdf,</p>
+<p><span id="eq-EmpCDF"><span class="math display">\[
+\widehat{F}_m(x) = \frac{1}{m} \sum_{i=1}^m \mathbb{1}\{Z_i \leq x\},
+\tag{6.18}\]</span></span></p>
+<p>is substituted into <a href="#eq-CRPS2" class="quarto-xref">Equation&nbsp;<span>6.16</span></a>. More efficient computational approaches can be used to estimate <a href="#eq-CRPS2" class="quarto-xref">Equation&nbsp;<span>6.16</span></a>, as discussed in <span class="citation" data-cites="jordan2017evaluation">Jordan, Krüger, and Lerch (<a href="references.html#ref-jordan2017evaluation" role="doc-biblioref">2017</a>)</span>. Note that <a href="#eq-EmpCDF" class="quarto-xref">Equation&nbsp;<span>6.18</span></a> implicitly assumes that the <span class="math inline">\(\{Z_i\}\)</span> are <span class="math inline">\(iid\)</span>, which is a reasonable assumption when one has multiple predictions (widely separated in time) for a given location. However, the <span class="math inline">\(iid\)</span> assumption is not typically realistic for spatio-temporal validation data sets with multiple observations (see the discussion below on multivariate scoring rules for an alternative).</p>
+<p>In the common case where one is only interested in evaluating the predictive distribution through its first two central moments, say <span class="math inline">\(\mu_F\)</span> and <span class="math inline">\(\sigma^2_F\)</span>, <span class="citation" data-cites="gneiting2014probabilistic">Gneiting and Katzfuss (<a href="references.html#ref-gneiting2014probabilistic" role="doc-biblioref">2014</a>)</span> suggest considering the <em>Dawid–Sebastiani score</em> (DSS),</p>
+<p><span id="eq-DSscore"><span class="math display">\[
+DSS(F,Z) =  \frac{(Z - \mu_F)^2}{\sigma^2_F} + 2 \log \sigma_F,
+\tag{6.19}\]</span></span></p>
+<p>which is a proper scoring rule and is simple to compute. In the case of a Gaussian predictive density function <span class="math inline">\(f(z)\)</span>, it can be shown that the DSS in <a href="#eq-DSscore" class="quarto-xref">Equation&nbsp;<span>6.19</span></a> is equivalent to the so-called <em>logarithmic score</em> (LS),</p>
+<p><span id="eq-LS"><span class="math display">\[
+LS(F,Z) =  - \log f(Z),
+\tag{6.20}\]</span></span></p>
+<p>where <span class="math inline">\(f\)</span> is the density function associated with <span class="math inline">\(F\)</span>. This is one of the most-used proper scoring rules in machine learning. Note that sometimes the LS is defined without the negative sign (i.e., <span class="math inline">\(\log f(Z)\)</span>), in which case a larger score is better. We prefer to define it as in <a href="#eq-LS" class="quarto-xref">Equation&nbsp;<span>6.20</span></a> so that a smaller score is better, and as we show below in <a href="#sec-ModSelect" class="quarto-xref"><span>Section 6.4</span></a>, this form of the LS is often used when comparing models.</p>
+<p>It can be quite useful to consider the <em>skill (<span class="math inline">\({\cal S}\)</span>)</em> of a predictive model, which we define here as the average of the scoring rule over a range of prediction cases. For pairs <span class="math inline">\(\{(F_i, Z_i ): i=1,\ldots,N\}\)</span>, the skill is given by</p>
+<p><span id="eq-skill"><span class="math display">\[
+{\cal S} = \frac{1}{N} \sum_{i=1}^N S(F_i, Z_i),
+\tag{6.21}\]</span></span></p>
+<p>where <span class="math inline">\(S\)</span> is a generic score function. We can use a <em>skill score (<span class="math inline">\({\cal SS}\)</span>)</em> to compare predictions from models to some reference prediction method. For example,</p>
+<p><span id="eq-skillscore"><span class="math display">\[
+{\cal SS}_{\cal M} =  \frac{{\cal S}_{\cal M} - {\cal S}_{\mathrm{ref}}}{{\cal S}_{\mathrm{opt}} - {\cal S}_{\mathrm{ref}}},
+\tag{6.22}\]</span></span></p>
+<p>where <span class="math inline">\({\cal S}_{\cal M}\)</span>, <span class="math inline">\({\cal S}_{\mathrm{ref}}\)</span>, and <span class="math inline">\({\cal S}_{\mathrm{opt}}\)</span> represent the skill of the model <span class="math inline">\({\cal M}\)</span>, the reference method, and a hypothetical optimal predictor, respectively. The skill score (<a href="#eq-skillscore" class="quarto-xref">Equation&nbsp;<span>6.22</span></a>) takes a maximum value of <span class="math inline">\(1\)</span> when the model <span class="math inline">\({\cal M}\)</span> prediction is optimal, a value of <span class="math inline">\(0\)</span> when the model <span class="math inline">\({\cal M}\)</span> has skill equivalent to the reference method, and a value less than <span class="math inline">\(0\)</span> when the model <span class="math inline">\({\cal M}\)</span> has lower skill than the reference method. As noted by <span class="citation" data-cites="gneiting2007strictly">Gneiting and Raftery (<a href="references.html#ref-gneiting2007strictly" role="doc-biblioref">2007</a>)</span>, <span class="math inline">\({\cal SS}_{\cal M}\)</span> is not proper in general, even if the scoring rule used in its construction is proper.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Functions to compute the Brier score, the ranked probability score, the continuous ranked probability score, and the logarithmic score can be found in the <strong>R</strong> package <strong>verification</strong>.</p>
+</div>
+</div>
+<section id="multivariate-scoring-rules" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="multivariate-scoring-rules">Multivariate Scoring Rules</h4>
+<p>The scoring rules given above are univariate quantities that can be averaged or more generally summarized across time and space in our setting. Although less common, there are scoring rules that explicitly account for the multivariate nature of a multivariate prediction, which can be important when there are dependencies in the process model (between variables in space or time). This addresses the <span class="math inline">\(iid\)</span> caveat we put on the CRPS calculation in <a href="#eq-CRPScalc" class="quarto-xref">Equation&nbsp;<span>6.17</span></a> and <a href="#eq-EmpCDF" class="quarto-xref">Equation&nbsp;<span>6.18</span></a>, and it applies also to the skill defined by <a href="#eq-skill" class="quarto-xref">Equation&nbsp;<span>6.21</span></a>. For example, the <strong>scoringRules</strong> <code>R</code> package implements the <em>energy score (ES)</em> discussed in <span class="citation" data-cites="gneiting2007strictly">Gneiting and Raftery (<a href="references.html#ref-gneiting2007strictly" role="doc-biblioref">2007</a>)</span>, which is given by</p>
+<p><span id="eq-energyscore"><span class="math display">\[
+ES(F,\mathbf{Z}) = E_F ||\mathbf{z}- \mathbf{Z}|| - \frac{1}{2} E_F || \mathbf{z}- \mathbf{z}'||,
+\tag{6.23}\]</span></span></p>
+<p>where, say, <span class="math inline">\(\mathbf{Z}' = (Z(\mathbf{s}_i;t_j)\!\!:\!i=1,\ldots,m; j=1,\ldots,T)\)</span>, <span class="math inline">\(|| \cdot ||\)</span> represents the Euclidean norm, and <span class="math inline">\(\mathbf{z}\)</span> and <span class="math inline">\(\mathbf{z}'\)</span> are independent random vectors with multivariate cdf <span class="math inline">\(F\)</span>. Notice from comparison to <a href="#eq-CRPS2" class="quarto-xref">Equation&nbsp;<span>6.16</span></a> that <a href="#eq-energyscore" class="quarto-xref">Equation&nbsp;<span>6.23</span></a> is a multivariate extension of the CRPS. <span class="citation" data-cites="scheuerer2015variogram">Scheuerer and Hamill (<a href="references.html#ref-scheuerer2015variogram" role="doc-biblioref">2015</a>)</span> state that numerous studies have shown that a good performance of this score function requires a correct specification of the dependence structure in the model. When only the first and second moments are of interest, an alternative is to consider the multivariate version of the DSS given by <a href="#eq-DSscore" class="quarto-xref">Equation&nbsp;<span>6.19</span></a>, which we define as</p>
+<p><span id="eq-DSSmv"><span class="math display">\[
+DSS_{mv}(F,\mathbf{Z}) =  \log |\mathbf{C}_F| + (\mathbf{Z}- \boldsymbol{\mu}_F)' \mathbf{C}_F^{-1} (\mathbf{Z}- \boldsymbol{\mu}_F),
+\tag{6.24}\]</span></span></p>
+<p>where <span class="math inline">\(\boldsymbol{\mu}_F = E(\mathbf{Z}| \mbox{data})\)</span> and <span class="math inline">\(\mathbf{C}_F = \textrm{var}(\mathbf{Z}| \mbox{data})\)</span> are the mean vector and covariance matrix of the multivariate predictive cdf <span class="math inline">\(F\)</span>.</p>
+<p><span class="citation" data-cites="scheuerer2015variogram">Scheuerer and Hamill (<a href="references.html#ref-scheuerer2015variogram" role="doc-biblioref">2015</a>)</span> note that variograms (which, as we discuss in Chapter 4, account for spatial and spatio-temporal dependence) consider the expected squared difference between observations, and they generalized this to define a multivariate score that they call the <em>variogram score of order p</em> (<span class="math inline">\(VS_p\)</span>). This can be written as</p>
+<p><span class="math display">\[
+VS_p(F,\mathbf{Z}) = \sum_{i=1}^{mT} \sum_{j=1}^{mT} w_{ij} (|Z_i - Z_j|^p - E_F |z_i - z_j|^p)^2,
+\]</span></p>
+<p>where <span class="math inline">\(w_{ij}\)</span> are non-negative weights, and <span class="math inline">\(z_i\)</span> and <span class="math inline">\(z_j\)</span> are the <span class="math inline">\(i\)</span>th and <span class="math inline">\(j\)</span>th elements of a random vector, <span class="math inline">\(\mathbf{z}\)</span>, from the multivariate cdf, <span class="math inline">\(F\)</span>, and for ease of notation we write the data vector as <span class="math inline">\(\mathbf{Z}= (Z_1,\ldots,Z_{mT})'\)</span>. The weights can be used to de-emphasize certain difference pairs (e.g., those that are farther apart) and <span class="math inline">\(p=2\)</span> corresponds to the variogram defined in Chapter 4. In Lab 6.1, we illustrate the use of the ES and <span class="math inline">\(VS_p\)</span>.</p>
+<div id="nte-technote-scorerules" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;6.2: Proper Scoring Rules
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This note follows the very intuitive description found in <span class="citation" data-cites="brocker2007scoring">Bröcker and Smith (<a href="references.html#ref-brocker2007scoring" role="doc-biblioref">2007</a>)</span>. Let <span class="math inline">\(p(z)\)</span> be a probability distribution of predictions of <span class="math inline">\(Z\)</span>, which we wish to compare to an observation <span class="math inline">\(Z\)</span> with cdf <span class="math inline">\(F\)</span> (i.e., we wish to validate our predictive model). Let a <em>score</em> be some comparison measure between the predictive distribution and the observed value, denoted <span class="math inline">\(S(p, Z)\)</span>. Typically, scores are defined so that smaller scores indicate better predictions. The score <span class="math inline">\(S\)</span> is said to be <em>proper</em> if</p>
+<p><span id="eq-properscore"><span class="math display">\[
+E_{F} \{S(p,Z)\}  \geq  E_F\{S(q,Z)\}
+\tag{6.25}\]</span></span></p>
+<p>for any two predictive distributions, <span class="math inline">\(p(z)\)</span> and <span class="math inline">\(q(z)\)</span>, where <span class="math inline">\(q(z)\)</span> is the “true” predictive distribution. That is, <a href="#eq-properscore" class="quarto-xref">Equation&nbsp;<span>6.25</span></a> says that the expected score is minimized when the predictive distribution coincides exactly with the true predictive distribution. The scoring rule is <em>strictly proper</em> if this minimum in the expected score occurs only when <span class="math inline">\(p(z) = q(z)\)</span> for all <span class="math inline">\(z\)</span>, that is, when the predictive distribution is the same as the true distribution. The concept of propriety is very intuitive in that it formalizes the notion that if our predictive distribution coincided with the true distribution, <span class="math inline">\(q(z)\)</span>, then it should be at least as good as some other forecast distribution, <span class="math inline">\(p(z)\)</span>, not equal to <span class="math inline">\(q(z)\)</span>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-fieldcomparison" class="level3" data-number="6.3.5">
+<h3 data-number="6.3.5" class="anchored" data-anchor-id="sec-fieldcomparison"><span class="header-section-number">6.3.5</span> Field Comparison</h3>
+<p>A special case of validation concerns comparing spatial or spatio-temporal “fields.” The idea of <em>field comparison</em> is to compare two or more spatial or spatio-temporal fields (typically gridded observations and/or model output, but note that they do not need to be gridded), in some sense, to decide if they are “different.” This has been of interest for quite some time in the geophysical sciences such as meteorology, where data and processes are naturally dependent in space and time. As an example, assume we have a model that provides short-term predictions (i.e., nowcasts) of precipitation, and we wish to validate our model’s predictions with weather radar data by comparing the two fields. Field comparison can also be used for inference where we would like to formally test whether two spatial fields are significantly different. Many of the validation summaries and scoring rules discussed above can be used in this context, although rigorous statistical inference has proved challenging. For example, the MSPE, MAPE, RMSPE, and ACC measures are often used for field comparison. Further, some specialized summaries have been designed to compare spatial (and, in principle, spatio-temporal) features of the process and data in these comparisons, and we discuss a few of these below.</p>
+<section id="field-matching-methods" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="field-matching-methods">Field-Matching Methods</h4>
+<p>One of the biggest challenges in comparing spatial fields is to decide how well features match up. For example, in the context of the aforementioned radar-nowcasting problem, the goal might be to predict a feature (say, a storm cell) that is present in the observed radar data, but the prediction might be shifted in space relative to the observations. Is such a prediction better than if the prediction of the feature is not shifted, but covers an overly broad area compared to the observed feature? Another issue is that the two fields may agree at some spatial scales of resolution, but not at others. One of the primary challenges in field comparison is to account for differences in feature location, orientation, and scale.</p>
+<p>When comparing two spatial fields of discrete outcomes, particularly in the context of validating a predictive model, we can adapt many of the score functions to the spatial case, beyond the simple averaging in a score function, where we try to account for the different ways that spatial fields may match up. One of the most famous is the <em>threat score</em> (TS) (also known as the <em>critical success index</em>). The TS is a simple summary that was originally designed for <span class="math inline">\(2 \times 2\)</span> contingency tables. That is, it is the ratio of the number of successful predictions of an event divided by the number of situations where that event was predicted or observed, so notice that the number of correct predictions of the non-event is not considered. In the context of field comparison, consider</p>
+<p><span id="eq-TS"><span class="math display">\[
+TS = \frac{A_{11}}{A_{11} + A_{10} + A_{01}},
+\tag{6.26}\]</span></span></p>
+<p>where <span class="math inline">\(A_{11}\)</span> is the area associated with the intersection of the region where the predicted event was expected to occur with the region where it did occur, <span class="math inline">\(A_{10}\)</span> is the area where the event was predicted to occur but did not occur, and <span class="math inline">\(A_{01}\)</span> is the area where the event occurred but was not predicted to occur.</p>
+<p>For illustration, we consider the example in Lab 6.1 (Sydney radar data set), where we leave out data in the 10-minute periods at 09:35 and 09:45, and then we predict the reflectivities at these time points using both an IDE model and an FRK model with spatio-temporal basis functions. When using the TS, we first need to identify the presence, or otherwise, of an event, and we do this by setting a <em>threshold</em> parameter: an observation or prediction greater than this threshold is classified as an event, while an observation or prediction less than this threshold is classified as a non-event (in practice, we often compare across multiple threshold values). <a href="#fig-threat_scores" class="quarto-xref">Figure&nbsp;<span>6.8</span></a> shows the events and non-events in the data and in the predictions from the two models at 09:35, for a threshold of 25 dBZ. Clearly, the IDE model has been more successful in capturing “events” in this instance. The TSs for both models for thresholds varying between 15 dBZ and 25 dBZ are given in Table <a href="#tbl-threat_scores" class="quarto-xref">Table&nbsp;<span>6.1</span></a>: we see that the IDE model outperforms the FRK models for all thresholds using this field-matching diagnostic. Of course, kriging is not designed to predict events above a threshold <span class="citation" data-cites="zhang2008loss">Zhang, Craigmile, and Cressie (<a href="references.html#ref-zhang2008loss" role="doc-biblioref">2008</a>)</span>, but neither is IDE prediction. Incorporating the dynamics appears to carry extra advantages!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Check out the <strong>SpatialVx</strong> package for a comprehensive suite of field-matching methods. In this example, we used the <code>vxstats</code> function from <strong>SpatialVx</strong> to obtain the threat scores; this function also returns other useful diagnostics, such as the probability of event detection and the false-alarm rate.</p>
+</div>
+</div>
+<div id="fig-threat_scores" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-threat_scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/threat_scores.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-threat_scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.8: Plots showing the presence or absence of events at 09:35, obtained by thresholding the observations (left) or the IDE/FRK predictions (center and right) at 25 dBZ.
+</figcaption>
+</figure>
+</div>
+<div id="tbl-threat_scores" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-threat_scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: Threat scores (TS) calculated using <a href="#eq-TS" class="quarto-xref">Equation&nbsp;<span>6.26</span></a> for both the IDE predictions and the FRK predictions at 09:35 for different thresholds.
+</figcaption>
+<div aria-describedby="tbl-threat_scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Threshold (dBZ)</th>
+<th>TS for IDE</th>
+<th>TS for FRK</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>15.00</td>
+<td>0.73</td>
+<td>0.32</td>
+</tr>
+<tr class="even">
+<td>20.00</td>
+<td>0.58</td>
+<td>0.21</td>
+</tr>
+<tr class="odd">
+<td>25.00</td>
+<td>0.37</td>
+<td>0.11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Field-matching approaches have attempted to deal with questions of scale decompositions and feature properties (location, orientation, phase, amplitude), and a summary of such methods from a geophysical perspective can be found in <span class="citation" data-cites="brown2012forecasts">Brown, Gilleland, and Ebert (<a href="references.html#ref-brown2012forecasts" role="doc-biblioref">2012</a>)</span> and <span class="citation" data-cites="gilleland2010verifying">Gilleland et al. (<a href="references.html#ref-gilleland2010verifying" role="doc-biblioref">2010</a>)</span>. A brief summary of field matching from a statistical perspective can be found in <span class="citation" data-cites="cressie2011statistics">N. Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>, Section 5.7. In addition to using the MSPE, ACC, and score functions, methods based on scale decomposition such as EOF-based diagnostics <span class="citation" data-cites="branstator1993identification">(<a href="references.html#ref-branstator1993identification" role="doc-biblioref">Branstator, Mai, and Baumhefner 1993</a>)</span> and wavelet decompositions <span class="citation" data-cites="briggs1997wavelets">(<a href="references.html#ref-briggs1997wavelets" role="doc-biblioref">Briggs and Levine 1997</a>)</span> have been used successfully for field matching. In these cases, the usual measures are applied to the various scale components rather than to the full field. Examples of feature-based methods include the location-error matching approach of <span class="citation" data-cites="ebert2000verification">Ebert and McBride (<a href="references.html#ref-ebert2000verification" role="doc-biblioref">2000</a>)</span> and the morphometric decomposition into scale, location, rotation angle, and intensity differences presented in <span class="citation" data-cites="micheas2007cell">Micheas et al. (<a href="references.html#ref-micheas2007cell" role="doc-biblioref">2007</a>)</span>.</p>
+</section>
+<section id="field-significance" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="field-significance">Field Significance</h4>
+<p>It has long been of interest in the geophysical sciences to ask whether the differences in two spatial fields (or a collection of such fields) are significantly different. These two spatial fields may correspond to predictions or observations. For example, is the average maximum temperature on a grid over North America for the decade 2001–2010 significantly different from the corresponding average for the decade 1971–1980? One could consider simple pointwise two-sample <span class="math inline">\(t\)</span> tests for the null hypothesis of mean differences equal to zero at each grid cell. Then a Bonferroni correction of the level of significance, obtained by dividing the desired level by the number of grid cells, could be applied to deal with the multiple testing. However, such a correction leads to an overall test with very low power. Alternatively, one could look at a map of corresponding <span class="math inline">\(p\)</span>-values and qualitatively try to identify regions in which a significant difference is present, which can be effective but lacks rigor.</p>
+<p>However, there is not only dependence in time that must be accounted for in any test that considers a sequence of fields (e.g., the effective degrees of freedom would likely be less than the number of time replicates in the presence of positive temporal dependence), but one must also account for the spatial dependence between nearby tests when doing multiple <span class="math inline">\(t\)</span> tests. Historical approaches have attempted to deal with these issues through effective-degrees-of-freedom modifications and Monte Carlo testing (see, for example, <span class="citation" data-cites="livezey1983statistical">Livezey and Chen (<a href="references.html#ref-livezey1983statistical" role="doc-biblioref">1983</a>)</span>; <span class="citation" data-cites="stanford1994field">Stanford and Ziemke (<a href="references.html#ref-stanford1994field" role="doc-biblioref">1994</a>)</span>; <span class="citation" data-cites="von2002statistical">Von Storch and Zwiers (<a href="references.html#ref-von2002statistical" role="doc-biblioref">2002</a>)</span>). More recently, expanding on the famous <em>false discovery rate</em> (FDR) multiplicity mitigation approach of <span class="citation" data-cites="benjamini1995controlling">Benjamini and Hochberg (<a href="references.html#ref-benjamini1995controlling" role="doc-biblioref">1995</a>)</span>, <span class="citation" data-cites="shen2002nonparametric">Shen, Huang, and Cressie (<a href="references.html#ref-shen2002nonparametric" role="doc-biblioref">2002</a>)</span> developed the so-called <em>enhanced FDR</em> (EFDR) approach for spatial field comparison that uses the FDR methodology on a wavelet-based scale decomposition of the spatial fields (which deals with the spatial dependence by carrying out the testing on the decorrelated wavelet coefficients).</p>
+<p>As an illustration, consider the difference between the mean SST anomalies in the 1970s and in the 1990s for an area of the Pacific Ocean, as shown in the left panel of <a href="#fig-EFDR" class="quarto-xref">Figure&nbsp;<span>6.9</span></a>. Visually, it seems clear that the mean SST anomaly in the 1990s was higher than that of the 1970s. However, to check which areas are significantly different, we can run the EFDR procedure on this field of differences and then plot the field corresponding to the wavelets whose coefficients are deemed to be significantly different from zero (at the 5% level). The resulting “field significance” map, shown in the right panel of <a href="#fig-EFDR" class="quarto-xref">Figure&nbsp;<span>6.9</span></a>, highlights the regions that were significantly warmer or cooler in the 1990s. This procedure was implemented using the <strong>EFDR</strong> <code>R</code> package.</p>
+<div id="fig-EFDR" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-EFDR-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Chapter_6/EFDR.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-EFDR-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.9: Left: Difference between the average SST anomalies in the 1990s and the average SST anomalies in the 1970s. Right: The field significance map of SST anomaly differences that were found to be significantly different from zero at the 5% level. The plot is based on the EFDR procedure and was obtained using the package <strong>EFDR</strong>.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+</section>
+<section id="sec-ModSelect" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-ModSelect"><span class="header-section-number">6.4</span> Model Selection</h2>
+<p>It is often the case that diagnostic analysis of a model suggests that we consider an alternative model, or that we should use fewer covariates in our regression model. This section is concerned with the question of how to decide which model out of a group of models, say <span class="math inline">\(\{{\cal M}_1,\ldots, {\cal M}_L\}\)</span>, is in some sense the “best.” We shall assume that all of the models under consideration are reasonable from a scientific perspective, and so the choice is not obvious. First, we note that any of the summaries or score functions discussed above could be used to compare models, for example, using the skill score (<a href="#eq-skillscore" class="quarto-xref">Equation&nbsp;<span>6.22</span></a>). In this section, we focus on more traditional statistical-model-selection approaches, although our presentation is brief. Interested readers can find more details in the excellent overviews of model comparison presented in <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">2014</a>)</span>, <span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span>, and the references therein.</p>
+<section id="sec-ModAvg" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="sec-ModAvg"><span class="header-section-number">6.4.1</span> Model Averaging</h3>
+<p>From a predictive perspective, it may be the case that one obtains better predictions by averaging over several models, rather than focusing on a single model. The formal methodology for doing this is through <em>Bayesian model averaging</em>, which provides a probabilistically consistent mechanism for combining posterior distributions <span class="citation" data-cites="hoeting1999bayesian">(see <a href="references.html#ref-hoeting1999bayesian" role="doc-biblioref">Hoeting et al. 1999</a> for an extensive overview)</span>. Our presentation follows the concise summary in <span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span>.</p>
+<p>Suppose we are interested in some vector quantity, <span class="math inline">\(\mathbf{g}\)</span>, which can be parameters or predictions of the process or the data, and suppose we have observations, <span class="math inline">\(\mathbf{Z}\)</span>, that were used to train the model. Then, for <span class="math inline">\(\ell \in \{1,\ldots,L\}\)</span>, we can write</p>
+<p><span class="math display">\[
+[\mathbf{g}| \mathbf{Z}] = \sum_{\ell=1}^{L} [\mathbf{g}| \mathbf{Z}, {\cal M}_\ell] P({\cal M}_\ell | \mathbf{Z}),
+\]</span></p>
+<p>where <span class="math inline">\([\mathbf{g}| \mathbf{Z}, {\cal M}_\ell]\)</span> is the posterior distribution of <span class="math inline">\({\mathbf{g}}\)</span> given the data and the model <span class="math inline">\({\cal M}_\ell\)</span>; and <span class="math inline">\(P({\cal M}_\ell | \mathbf{Z})\)</span> is the posterior probability of the model <span class="math inline">\({\cal M}_\ell\)</span> which, given the data, gives the importance of model <span class="math inline">\({\cal M}_\ell\)</span> among the collection of models. We can obtain the latter distribution from</p>
+<p><span id="eq-Postmod"><span class="math display">\[
+P({\cal M}_\ell | \mathbf{Z}) = \frac{[\mathbf{Z}| {\cal M}_\ell] P({\cal M}_\ell)}{\sum_{j=1}^{L} [\mathbf{Z}| {\cal M}_j] P({\cal M}_j)},
+\tag{6.27}\]</span></span></p>
+<p>where the prior probabilities for the models, <span class="math inline">\(\{P({\cal M}_j): j=1,\ldots,L\}\)</span>, have been provided. Often, all the models are assumed equally likely with <em>a priori</em> probability <span class="math inline">\(1/L\)</span>, but this need not be the case. In <a href="#eq-Postmod" class="quarto-xref">Equation&nbsp;<span>6.27</span></a>, we also require the marginal data distribution for each model (often called the <em>integrated likelihood</em>), <span class="math inline">\([\mathbf{Z}| {\cal M}_\ell]\)</span>, which is simply the factor in the denominator in Bayes’ rule when one is obtaining the posterior distribution under model <span class="math inline">\({\cal M}_\ell\)</span>. That is,</p>
+<p><span id="eq-intLike"><span class="math display">\[
+[\mathbf{Z}| {\cal M}_\ell] = \iint [\mathbf{Z}|  \mathbf{Y}, \boldsymbol{\theta}, {\cal M}_\ell][\mathbf{Y}| \boldsymbol{\theta}, {\cal M}_\ell] [\boldsymbol{\theta}| {\cal M}_\ell] \textrm{d}\mathbf{Y}\textrm{d}\boldsymbol{\theta},
+\tag{6.28}\]</span></span></p>
+<p>where <span class="math inline">\([\mathbf{Z}| \mathbf{Y}, \boldsymbol{\theta}, {\cal M}_\ell]\)</span> is the data model (likelihood) under model <span class="math inline">\({\cal M}_\ell\)</span>; and <span class="math inline">\([\mathbf{Y}| \boldsymbol{\theta}, {\cal M}_\ell]\)</span> and <span class="math inline">\([\boldsymbol{\theta}| {\cal M}_\ell]\)</span> are the process and prior distributions, respectively, under model <span class="math inline">\({\cal M}_\ell\)</span>. Unfortunately, <a href="#eq-intLike" class="quarto-xref">Equation&nbsp;<span>6.28</span></a> is typically intractable in BHM settings and cannot be calculated directly. This makes Bayesian model averaging difficult to implement for complex models, although there are various computational approaches used to obtain integrated likelihoods in this setting and in the context of Bayes factors described in <a href="#sec-BayesFac" class="quarto-xref"><span>Section 6.4.2</span></a> (see, for example, <span class="citation" data-cites="congdon2006bayesian">Congdon (<a href="references.html#ref-congdon2006bayesian" role="doc-biblioref">2006</a>)</span>).</p>
+</section>
+<section id="sec-BayesFac" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="sec-BayesFac"><span class="header-section-number">6.4.2</span> Model Comparison via Bayes Factors</h3>
+<p>The posterior probability for a given model expressed in <a href="#eq-Postmod" class="quarto-xref">Equation&nbsp;<span>6.27</span></a> suggests a way to compare models. In particular, we note that the ratio of two such posteriors (the <em>posterior odds</em>) can be written as</p>
+<p><span class="math display">\[
+\frac{p({\cal M}_\ell | \mathbf{Z})}{p({\cal M}_k | \mathbf{Z})} = \frac{[\mathbf{Z}| {\cal M}_\ell]P({\cal M}_\ell)}{[\mathbf{Z}| {\cal M}_k]P({\cal M}_k)} \equiv B_{\ell,k}(\mathbf{Z}) \frac{P({\cal M}_\ell)}{P({\cal M}_k)},
+\]</span></p>
+<p>where the ratio of the integrated likelihoods, <span class="math inline">\(B_{\ell,k}(\mathbf{Z})\)</span>, is known as the <em>Bayes factor</em>. It is a constant multiplier (that depends on the data) applied to the prior odds of model <span class="math inline">\({\cal M}_\ell\)</span> relative to model <span class="math inline">\({\cal M}_k\)</span>. So, the larger <span class="math inline">\(B_{\ell,k}(\mathbf{Z})\)</span> is, the more support there is for model <span class="math inline">\({\cal M}_\ell\)</span> relative to model <span class="math inline">\({\cal M}_k\)</span>. Note that if we take the negative log of the Bayes factor, we obtain the difference of two logarithmic scores (recall <a href="#eq-LS" class="quarto-xref">Equation&nbsp;<span>6.20</span></a>); using obvious notation,</p>
+<p><span class="math display">\[
+- \log B_{\ell,k} = LS(F_\ell;\mathbf{Z}) - LS(F_k;\mathbf{Z}).
+\]</span></p>
+</section>
+<section id="sec-ModCompVal" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="sec-ModCompVal"><span class="header-section-number">6.4.3</span> Model Comparison via Validation</h3>
+<p>We can always compare models based on the validation measure that we think is most appropriate for our problem. In this sense, any of the validation measures discussed above might be considered. In spatio-temporal statistics, we most often use a measure of predictive accuracy and typically use an out-of-sample validation or, at least, some type of cross-validation (e.g., using the MSPE or a proper scoring rule as a way to compare models). The logarithmic scoring rule <a href="#eq-LS" class="quarto-xref">Equation&nbsp;<span>6.20</span></a> is often used in this context. Note that the log predictive density is given by <span class="math inline">\(\log [\mathbf{Z}_p | \mathbf{Z}]\)</span>, where <span class="math inline">\(\mathbf{Z}_p\)</span> corresponds to spatio-temporal data that we would like to predict with our model, given data <span class="math inline">\(\mathbf{Z}\)</span> that were used to train the model. In the context of model selection, we should explicitly denote the model under which this predictive distribution was obtained, namely, <span class="math inline">\(\log [\mathbf{Z}_p | \mathbf{Z}, {\cal M}_\ell]\)</span>.</p>
+<p>As stated previously, when the predictive distribution is Gaussian (which is often assumed in S-T kriging models), it is described by the predictive means, variances, and covariances. Then the negative log predictive density is the <span class="math inline">\(LS_{mv}\)</span> score, which is just the <span class="math inline">\(DSS_{mv}\)</span> score as we defined it in <a href="#eq-DSSmv" class="quarto-xref">Equation&nbsp;<span>6.24</span></a>. More generally, in a BHM context, we can obtain the logarithmic score by averaging over <span class="math inline">\(j=1,\ldots,N\)</span> MCMC samples from the predictive distribution. That is, up to Monte Carlo error, the log score based on the predictive distribution <span class="math inline">\([\mathbf{Z}_p | \mathbf{Z}]\)</span> can be obtained as follows:</p>
+<p><span id="eq-logPredmcmc"><span class="math display">\[
+LS_{p,\ell} = - \log\left(\frac{1}{N} \sum_{j=1}^N [\mathbf{Z}_p | \mathbf{Z}, \mathbf{Y}^{(j)}, \boldsymbol{\theta}^{(j)}, {\cal M}_\ell]  \right),\quad \ell = 1,\ldots,L,
+\tag{6.29}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{Y}^{(j)}\)</span> and <span class="math inline">\(\boldsymbol{\theta}^{(j)}\)</span> correspond to the <span class="math inline">\(j\)</span>th MCMC sample of the process and parameter components in the <span class="math inline">\(\ell\)</span>th model. Thus, we can compute <a href="#eq-logPredmcmc" class="quarto-xref">Equation&nbsp;<span>6.29</span></a> for multiple models, <span class="math inline">\(\ell = 1,\ldots,L\)</span>, and use this to select the “best” model(s); with our definition of <span class="math inline">\(LS\)</span>, we prefer models with smaller values of <span class="math inline">\(LS_{p,\ell}\)</span>.</p>
+<p>As discussed above in <a href="#sec-ModValCV" class="quarto-xref"><span>Section 6.3.3</span></a>, we often do not have a hold-out sample to use for validation, so we turn to cross-validation. For example, the <span class="math inline">\(K\)</span>-fold cross-validation estimate of the LS based on the predictive distribution <span class="math inline">\([\mathbf{Z}_k | \mathbf{Z}^{(-k)}]\)</span> is (up to Monte Carlo error)</p>
+<p><span class="math display">\[
+LS_{cv,\ell} = - \frac{1}{K} \sum_{k=1}^K \log\left( \frac{1}{N} \sum_{j=1}^N [\mathbf{Z}_k | \mathbf{Z}^{(-k)},  \mathbf{Y}^{(j)}, \boldsymbol{\theta}^{(j)}, {\cal M}_\ell] \right),\quad \ell=1,\ldots,L,
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{Z}_k\)</span> corresponds to the components of <span class="math inline">\(\mathbf{Z}\)</span> in the <span class="math inline">\(k\)</span>th hold-out sample. The challenge for many spatio-temporal BHMs is that it can be expensive to perform <span class="math inline">\(K\)</span>-fold cross-validation in the Bayesian setting, since the model has to be fitted <span class="math inline">\(K\)</span> times. As an alternative, we can evaluate the log predictive distribution using data from our training sample and then attempt to correct for the bias associated with using the training sample for both model-parameter estimation and prediction evaluation. The common bias correction methods are often labeled <em>information criteria</em> and are discussed briefly in the next subsection.</p>
+</section>
+<section id="sec-informationcriteria" class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="sec-informationcriteria"><span class="header-section-number">6.4.4</span> Information Criteria</h3>
+<p>Information criteria work in much the same spirit as regularization approaches; that is, they represent a trade-off between bias and variance in the sense that they penalize the bias due to overfitting that can occur when models are evaluated on the same data that were used to train them. This penalty controls for model complexity and favors models that are more parsimonious (see, for example, <span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span>).</p>
+<p>Perhaps the most famous of the information criteria is the <em>Akaike information criterion</em> (AIC). In this case, the parameters, <span class="math inline">\(\boldsymbol{\theta}\)</span>, are assumed to be estimated using ML estimation, and the AIC can be defined as</p>
+<p><span id="eq-AIC"><span class="math display">\[
+AIC({\cal M}_\ell) \equiv -2 \log [\mathbf{Z}| \widehat{\boldsymbol{\theta}}, {\cal M}_\ell] + 2p_\ell,
+\tag{6.30}\]</span></span></p>
+<p>where notice that <span class="math inline">\(- \log [\mathbf{Z}| \widehat{\boldsymbol{\theta}}, {\cal M}_\ell]\)</span> is the LS for model <span class="math inline">\({\cal M}_\ell\)</span>, and parameter estimates <span class="math inline">\(\widehat{\boldsymbol{\theta}}\)</span> are ML estimates under model <span class="math inline">\({\cal M}_\ell\)</span> (having integrated out the hidden process <span class="math inline">\(\mathbf{Y}\)</span> to yield <span class="math inline">\([\mathbf{Z}| \boldsymbol{\theta}, {\cal M}_\ell]\)</span>). In <a href="#eq-AIC" class="quarto-xref">Equation&nbsp;<span>6.30</span></a>, <span class="math inline">\(p_\ell\)</span> is the number of parameters estimated in model <span class="math inline">\({\cal M}_\ell\)</span> (after integrating out <span class="math inline">\(\mathbf{Y}\)</span>). Thus, the LS is penalized by the number of parameters in the model. When comparing two models, the model with the lower AIC is better, which, all other things being equal, favors more parsimonious models. Despite integrating out the process <span class="math inline">\(\mathbf{Y}\)</span>, the AIC breaks down when one has random effects and dependence in the model <span class="math inline">\({\cal M}_\ell\)</span>, because the number of <em>effective parameters</em> is not equal to <span class="math inline">\(p_\ell\)</span>. Although there are corrections to the AIC that attempt to deal with some of these issues, one must be careful using them in these settings (see, for example, the discussion in <span class="citation" data-cites="hodges2001counting">Hodges and Sargent (<a href="references.html#ref-hodges2001counting" role="doc-biblioref">2001</a>)</span>; <span class="citation" data-cites="overholser2014effective">Overholser and Xu (<a href="references.html#ref-overholser2014effective" role="doc-biblioref">2014</a>)</span>). In addition, the AIC is not an appropriate criterion for model selection between different BHMs because it depends on ML estimates of parameters, and these parameters have a prior distribution on them. There is no mechanism that we know of to account for general prior distributions when using the AIC.</p>
+<p>Another information criterion in common use is the <em>Bayesian information criterion</em> (BIC). The BIC is given by</p>
+<p><span id="eq-BIC"><span class="math display">\[
+BIC({\cal M}_\ell) = - 2 \log [\mathbf{Z}| \widehat{\boldsymbol{\theta}}, {\cal M}_\ell] + \log(m^*) p_\ell,
+\tag{6.31}\]</span></span></p>
+<p>where <span class="math inline">\(m^*\)</span> is the sample size (i.e., the number of spatio-temporal observations) and, as with the AIC, <span class="math inline">\(\widehat{\boldsymbol{\theta}}\)</span> is the ML estimate under <span class="math inline">\({\cal M}_\ell\)</span> and <span class="math inline">\(p_\ell\)</span> is the number of parameters in the model (with the same caveats as in the AIC case). As with the AIC, we prefer models with smaller BIC values. Note that the BIC formula <a href="#eq-BIC" class="quarto-xref">Equation&nbsp;<span>6.31</span></a> gives larger penalties than the AIC (when <span class="math inline">\(m^* &gt; 7\)</span>) and so favors more parsimonious models than AIC. While it is referred to as a “Bayesian” information criterion, it is likewise not appropriate for model selection between different BHMs. Again the BIC relies on ML estimates of parameters and provides no way to adjust the penalty term to account for the effective number of parameters in models with random effects and dependence.</p>
+<p>To account for the effective number of parameters in a BHM, <span class="citation" data-cites="spiegelhalter2002bayesian">Spiegelhalter et al. (<a href="references.html#ref-spiegelhalter2002bayesian" role="doc-biblioref">2002</a>)</span> proposed the <em>deviance information criterion</em> (DIC), given by</p>
+<p><span id="eq-DIC"><span class="math display">\[
+DIC({\cal M}_\ell) = -2 \log [\mathbf{Z}|  E(\boldsymbol{\theta}| \mathbf{Z}), {\cal M}_\ell] + 2 p_\ell^D,
+\tag{6.32}\]</span></span></p>
+<p>where <span class="math inline">\(E(\boldsymbol{\theta}| \mathbf{Z})\)</span> is the posterior expectation of <span class="math inline">\(\boldsymbol{\theta}\)</span> under model <span class="math inline">\({\cal M}_\ell\)</span>, and <span class="math inline">\(p_\ell^D\)</span> is the effective number of parameters, given by</p>
+<p><span id="eq-DICpD"><span class="math display">\[
+p_\ell^D \equiv \overline{D}_\ell - \widehat{D}_\ell.
+\tag{6.33}\]</span></span></p>
+<p>In <a href="#eq-DICpD" class="quarto-xref">Equation&nbsp;<span>6.33</span></a>, the <em>estimated model deviance</em> is <span class="math inline">\(\widehat{D}_\ell = -2 \log [\mathbf{Z}| E(\boldsymbol{\theta}| \mathbf{Z}), {\cal M}_\ell]\)</span> as in <a href="#eq-DIC" class="quarto-xref">Equation&nbsp;<span>6.32</span></a>, and <span class="math inline">\(\overline{D}_\ell\)</span> is the <em>posterior mean deviance</em>, which is given by</p>
+<p><span class="math display">\[
+\overline{D}_\ell = \int - 2 \left( \log [\mathbf{Z}| \boldsymbol{\theta}, {\cal M}_\ell]\right) [\boldsymbol{\theta}| \mathbf{Z}, {\cal M}_\ell] \textrm{d}\boldsymbol{\theta}.
+\]</span></p>
+<p>The DIC is fairly simple to calculate in MCMC implementations of BHMs, but it has several well-known limitations, primarily related to the estimate of the effective number of parameters <a href="#eq-DICpD" class="quarto-xref">Equation&nbsp;<span>6.33</span></a> and the fact that it is not appropriate for mixture models (see the summary in <span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span>). There are several alternative specifications in the literature that attempt to overcome these limitations.</p>
+<p>The <em>Watanabe–Akaike information criterion (WAIC)</em> attempts to address some of the limitations of the DIC, and an elementwise (rather than multivariate) form can be written as</p>
+<p><span id="eq-WAIC"><span class="math display">\[
+{W\!AIC}({\cal M}_\ell) = -2 \sum_{i=1}^{m^*} \log  \left( \int [Z_i | \boldsymbol{\theta}, {\cal M}_\ell] [\boldsymbol{\theta}| \mathbf{Z}, {\cal M}_\ell] \textrm{d}\boldsymbol{\theta}\right) + 2 p_\ell^w,
+\tag{6.34}\]</span></span></p>
+<p>where the effective number of parameters in <a href="#eq-WAIC" class="quarto-xref">Equation&nbsp;<span>6.34</span></a> is given by</p>
+<p><span id="eq-pd2"><span class="math display">\[
+p_{\ell}^w = \sum_{i=1}^{m^*} \textrm{var}_{\theta | Z} (\log [Z_i | \boldsymbol{\theta}, {\cal M}_\ell]).
+\tag{6.35}\]</span></span></p>
+<p>There are other ways to define the effective number of parameters in this setting, but Gelman et al.&nbsp;(2014) favor <a href="#eq-pd2" class="quarto-xref">Equation&nbsp;<span>6.35</span></a> because it gives results more similar to LOOCV. Both components of the WAIC can be easily evaluated using the samples from MCMC implementations of BHMs (see, for example, <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">2014</a>)</span>; <span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span>). The WAIC has several advantages over the DIC for BHM selection (it averages using the posterior predictive distribution of <span class="math inline">\(\boldsymbol{\theta}\)</span> directly, rather than conditioning on a point estimate of the parameters; it has a more realistic effective-number-of-parameters penalty; and it is appropriate both for BHMs and Bayesian mixture models). However, we sound a warning note again in that the elementwise implementation of the WAIC may not be appropriate for dependent processes such as encountered in spatio-temporal modeling (see, for example, <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">2014</a>)</span>; <span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span>, for further discussion).</p>
+<p><span class="citation" data-cites="hooten2015guide">Hooten and Hobbs (<a href="references.html#ref-hooten2015guide" role="doc-biblioref">2015</a>)</span> make the point that there is a similar model-selection approach that may be more appropriate for BHMs with dependent processes. In particular, consider a special case of the so-called <em>posterior predictive loss (PPL)</em> approach described by <span class="citation" data-cites="laud1995predictive">Laud and Ibrahim (<a href="references.html#ref-laud1995predictive" role="doc-biblioref">1995</a>)</span> and <span class="citation" data-cites="gelfand1998model">Gelfand and Ghosh (<a href="references.html#ref-gelfand1998model" role="doc-biblioref">1998</a>)</span>. Define</p>
+<p><span id="eq-PPL"><span class="math display">\[
+PPL({\cal M}_\ell) = \sum_{i=1}^{m^*} (Z_i - E(Z_i | \mathbf{Z}, {\cal M}_\ell))^2 + \sum_{i=1}^{m^*} \textrm{var}(Z_i | \mathbf{Z}, {\cal M}_\ell),
+\tag{6.36}\]</span></span></p>
+<p>where <span class="math inline">\(E(Z_i | \mathbf{Z}, {\cal M}_\ell)\)</span> and <span class="math inline">\(\textrm{var}(Z_i | \mathbf{Z}, {\cal M}_\ell)\)</span> are the predictive mean and predictive variance, respectively, for the observation <span class="math inline">\(Z_i\)</span>. The PPL given by <a href="#eq-PPL" class="quarto-xref">Equation&nbsp;<span>6.36</span></a> shares with the usual information criteria a first term corresponding to the quality of prediction and a second term penalizing models that are more complex.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Several <strong>R</strong> packages used in this book contain functions that help compute or return information criteria from the fitted model. The functions <code>AIC</code> and <code>BIC</code> can be used to extract the Akaike and Bayesian information criteria, respectively, from the models discussed in Chapter 3 (linear models, generalized linear models, generalized additive models), and the function <code>inla</code> in the package <strong>INLA</strong> may be instructed to compute the deviance and Watanabe–Akaike information criteria. Other packages such as <strong>SpatioTemporal</strong>, <strong>FRK</strong>, and <strong>IDE</strong> contain functions to compute the log-likelihood from the fitted model, and then some of the information criteria above could be computed; see Lab 6.1.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="chapter-6-wrap-up" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="chapter-6-wrap-up"><span class="header-section-number">6.5</span> Chapter 6 Wrap-Up</h2>
+<p>The evaluation of a model through model checking, validation, and selection is a very important step in the model-building process. That said, it is worth making the point here that in spatio-temporal modeling we often have a strong scientific motivation to consider a specific model (e.g., a particular survey design or a particular physical or biological process model). <span class="citation" data-cites="cressie2011statistics">N. Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span> (Chapter 1) and <span class="citation" data-cites="ver2015iterating">Ver Hoef and Boveng (<a href="references.html#ref-ver2015iterating" role="doc-biblioref">2015</a>)</span> make the case that in these situations one should focus on building the best single model that is possible rather than carrying out model selection from several models or implementing multi-model inference. Indeed, as we have mentioned several times in this book, with observational data we never select the “true” model, but we can certainly build models that allow us to learn about or predict the spatio-temporal process. This notion of “iterating on a single model” <span class="citation" data-cites="ver2015iterating">(<a href="references.html#ref-ver2015iterating" role="doc-biblioref">Ver Hoef and Boveng 2015</a>)</span> may actually improve our ability to describe the real-world processes of interest, as it allows us to focus more on model checking (diagnostics) and model validation, which may suggest new features of the data about which we were unaware.</p>
+<p>This chapter focused on model checking (<a href="#sec-ModCheck" class="quarto-xref"><span>Section 6.2</span></a>), model validation (<a href="#sec-ModValidate" class="quarto-xref"><span>Section 6.3</span></a>), and model selection (<a href="#sec-ModSelect" class="quarto-xref"><span>Section 6.4</span></a>). We discussed how it is difficult to evaluate what we usually care about, the latent process, because we only have noisy and usually incompletely sampled versions of it. Although an OSSE can be used in some cases to evaluate the model with respect to the (simulated) true process of interest, we most often compare predictions obtained from our predictive distribution to various validation data. We typically favor validation data sets that are not used to train the model, and we can mimic such data through cross-validation. We mentioned how there is often a challenge in matching the validation sample with the prediction from our model, in terms of data support, although this was not a topic we covered in detail. We gave some possible spatio-temporal extensions of regression diagnostics and diagnostic plots that could be used for model checking, but we note that this is quite an under-developed area of spatio-temporal statistics.</p>
+<p>Validation is the area of model evaluation that has seen the most activity in the spatio-temporal literature, although most of these methods were not developed explicitly for spatio-temporal processes. We are in favor of using proper scoring rules as validation summaries, particularly those that account for the uncertainty included in the predictive distribution.</p>
+<p>Model selection is a vast topic, and we just touched on some of the basic approaches there. It is worth pointing out again that many of these methods are often not appropriate in fully Bayesian contexts, or when one has dependent random effects. In that sense, there is still a lot of work to be done in developing model-selection approaches for complex spatio-temporal models.</p>
+<p>Finally, as we have noted, spatio-temporal statistical models have primarily been used for the purpose of prediction. Disciplines such as meteorology, which have had to develop, improve, and justify predictive (forecast) models publicly on a daily basis for decades, have developed a broader terminology to consider the efficacy of predictive models. In particular, the late Alan Murphy was a pioneer in the formal study of predictive-model performance. In a classic paper, <span class="citation" data-cites="murphy1993good">Murphy (<a href="references.html#ref-murphy1993good" role="doc-biblioref">1993</a>)</span> gave a list of nine “attributes” to consider when trying to describe the quality of a forecast: <em>bias</em>, <em>association</em>, <em>accuracy</em>, <em>skill</em>, <em>reliability</em>, <em>resolution</em>, <em>sharpness</em>, <em>discrimination</em>, and <em>uncertainty</em>. In general, his attributes describe three primary aspects of a good prediction: <em>consistency</em>, <em>quality</em>, and <em>value</em>. Consistency refers to how closely the prediction corresponds to the modeler’s prior beliefs or judgement, given his/her understanding of the process and the data; quality corresponds to how well the prediction agrees with observations; and value simply considers if the prediction actually contributes to beneficial decision-making (see the overview at <a href="http://www.cawcr.gov.au/projects/verification/">http://www.cawcr.gov.au/projects/verification/</a>). In statistics, we should consider these issues too, but our subject has primarily focused on bias and accuracy. These other issues are important, and this area offers a wonderful opportunity for researchers to build up this under-developed area in spatio-temporal statistics.</p>
+<p>After going through the following Lab, you are invited to go on to the epilogical chapter for some closing remarks about spatio-temporal statistics.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-benjamini1995controlling" class="csl-entry" role="listitem">
+Benjamini, Yoav, and Yosef Hochberg. 1995. <span>“Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.”</span> <em>Journal of the Royal Statistical Society, Series B</em> 57: 289–300.
+</div>
+<div id="ref-branstator1993identification" class="csl-entry" role="listitem">
+Branstator, Grant, Andrew Mai, and David Baumhefner. 1993. <span>“Identification of Highly Predictable Flow Elements for Spatial Filtering of Medium- and Extended-Range Numerical Forecasts.”</span> <em>Monthly Weather Review</em> 121 (6): 1786–1802.
+</div>
+<div id="ref-briggs1997wavelets" class="csl-entry" role="listitem">
+Briggs, William M, and Richard A Levine. 1997. <span>“Wavelets and Field Forecast Verification.”</span> <em>Monthly Weather Review</em> 125 (6): 1329–41.
+</div>
+<div id="ref-brocker2007scoring" class="csl-entry" role="listitem">
+Bröcker, Jochen, and Leonard A Smith. 2007. <span>“Scoring Probabilistic Forecasts: The Importance of Being Proper.”</span> <em>Weather and Forecasting</em> 22 (2): 382–88.
+</div>
+<div id="ref-brown2012forecasts" class="csl-entry" role="listitem">
+Brown, Barbara G, Eric Gilleland, and Elizabeth E Ebert. 2012. <span>“Forecasts of Spatial Fields.”</span> In <em>Forecast Verification: A Practitioner’s Guide in Atmospheric Science</em>, edited by Ian T. Jolliffe and David B. Stephenson, 2nd ed., 95–117. Chichester: John Wiley &amp; Sons.
+</div>
+<div id="ref-carroll1996comparison" class="csl-entry" role="listitem">
+Carroll, Steven S, and Noel Cressie. 1996. <span>“A Comparison of Geostatistical Methodologies Used to Estimate Snow Water Equivalent.”</span> <em>Water Resources Bulletin</em> 32 (2): 267–78.
+</div>
+<div id="ref-carvalho2016overview" class="csl-entry" role="listitem">
+Carvalho, Arthur. 2016. <span>“An Overview of Applications of Proper Scoring Rules.”</span> <em>Decision Analysis</em> 13 (4): 223–42.
+</div>
+<div id="ref-congdon2006bayesian" class="csl-entry" role="listitem">
+Congdon, Peter. 2006. <span>“Bayesian Model Choice Based on Monte Carlo Estimates of Posterior Model Probabilities.”</span> <em>Computational Statistics &amp; Data Analysis</em> 50 (2): 346–57.
+</div>
+<div id="ref-cook1977detection" class="csl-entry" role="listitem">
+Cook, R Dennis. 1977. <span>“Detection of Influential Observation in Linear Regression.”</span> <em>Technometrics</em> 19 (1): 15–18.
+</div>
+<div id="ref-cressie1993statistics" class="csl-entry" role="listitem">
+Cressie, Noel. 1993. <em>Statistics for Spatial Data</em>. Revised. New York: John Wiley &amp; Sons.
+</div>
+<div id="ref-cressie2011statistics" class="csl-entry" role="listitem">
+Cressie, N., and C. K. Wikle. 2011. <em>Statistics for Spatio-Temporal Data</em>. Hoboken, NJ: John Wiley &amp; Sons.
+</div>
+<div id="ref-ebert2000verification" class="csl-entry" role="listitem">
+Ebert, E E, and J L McBride. 2000. <span>“Verification of Precipitation in Weather Systems: Determination of Systematic Errors.”</span> <em>Journal of Hydrology</em> 239 (1-4): 179–202.
+</div>
+<div id="ref-gelfand1998model" class="csl-entry" role="listitem">
+Gelfand, Alan E, and Sujit K Ghosh. 1998. <span>“Model Choice: A Minimum Posterior Predictive Loss Approach.”</span> <em>Biometrika</em> 85 (1): 1–11.
+</div>
+<div id="ref-gelman2013bayesian" class="csl-entry" role="listitem">
+Gelman, Andrew, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2014. <em>Bayesian Data Analysis</em>. 3rd ed. Boca Raton, FL: Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-gilleland2010verifying" class="csl-entry" role="listitem">
+Gilleland, Eric, David A Ahijevych, Barbara G Brown, and Elizabeth E Ebert. 2010. <span>“Verifying Forecasts Spatially.”</span> <em>Bulletin of the American Meteorological Society</em> 91 (10): 1365–76.
+</div>
+<div id="ref-gneiting2014probabilistic" class="csl-entry" role="listitem">
+Gneiting, Tilmann, and Matthias Katzfuss. 2014. <span>“Probabilistic Forecasting.”</span> <em>Annual Review of Statistics and Its Application</em> 1: 125–51.
+</div>
+<div id="ref-gneiting2007strictly" class="csl-entry" role="listitem">
+Gneiting, Tilmann, and Adrian E Raftery. 2007. <span>“Strictly Proper Scoring Rules, Prediction, and Estimation.”</span> <em>Journal of the American Statistical Association</em> 102 (477): 359–78.
+</div>
+<div id="ref-haslett1999simple" class="csl-entry" role="listitem">
+Haslett, John. 1999. <span>“A Simple Derivation of Deletion Diagnostic Results for the General Linear Model with Correlated Errors.”</span> <em>Journal of the Royal Statistical Society, Series B</em> 61 (3): 603–9.
+</div>
+<div id="ref-hastie2009elements" class="csl-entry" role="listitem">
+Hastie, T., R. Tibshirani, and J. Friedman. 2009. <em>The Elements of Statistical Learning</em>. 2nd ed. New York: Springer.
+</div>
+<div id="ref-hodges2001counting" class="csl-entry" role="listitem">
+Hodges, James S, and Daniel J Sargent. 2001. <span>“Counting Degrees of Freedom in Hierarchical and Other Richly-Parameterised Models.”</span> <em>Biometrika</em> 88: 367–79.
+</div>
+<div id="ref-hoeting1999bayesian" class="csl-entry" role="listitem">
+Hoeting, Jennifer A, David Madigan, Adrian E Raftery, and Chris T Volinsky. 1999. <span>“Bayesian Model Averaging: A Tutorial.”</span> <em>Statistical Science</em>, 382–401.
+</div>
+<div id="ref-hooten2015guide" class="csl-entry" role="listitem">
+Hooten, Mevin B, and NT Hobbs. 2015. <span>“A Guide to Bayesian Model Selection for Ecologists.”</span> <em>Ecological Monographs</em> 85 (1): 3–28.
+</div>
+<div id="ref-jordan2017evaluation" class="csl-entry" role="listitem">
+Jordan, Alexander, Fabian Krüger, and Sebastian Lerch. 2017. <span>“Evaluation of Probabilistic Forecasts with the scoringRules Package.”</span> In <em>EGU General Assembly Conference Abstracts</em>, 19:3295.
+</div>
+<div id="ref-kang2009statistical" class="csl-entry" role="listitem">
+Kang, Emily L, Desheng Liu, and Noel Cressie. 2009. <span>“Statistical Analysis of Small-Area Data Based on Independence, Spatial, Non-Hierarchical, and Hierarchical Models.”</span> <em>Computational Statistics &amp; Data Analysis</em> 53 (8): 3016–32.
+</div>
+<div id="ref-kornak2006spatial" class="csl-entry" role="listitem">
+Kornak, John, Mark E Irwin, and Noel Cressie. 2006. <span>“Spatial Point Process Models of Defensive Strategies: Detecting Changes.”</span> <em>Statistical Inference for Stochastic Processes</em> 9 (1): 31–46.
+</div>
+<div id="ref-laud1995predictive" class="csl-entry" role="listitem">
+Laud, Purushottam W, and Joseph G Ibrahim. 1995. <span>“Predictive Model Selection.”</span> <em>Journal of the Royal Statistical Society, Series B</em>, 247–62.
+</div>
+<div id="ref-livezey1983statistical" class="csl-entry" role="listitem">
+Livezey, Robert E, and W Y Chen. 1983. <span>“Statistical Field Significance and Its Determination by Monte Carlo Techniques.”</span> <em>Monthly Weather Review</em> 111 (1): 46–59.
+</div>
+<div id="ref-micheas2007cell" class="csl-entry" role="listitem">
+Micheas, Athanasios Christou, Neil I Fox, Steven A Lack, and Christopher K Wikle. 2007. <span>“Cell Identification and Verification of QPF Ensembles Using Shape Analysis Techniques.”</span> <em>Journal of Hydrology</em> 343 (3-4): 105–16.
+</div>
+<div id="ref-murphy1993good" class="csl-entry" role="listitem">
+Murphy, Allan H. 1993. <span>“What Is a Good Forecast? An Essay on the Nature of Goodness in Weather Forecasting.”</span> <em>Weather and Forecasting</em> 8 (2): 281–93.
+</div>
+<div id="ref-nakazono2013strategic" class="csl-entry" role="listitem">
+Nakazono, Yoshiyuki. 2013. <span>“Strategic Behavior of Federal Open Market Committee Board Members: Evidence from Members’ Forecasts.”</span> <em>Journal of Economic Behavior &amp; Organization</em> 93: 62–70.
+</div>
+<div id="ref-overholser2014effective" class="csl-entry" role="listitem">
+Overholser, Rosanna, and Ronghui Xu. 2014. <span>“Effective Degrees of Freedom and Its Application to Conditional <span>AIC</span> for Linear Mixed-Effects Models with Correlated Error Structures.”</span> <em>Journal of Multivariate Analysis</em> 132: 160–70.
+</div>
+<div id="ref-scheuerer2015variogram" class="csl-entry" role="listitem">
+Scheuerer, Michael, and Thomas M Hamill. 2015. <span>“Variogram-Based Proper Scoring Rules for Probabilistic Forecasts of Multivariate Quantities.”</span> <em>Monthly Weather Review</em> 143 (4): 1321–34.
+</div>
+<div id="ref-shen2002nonparametric" class="csl-entry" role="listitem">
+Shen, Xiaotong, Hsin-Cheng Huang, and Noel Cressie. 2002. <span>“Nonparametric Hypothesis Testing for a Spatial Signal.”</span> <em>Journal of the American Statistical Association</em> 97 (460): 1122–40.
+</div>
+<div id="ref-spiegelhalter2002bayesian" class="csl-entry" role="listitem">
+Spiegelhalter, David J, Nicola G Best, Bradley P Carlin, and Angelika van der Linde. 2002. <span>“Bayesian Measures of Model Complexity and Fit.”</span> <em>Journal of the Royal Statistical Society, Series B</em> 64 (4): 583–639.
+</div>
+<div id="ref-stanford1994field" class="csl-entry" role="listitem">
+Stanford, John L, and Jerald R Ziemke. 1994. <span>“Field (MAP) Statistics.”</span> In <em>Statistical Methods for Physical Science</em>, edited by John Stanford and Stephen B Vardeman, 457–79. San Diego, CA: Academic Press.
+</div>
+<div id="ref-ver2015iterating" class="csl-entry" role="listitem">
+Ver Hoef, Jay M, and Peter L Boveng. 2015. <span>“Iterating on a Single Model Is a Viable Alternative to Multimodel Inference.”</span> <em>Journal of Wildlife Management</em> 79 (5): 719–29.
+</div>
+<div id="ref-von2002statistical" class="csl-entry" role="listitem">
+Von Storch, H., and F. W. Zwiers. 2002. <em>Statistical Analysis in Climate Research</em>. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-weigel2012ensemble" class="csl-entry" role="listitem">
+Weigel, Andreas P. 2012. <span>“Ensemble Forecasts.”</span> In <em>Forecast Verification: A Practitioner’s Guide in Atmospheric Science</em>, edited by Ian T. Jolliffe and David B. Stephenson, 141–66. Chichester: John Wiley &amp; Sons.
+</div>
+<div id="ref-wilks2011statistical" class="csl-entry" role="listitem">
+Wilks, D. S. 2011. <em>Statistical Methods in the Atmospheric Sciences</em>. 3rd ed. Waltham, MA: Academic Press.
+</div>
+<div id="ref-zhang2008loss" class="csl-entry" role="listitem">
+Zhang, Jian, Peter F Craigmile, and Noel Cressie. 2008. <span>“Loss Function Approaches to Predict a Spatial Quantile and Its Exceedance Region.”</span> <em>Technometrics</em> 50 (2): 216–27.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Chapter5.html" class="pagination-link" aria-label="Dynamic Spatio-Temporal Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Dynamic Spatio-Temporal Models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ChapterPergimus.html" class="pagination-link" aria-label="Pergimus (Epilogue)">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
