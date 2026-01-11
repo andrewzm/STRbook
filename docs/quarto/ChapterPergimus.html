@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Pergimus (Epilogue) – Spatio-Temporal Statistics with R (1st edition)</title>
+<title>Pergimus (Epilogue) – Spatio-Temporal Statistics with R (1st edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -50,7 +50,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./ChapterAppendices.html" rel="next">
+<link href="./references.html" rel="next">
 <link href="./Chapter6.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -62,6 +62,7 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-7d2e1f8220df954187ab24ed36a0da9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/foldbox/foldbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -89,6 +90,12 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<style>
+.Algorithm {
+  --color1: #948bde;
+  --color2: #584eab;
+}
+</style>
 
 
 </head>
@@ -102,7 +109,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ChapterPergimus.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ChapterPergimus.html">Pergimus (Epilogue)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -172,27 +179,68 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ChapterPergimus.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></span></a>
+ <span class="menu-text">Pergimus (Epilogue)</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./ChapterAppendices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Appendices</span></span></a>
+  <a href="./ChapterAppendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Some Useful Matrix-Algebra Definitions and Properties</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./ChapterAppendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">General Smoothing Kernels</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Estimation and Prediction for Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Mechanistically Motivated Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixF.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Case Study: Quadratic Echo State Networks for Sea Surface Temperature Long-Lead Prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+  <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ChapterRPackages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">List of <code>R</code> packages</span></a>
+  <span class="menu-text">List of <code>R</code> packages</span></a>
   </div>
-</li>
+  </li>
+  <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <span class="menu-text">References</span></a>
+  </div>
+  </li>
     </ul>
     </div>
 </nav>
@@ -206,7 +254,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></h1>
+<h1 class="title">Pergimus (Epilogue)</h1>
 </div>
 
 
@@ -224,7 +272,7 @@ div.csl-indent {
 
 
 <p>These are our last words in the book, but that doesn’t mean this is the end. This epilogical chapter’s title is meant to convey an open-endedness to our project. Our Latin sources tell us that <em>pergimus</em> means “let’s go forward” or “let’s continue to progress,” derived from the verb <em>pergere</em>. Here’s an opportunity for you, the reader, to move beyond the previous six chapters and develop your own statistical approaches to the analysis of spatio-temporal data. You now have a sense for the motivations, main concepts, and practicalities behind spatio-temporal statistics, and the R Labs have given you an important “hands-on” perspective.</p>
-<p>We hope you’ve seen enough to want more than what is in our book. A stepping-off point for more theory and methods might be in the pages of Chapters 6–9 of <span class="citation" data-cites="cressie2011statistics">Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>; and you can find more and more applications in the literature, most recently where the spatio-temporal models fitted are non-Gaussian, nonlinear, and multivariate. We expect that by the time our book comes out, new applications and software for spatio-temporal statistics will have appeared, and we hope you’ll be motivated yourself to contribute.</p>
+<p>We hope you’ve seen enough to want more than what is in our book. A stepping-off point for more theory and methods might be in the pages of Chapters 6–9 of <span class="citation" data-cites="cressie2011statistics">Cressie &amp; Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>; and you can find more and more applications in the literature, most recently where the spatio-temporal models fitted are non-Gaussian, nonlinear, and multivariate. We expect that by the time our book comes out, new applications and software for spatio-temporal statistics will have appeared, and we hope you’ll be motivated yourself to contribute.</p>
 <p>We’ve tried to emphasize that spatio-temporal data are ubiquitous in the real, complex, messy world, and making sense of them depends on accounting for spatio-temporal dependencies. In the past, it’s been difficult to handle the complexity of such data, the hidden processes behind them, and the sheer size of many of the data sets. Yet the principles of good statistical practice still apply – they’re just a bit more involved! We should still explore our data through visualization and quantitative summaries; we should still try to build parsimonious models; we should add complexity to our models only when necessary; and we still need to evaluate our inferences through simulation and (cross-)validation. Then, after making all necessary modifications to the model, we go through the modeling–evaluation cycle again!</p>
 <p>There are several challenges that are particular to spatio-temporal statistics. The obvious one is how to accommodate the complex dependencies that are typically present in spatio-temporal data. This is often exacerbated by the curse of dimensionality – that is, we may have a lot of data and/or are interested in predicting at a lot of locations in space and time. It’s often worse when we’re data-rich in one of the dimensions (e.g., space) but data-poor in the other (e.g., time, or vice versa). These challenges can be met by focusing on parsimonious parameterizations, for example when parameterizing spatio-temporal covariance functions in the descriptive approach or propagator matrices in the dynamic approach. In the latter case, using mechanistic processes to motivate parsimonious dynamic models has proven very useful.</p>
 <p>In both cases, a very effective strategy is to treat scientifically interpretable parameters as random processes (e.g., spatial stochastic processes) at a lower level in a hierarchical statistical model. We’ve also seen that if we’re not careful about how our models are parameterized, we can run into serious computational roadblocks. One of the most helpful solutions comes through basis-function expansions, where the modeling effort is typically redirected towards specifying multivariate-time-series models for the random coefficients of the basis functions.</p>
@@ -246,9 +294,9 @@ div.csl-indent {
 <p>It’s time to take a break, but let’s continue to progress… and we invite you to share your progress and check up on ours through the book’s website: <a href="https://spacetimewithr.org">https://spacetimewithr.org</a>.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-cressie2011statistics" class="csl-entry" role="listitem">
-Cressie, N., and C. K. Wikle. 2011. <em>Statistics for Spatio-Temporal Data</em>. Hoboken, NJ: John Wiley &amp; Sons.
+Cressie, N., &amp; Wikle, C. K. (2011). <em>Statistics for spatio-temporal data</em>. John Wiley &amp; Sons.
 </div>
 </div>
 
@@ -659,8 +707,8 @@ Cressie, N., and C. K. Wikle. 2011. <em>Statistics for Spatio-Temporal Data</em>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./ChapterAppendices.html" class="pagination-link" aria-label="Appendices">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Appendices</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

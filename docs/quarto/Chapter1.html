@@ -62,6 +62,7 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-7d2e1f8220df954187ab24ed36a0da9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/foldbox/foldbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -89,6 +90,12 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<style>
+.Algorithm {
+  --color1: #948bde;
+  --color2: #584eab;
+}
+</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -201,27 +208,68 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ChapterPergimus.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pergimus (Epilogue)</span></span></a>
+ <span class="menu-text">Pergimus (Epilogue)</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./ChapterAppendices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Appendices</span></span></a>
+  <a href="./ChapterAppendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Some Useful Matrix-Algebra Definitions and Properties</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./ChapterAppendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">General Smoothing Kernels</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Estimation and Prediction for Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Mechanistically Motivated Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixF.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Case Study: Quadratic Echo State Networks for Sea Surface Temperature Long-Lead Prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+  <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ChapterRPackages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">List of <code>R</code> packages</span></a>
+  <span class="menu-text">List of <code>R</code> packages</span></a>
   </div>
-</li>
+  </li>
+  <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <span class="menu-text">References</span></a>
+  </div>
+  </li>
     </ul>
     </div>
 </nav>
@@ -294,8 +342,8 @@ Figure&nbsp;1.2: Sixteen days of CO<span class="math inline">\(_{2}\)</span> dat
 </figcaption>
 </figure>
 </div>
-<p>There is a “+” on the global maps shown in <a href="#fig-OCO2data" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>, which marks the location of the Mauna Loa volcano, Hawaii. Near the top of this volcano, at an altitude of 4.17 km, is the US National Oceanic and Atmospheric Administration (NOAA) Mauna Loa Observatory, which has been taking monthly measurements of CO<span class="math inline">\(_2\)</span> since the late 1950s. The data are shown as a time series in <a href="#fig-meanCO2" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>. Now, for the moment, put aside issues associated with measurements being taken with different instruments, on different parcels of air, at different locations, and for different blocks of time; these can be dealt with using quite advanced spatio-temporal statistical methodology found in, for example, <span class="citation" data-cites="cressie2011statistics">N. Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>. What is fundamental here is that underlying these imperfect observations is a spatio-temporal process that itself is not perfectly understood, and we propose to capture this uncertainty in the process with a spatio-temporal statistical model.</p>
-<div id="fig-meanCO2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-env="figure" data-fig-pos="t!">
+<p>There is a “+” on the global maps shown in <a href="#fig-OCO2data" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>, which marks the location of the Mauna Loa volcano, Hawaii. Near the top of this volcano, at an altitude of 4.17 km, is the US National Oceanic and Atmospheric Administration (NOAA) Mauna Loa Observatory, which has been taking monthly measurements of CO<span class="math inline">\(_2\)</span> since the late 1950s. The data are shown as a time series in <a href="#fig-meanCO2" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>. Now, for the moment, put aside issues associated with measurements being taken with different instruments, on different parcels of air, at different locations, and for different blocks of time; these can be dealt with using quite advanced spatio-temporal statistical methodology found in, for example, <span class="citation" data-cites="cressie2011statistics">Cressie &amp; Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>. What is fundamental here is that underlying these imperfect observations is a spatio-temporal process that itself is not perfectly understood, and we propose to capture this uncertainty in the process with a spatio-temporal statistical model.</p>
+<div id="fig-meanCO2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="t!" data-fig-env="figure">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-meanCO2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/Chapter_1/figure3_co2_data_mlo.png" style="height:2in" data-fig-env="figure" data-fig-pos="t!" class="figure-img">
@@ -307,7 +355,7 @@ Figure&nbsp;1.3: Monthly mean atmospheric CO<span class="math inline">\(_2\)</sp
 </figure>
 </div>
 <p>The atmospheric CO<span class="math inline">\(_2\)</span> process varies in space and in time, but the extent of its spatio-temporal domain means that exhaustive measurement of it is not possible; and even if it were possible, it would not be a good use of resources (a conclusion you should find evident after reading our book). This is a generic problem in spatio-temporal statistics—our noisy data traverse different paths through the “space-time cube”, but we want to gain knowledge about unobserved (and even observed) parts of it. We shall address this problem in the chapters, the Labs, and the technical notes that follow, drawing on a number of data sets introduced in Chapter 2.</p>
-<p>Humans have a longing to understand their place (temporally and spatially) in the universe. In an Einsteinian universe, space and time interact in a special, “curved” way; however, in this book our methodology and applications are for a Newtonian world. Rick Delmonico, author of <em>The Philosophy of Fractals</em> <span class="citation" data-cites="delmonico2017fractals">(<a href="references.html#ref-delmonico2017fractals" role="doc-biblioref">Delmonico 2017</a>)</span>, has been quoted elsewhere as saying that “light is time at maximum compression and matter is space at maximum compression.” Our Newtonian world is definitely more relaxed than this! Nevertheless, it is fascinating that images of electron motion at a scale of <span class="math inline">\(10^{-11}\)</span> meters look very much like images of the cosmos at a scale of <span class="math inline">\(10^{17}\)</span> meters <span class="citation" data-cites="morrison1982powers">(<a href="references.html#ref-morrison1982powers" role="doc-biblioref">Morrison and Morrison 1982</a>)</span>.</p>
+<p>Humans have a longing to understand their place (temporally and spatially) in the universe. In an Einsteinian universe, space and time interact in a special, “curved” way; however, in this book our methodology and applications are for a Newtonian world. Rick Delmonico, author of <em>The Philosophy of Fractals</em> <span class="citation" data-cites="delmonico2017fractals">(<a href="references.html#ref-delmonico2017fractals" role="doc-biblioref">Delmonico, 2017</a>)</span>, has been quoted elsewhere as saying that “light is time at maximum compression and matter is space at maximum compression.” Our Newtonian world is definitely more relaxed than this! Nevertheless, it is fascinating that images of electron motion at a scale of <span class="math inline">\(10^{-11}\)</span> meters look very much like images of the cosmos at a scale of <span class="math inline">\(10^{17}\)</span> meters <span class="citation" data-cites="morrison1982powers">(<a href="references.html#ref-morrison1982powers" role="doc-biblioref">Morrison &amp; Morrison, 1982</a>)</span>.</p>
 <p>Trying to understand spatio-temporal data and how (and ultimately why) they vary in space and time is not new — just consider trying to describe the growth and decline of populations, the territorial expansion and contraction of empires, the spread of world religions, species (including human) migrations, the dynamics of epidemics, and so on. Indeed, history and geography are inseparable. From this “big picture” point of view, there is a complex system of interacting physical, biological, and social processes across a range of spatial/temporal scales.</p>
 <p>How does one do spatio-temporal statistics? Well, it is not enough to consider just spatial snapshots of a process at a given time, nor just time-series profiles at a given spatial location—the behavior at spatial locations at one time point will almost certainly affect the behavior at nearby spatial locations at the next time point. Only by considering time and space together can we address how spatially coherent entities change over time or, in some cases, why they change. It turns out that a big part of the <em>how</em> and <em>why</em> of such change is due to <em>interactions</em> across space and time, and across multiple processes.</p>
 <p>For example, consider an influenza epidemic, which is generally in the winter season. Individuals in the population at risk can be classified as susceptible (S), infected (I), or recovered (R), and a well-known class of multivariate temporal models, called SIR models, capture the transition of susceptibles to infecteds to recovereds and then possibly back to susceptibles. At a micro level, infection occurs in the household, in the workplace, and in public places due to the interaction (contact) between infected and susceptible individuals. At a macro level, infection and recovery rates can be tracked and fitted to an SIR model that might also account for the weather, demographics, and vaccination rates. Now suppose we can disaggregate the total-population SIR rates into health-district SIR rates. This creates a spatio-temporal data set, albeit at a coarse spatial scale, and the SIR rates can be visualized dynamically on a map of the health districts. Spatio-temporal interactions may then become apparent, and the first steps of spatio-temporal modeling can be taken.</p>
@@ -317,7 +365,7 @@ Figure&nbsp;1.3: Monthly mean atmospheric CO<span class="math inline">\(_2\)</sp
 <h2 data-number="1.1" class="anchored" data-anchor-id="sec-why"><span class="header-section-number">1.1</span> Why Should Spatio-Temporal Models Be <em>Statistical?</em></h2>
 <p>In the physical world, phenomena evolve in space and time following deterministic, perhaps “chaotic,” physical rules (except at the quantum level), so why do we need to consider randomness and uncertainty? The primary reason comes from the uncertainty resulting from incomplete knowledge of the science and of the mechanisms driving a spatio-temporal phenomenon. In particular, <em>statistical</em> spatio-temporal models give us the ability to model components in a physical system that appear to be random and, even if they are not, the models are useful if they result in accurate and precise predictions. Such models introduce the notion of uncertainty, but they are able to do so without obscuring the salient trends or regularities of the underlying process (that are typically of primary interest).</p>
 <p>Take, for instance, the raindrops falling on a surface; to predict exactly where and when each drop will fall would require an inconceivably complex, deterministic, meteorological model, incorporating air pressure, wind speed, water-droplet formation, and so on. A model of this sort at a large spatial scale is not only infeasible but also unnecessary for many purposes. By studying the temporal intensity of drops on a regular spatial grid, one can test for spatio-temporal interaction or look for dynamic changes in spatial intensity (given in units of “per area”) for each cell of the grid. The way in which the intensity evolves over time may reveal something about the driving mechanisms (e.g., wind vectors) and be useful for prediction, even though the exact location and time of each incident raindrop is uncertain.</p>
-<p>Spatio-temporal statistical models are <em>not</em> at odds with deterministic ones. Indeed, the most powerful (in terms of predictive performance) spatio-temporal statistical models are those that are constructed based on an understanding of the biological or physical mechanisms that give rise to spatio-temporal variability and interactions. Hence, we sometimes refer to them as <em>physical-statistical models</em> <span class="citation" data-cites="kuhnert2014physical">(see the editorial by <a href="references.html#ref-kuhnert2014physical" role="doc-biblioref">Kuhnert 2014</a>)</span>, or generally as <em>mechanistically motivated statistical models</em>. To this understanding, we add the reality that observations may have large gaps between them (in space and in time), they are observed with error, our understanding of the physical mechanisms is incomplete, we have limited knowledge about model parameters, and so on. Then it becomes clear that incorporating statistical distributions into the model is a very natural way to solve complex problems. Answers to the problems come as estimates or predictions along with a quantification of their uncertainties. These physical-statistical models, in the temporal domain, the spatial domain, and the spatio-temporal domain, have immense use in everything from anthropology to zoology and all the “ologies” in-between.</p>
+<p>Spatio-temporal statistical models are <em>not</em> at odds with deterministic ones. Indeed, the most powerful (in terms of predictive performance) spatio-temporal statistical models are those that are constructed based on an understanding of the biological or physical mechanisms that give rise to spatio-temporal variability and interactions. Hence, we sometimes refer to them as <em>physical-statistical models</em> <span class="citation" data-cites="kuhnert2014physical">(see the editorial by <a href="references.html#ref-kuhnert2014physical" role="doc-biblioref">Kuhnert, 2014</a>)</span>, or generally as <em>mechanistically motivated statistical models</em>. To this understanding, we add the reality that observations may have large gaps between them (in space and in time), they are observed with error, our understanding of the physical mechanisms is incomplete, we have limited knowledge about model parameters, and so on. Then it becomes clear that incorporating statistical distributions into the model is a very natural way to solve complex problems. Answers to the problems come as estimates or predictions along with a quantification of their uncertainties. These physical-statistical models, in the temporal domain, the spatial domain, and the spatio-temporal domain, have immense use in everything from anthropology to zoology and all the “ologies” in-between.</p>
 </section>
 <section id="sec-goals" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="sec-goals"><span class="header-section-number">1.2</span> Goals of Spatio-Temporal Statistics</h2>
@@ -332,13 +380,13 @@ Figure&nbsp;1.3: Monthly mean atmospheric CO<span class="math inline">\(_2\)</sp
 </section>
 <section id="sec-Tobler" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="sec-Tobler"><span class="header-section-number">1.2.2</span> Descriptive Modeling</h3>
-<p>The descriptive approach typically seeks to characterize the spatio-temporal process in terms of its mean function and its covariance function. When these are sufficient to describe the process, we can use “optimal prediction” theory to obtain predictions and, crucially, their associated prediction uncertainties. This approach has a distinguished history in spatial statistics and is the foundation of the famed <em>kriging</em> methodology. <span class="citation" data-cites="cressie1990origins">(<a href="references.html#ref-cressie1990origins" role="doc-biblioref">Noel Cressie 1990</a>, presents the early history of kriging.)</span> In a spatio-temporal setting, the descriptive approach is most useful when we do not have a strong understanding of the mechanisms that drive the spatio-temporal phenomenon being modeled. Or perhaps we are more interested in studying how covariates in a regression are influencing the phenomenon, but we also recognize that the errors that occur when fitting that relationship are statistically dependent in space and time. That is, the standard assumption given in Chapter 3, that errors are independent and identically distributed (<span class="math inline">\(iid\)</span>), is <em>not</em> tenable. In this case, knowing spatio-temporal covariances between the data is enough for statistically efficient inferences (via generalized least squares) on regression coefficients (see Chapter 4). But, as you might suspect, it can be quite difficult to specify all possible covariances for complex spatio-temporal phenomena (and, for nonlinear processes, covariances are not sufficient to describe the spatio-temporal statistical dependence within the process).</p>
+<p>The descriptive approach typically seeks to characterize the spatio-temporal process in terms of its mean function and its covariance function. When these are sufficient to describe the process, we can use “optimal prediction” theory to obtain predictions and, crucially, their associated prediction uncertainties. This approach has a distinguished history in spatial statistics and is the foundation of the famed <em>kriging</em> methodology. <span class="citation" data-cites="cressie1990origins">(<a href="references.html#ref-cressie1990origins" role="doc-biblioref">Cressie, 1990</a>, presents the early history of kriging.)</span> In a spatio-temporal setting, the descriptive approach is most useful when we do not have a strong understanding of the mechanisms that drive the spatio-temporal phenomenon being modeled. Or perhaps we are more interested in studying how covariates in a regression are influencing the phenomenon, but we also recognize that the errors that occur when fitting that relationship are statistically dependent in space and time. That is, the standard assumption given in Chapter 3, that errors are independent and identically distributed (<span class="math inline">\(iid\)</span>), is <em>not</em> tenable. In this case, knowing spatio-temporal covariances between the data is enough for statistically efficient inferences (via generalized least squares) on regression coefficients (see Chapter 4). But, as you might suspect, it can be quite difficult to specify all possible covariances for complex spatio-temporal phenomena (and, for nonlinear processes, covariances are not sufficient to describe the spatio-temporal statistical dependence within the process).</p>
 <p>Sometimes we can describe spatio-temporal dependence in a phenomenon by including in our model covariates that capture spatio-temporal “trends.” This large-scale spatio-temporal variability leaves behind smaller-scale variability that can be modeled statistically with spatio-temporal covariances. The descriptive approach often relies on an important statistical characteristic of dependent data, namely that nearby (in space and time) observations tend to be more alike than those far apart. In spatial modeling, this is often referred to as “Tobler’s first law of geography” <span class="citation" data-cites="tobler1970computer">Tobler (<a href="references.html#ref-tobler1970computer" role="doc-biblioref">1970</a>)</span>, and it is often a good guiding principle. It is fair to point out, though, that there are exceptions: there might be “competition” (e.g., only smaller trees are likely to grow close to or under bigger trees as they compete over time for light and nutrients), or things may be more alike on two distant mountain peaks at the same elevation than they are on the same mountain peak at different elevations.</p>
 <p>It is important to take a look back at the writings of the pioneers in statistics and ask why spatio-temporal statistical dependencies were not present in early statistical models if they are so ubiquitous in real-world data. Well, we know that some people definitely were aware of these issues. For example, in his ground-breaking treatise on the design of experiments in agriculture, R. A. Fisher (<span class="citation" data-cites="fisher1935design">Fisher (<a href="references.html#ref-fisher1935design" role="doc-biblioref">1935</a>)</span>, p.&nbsp;66) wrote:</p>
 <blockquote class="blockquote">
 <p><em>“After choosing the area we usually have no guidance beyond the widely verified fact that patches in close proximity are commonly more alike, as judged by the yield of crops, than those which are further apart.”</em></p>
 </blockquote>
-<p>In this case, the spatial variability between plots is primarily due to the fact that the soil properties vary relatively smoothly across space at the field level. Unfortunately, Fisher could not implement complex error models that included spatial statistical dependence due to modeling and computational limitations at that time. So he came up with the brilliant solution of introducing randomization into the experimental design in order to avoid confounding plot effects and treatment effects (but note, only at the plot scale). This was one of the most important innovations in twentieth-century science, and it revolutionized experimentation, not only in agriculture but also in industrial and medical applications. Readers interested in more details behind the development of spatial and spatio-temporal statistics could consult Chapter 1 of <span class="citation" data-cites="cressie1993statistics">Noel Cressie (<a href="references.html#ref-cressie1993statistics" role="doc-biblioref">1993</a>)</span> and Chapter 1 of <span class="citation" data-cites="cressie2011statistics">N. Cressie and Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>, respectively.</p>
+<p>In this case, the spatial variability between plots is primarily due to the fact that the soil properties vary relatively smoothly across space at the field level. Unfortunately, Fisher could not implement complex error models that included spatial statistical dependence due to modeling and computational limitations at that time. So he came up with the brilliant solution of introducing randomization into the experimental design in order to avoid confounding plot effects and treatment effects (but note, only at the plot scale). This was one of the most important innovations in twentieth-century science, and it revolutionized experimentation, not only in agriculture but also in industrial and medical applications. Readers interested in more details behind the development of spatial and spatio-temporal statistics could consult Chapter 1 of <span class="citation" data-cites="cressie1993statistics">Cressie (<a href="references.html#ref-cressie1993statistics" role="doc-biblioref">1993</a>)</span> and Chapter 1 of <span class="citation" data-cites="cressie2011statistics">Cressie &amp; Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011</a>)</span>, respectively.</p>
 </section>
 <section id="dynamic-modeling" class="level3" data-number="1.2.3">
 <h3 data-number="1.2.3" class="anchored" data-anchor-id="dynamic-modeling"><span class="header-section-number">1.2.3</span> Dynamic Modeling </h3>
@@ -372,7 +420,7 @@ Note&nbsp;1.1: Berliner’s Bayesian Hierarchical Model (BHM) paradigm
 </div>
 <div class="callout-body-container callout-body">
 <p>First, the fundamental notion of the <em>law of total probability</em> allows one to decompose a joint distribution into a series of conditional distributions: <span class="math inline">\({[A,B,C] = [A\mid B,C][B\mid C][C]}\)</span>, where the “bracket notation” is used to denote probability distributions; for example, <span class="math inline">\([A,B,C]\)</span> is the <em>joint distribution</em> of random variables <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, and <span class="math inline">\([A \mid B, C]\)</span> is the <em>conditional distribution</em> of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>.</p>
-<p>Mark Berliner’s insight <span class="citation" data-cites="berliner1996hierarchical">(<a href="references.html#ref-berliner1996hierarchical" role="doc-biblioref">Berliner 1996</a>)</span> was that one should use this simple decom-posi-tion as a way to formulate models for complex dependent processes. That is, the joint distribution, [data, process, parameters], can be factored into three levels.</p>
+<p>Mark Berliner’s insight <span class="citation" data-cites="berliner1996hierarchical">(<a href="references.html#ref-berliner1996hierarchical" role="doc-biblioref">Berliner, 1996</a>)</span> was that one should use this simple decom-posi-tion as a way to formulate models for complex dependent processes. That is, the joint distribution, [data, process, parameters], can be factored into three levels.</p>
 <p>At the top level is the <em>data model</em>, which is a probability model that specifies the distribution of the data given an underlying “true” process (sometimes called the hidden or latent process) and given some parameters that are needed to specify this distribution. At the next level is the <em>process model</em>, which is a probability model that describes the hidden process (and, thus, its uncertainty) given some parameters. Note that at this level the model does not need to account for measurement uncertainty. The process model can then use science-based theoretical or empirical knowledge, which is often physical or mechanistic. At the bottom level is the parameter model, where uncertainty about the parameters is modeled. From top to bottom, the levels of a BHM are:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -410,36 +458,36 @@ Note&nbsp;1.1: Berliner’s Bayesian Hierarchical Model (BHM) paradigm
 <p>Last, but certainly not least, each of Chapters 2–6 contain Lab vignettes that go through the implementation of many of the important methods presented in each chapter using the <code>R</code>~programming language. This book represents the first time such a comprehensive collection of <code>R</code>~examples for spatio-temporal data have been collected in one place. We believe that it is essential to “get your hands dirty” with data, but we recognize that quite a few of the methods and approaches used in spatio-temporal statistics can be complicated and that it can be daunting to program them yourself from scratch. Therefore, we have tried to identi-fy some useful (and stable) <code>R</code>~functions from existing <code>R</code>~packages (see the list following the appendices) that can be used to implement the methods discussed in Chapters 2–6. We have also put a few functions of our own, along with the data sets that we have used, in the <code>R</code>~package, <strong>STRbook</strong>, associated with this book (instructions for obtaining this package are available at <a href="https://spacetimewithr.org">https://spacetimewithr.org</a>. We note that there are many other <code>R</code>~packages that implement various spatio-temporal methods, whose approaches could arrive at the same result with more or less effort, depending on familiarity. As is often the case with <code>R</code>,~ one gets used to doing things a certain way, and so most of our choices are representative of this.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-berliner1996hierarchical" class="csl-entry" role="listitem">
-Berliner, L Mark. 1996. <span>“Hierarchical <span>B</span>ayesian Time Series Models.”</span> In <em>Maximum Entropy and Bayesian Methods</em>, edited by K. M. Hanson and R. N. Silver, 15–22. Fundamental Theories of Physics, 79. Dordecht: Kluwer.
+Berliner, L. M. (1996). Hierarchical <span>B</span>ayesian time series models. In K. M. Hanson &amp; R. N. Silver (Eds.), <em>Maximum entropy and bayesian methods</em> (pp. 15–22). Kluwer.
 </div>
 <div id="ref-cressie1990origins" class="csl-entry" role="listitem">
-Cressie, Noel. 1990. <span>“The Origins of Kriging.”</span> <em>Mathematical Geology</em> 22: 239–52.
+Cressie, N. (1990). The origins of kriging. <em>Mathematical Geology</em>, <em>22</em>, 239–252.
 </div>
 <div id="ref-cressie1993statistics" class="csl-entry" role="listitem">
-———. 1993. <em>Statistics for Spatial Data</em>. Revised. New York: John Wiley &amp; Sons.
+Cressie, N. (1993). <em>Statistics for spatial data</em> (revised). John Wiley &amp; Sons.
 </div>
 <div id="ref-cressie2011statistics" class="csl-entry" role="listitem">
-Cressie, N., and C. K. Wikle. 2011. <em>Statistics for Spatio-Temporal Data</em>. Hoboken, NJ: John Wiley &amp; Sons.
+Cressie, N., &amp; Wikle, C. K. (2011). <em>Statistics for spatio-temporal data</em>. John Wiley &amp; Sons.
 </div>
 <div id="ref-delmonico2017fractals" class="csl-entry" role="listitem">
-Delmonico, Rick. 2017. <em>The Philosophy of Fractals</em>.
+Delmonico, R. (2017). <em>The philosophy of fractals</em>.
 </div>
 <div id="ref-fisher1935design" class="csl-entry" role="listitem">
-Fisher, Ronald A. 1935. <em>The Design of Experiments</em>. 8th ed. Edinburgh: Oliver; Boyd.
+Fisher, R. A. (1935). <em>The design of experiments</em> (8th ed.). Edinburgh: Oliver; Boyd.
 </div>
 <div id="ref-kalman1960new" class="csl-entry" role="listitem">
-Kalman, Rudolph Emil. 1960. <span>“A New Approach to Linear Filtering and Prediction Problems.”</span> <em>Journal of Basic Engineering</em> 82: 35–45.
+Kalman, R. E. (1960). A new approach to linear filtering and prediction problems. <em>Journal of Basic Engineering</em>, <em>82</em>, 35–45.
 </div>
 <div id="ref-kuhnert2014physical" class="csl-entry" role="listitem">
-Kuhnert, Petra. 2014. <span>“Editorial: Physical-Statistical Modelling.”</span> <em>Environmetrics</em> 25: 201–2.
+Kuhnert, P. (2014). Editorial: Physical-statistical modelling. <em>Environmetrics</em>, <em>25</em>, 201–202.
 </div>
 <div id="ref-morrison1982powers" class="csl-entry" role="listitem">
-Morrison, Philip, and Phylis Morrison. 1982. <em>Powers of Ten: About the Relative Size of Things in the Universe</em>. Redding, CT: Scientific American Library, distributed by WH Freeman.
+Morrison, P., &amp; Morrison, P. (1982). <em>Powers of ten: About the relative size of things in the universe</em>. Scientific American Library, distributed by WH Freeman.
 </div>
 <div id="ref-tobler1970computer" class="csl-entry" role="listitem">
-Tobler, Waldo R. 1970. <span>“A Computer Movie Simulating Urban Growth in the <span>D</span>etroit Region.”</span> <em>Economic Geography</em> 46 (sup1): 234–40.
+Tobler, W. R. (1970). A computer movie simulating urban growth in the <span>D</span>etroit region. <em>Economic Geography</em>, <em>46</em>(sup1), 234–240.
 </div>
 </div>
 </section>
