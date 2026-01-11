@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix E — Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds – Spatio-Temporal Statistics with R (1st edition)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ChapterAppendixF.html" rel="next">
+<link href="./ChapterAppendixD.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b719d3d4935f2b08311a76135e2bf442.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d2e1f8220df954187ab24ed36a0da9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/foldbox/foldbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+.Algorithm {
+  --color1: #948bde;
+  --color2: #584eab;
+}
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ChapterAppendixA.html">Appendices</a></li><li class="breadcrumb-item"><a href="./ChapterAppendixE.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Spatio-Temporal Statistics with R (1st edition)</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatio-Temporal Statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Exploring Spatio-Temporal Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Descriptive Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Evaluating Spatio-Temporal Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterPergimus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pergimus (Epilogue)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Some Useful Matrix-Algebra Definitions and Properties</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">General Smoothing Kernels</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Estimation and Prediction for Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Mechanistically Motivated Dynamic Spatio-Temporal Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixE.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterAppendixF.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Case Study: Quadratic Echo State Networks for Sea Surface Temperature Long-Lead Prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+  <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ChapterRPackages.html" class="sidebar-item-text sidebar-link">
+  <span class="menu-text">List of <code>R</code> packages</span></a>
+  </div>
+  </li>
+  <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <span class="menu-text">References</span></a>
+  </div>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#implementation-in-r" id="toc-implementation-in-r" class="nav-link active" data-scroll-target="#implementation-in-r">Implementation in <code>R</code></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ChapterAppendixA.html">Appendices</a></li><li class="breadcrumb-item"><a href="./ChapterAppendixE.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-PDEdecomp_MedWinds" class="quarto-section-identifier">Appendix E — Case Study: Physical-Statistical Bayesian Hierarchical Model for Predicting Mediterranean Surface Winds</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this section we present a specific and detailed example of how to develop a physically motivated bivariate spatio-temporal model for the purpose of predicting near-surface wind fields in the Mediterranean Sea. The implementation of this model in <code>R</code> is given below.</p>
+<p>Consider a simple analytical model for the surface wind known as the <em>Rayleigh friction equations</em> <span class="citation" data-cites="stevens2002entrainment">(e.g., <a href="references.html#ref-stevens2002entrainment" role="doc-biblioref">Stevens et al., 2002</a>)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{\partial u}{\partial t} &amp;= f v - \frac{1}{\rho_0} \frac{\partial P}{\partial x} - \gamma u, \\
+\frac{\partial v}{\partial t} &amp;= - f u - \frac{1}{\rho_0} \frac{\partial P}{\partial y} - \gamma v,
+\end{align*}
+\]</span></p>
+<p>where <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> are the east–west and north–south components of the wind, respectively (recall that winds are vectors with a magnitude and direction that can be decomposed into <span class="math inline">\(x\)</span> (east–west) and <span class="math inline">\(y\)</span> (north–south) coordinates); <span class="math inline">\(f\)</span> is the Coriolis parameter; <span class="math inline">\(\rho_0\)</span> is a reference atmospheric density; <span class="math inline">\(P\)</span> is the sea-level pressure; and <span class="math inline">\(\gamma\)</span> is the Rayleigh friction parameter. Note that <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span>, and <span class="math inline">\(P\)</span> are functions of time and space. As in <a href="ChapterAppendixD.html#sec-PDEdecomp1" class="quarto-xref"><span>Section D.1</span></a>, simple forward differencing in time with <span class="math inline">\(\Delta_t = 1\)</span>, and centered differencing in space, give the analogous discretized form of these equations:</p>
+<p><span id="eq-DRFEu1"><span class="math display">\[
+\small
+u_{t+1}(i,j) =  u_t(i,j) + \Delta_t \left\{ f v_t(i,j) -  \frac{1}{\rho_0}\left(\frac{P_t(i+1,j) - P_t(i-1,j)}{2 \Delta_x}\right) - \gamma u_t(i,j)\right\},
+\tag{E.1}\]</span></span></p>
+<p><span id="eq-DRFEv1"><span class="math display">\[
+\small
+v_{t+1}(i,j) = v_t(i,j) +   \Delta_t\left\{  - f u_t(i,j) -
+  \frac{1}{\rho_0}\left(\frac{P_t(i,j+1) - P_t(i,j-1)}{2 \Delta_y}\right) - \gamma v_t(i,j)\right\},  
+\tag{E.2}\]</span></span></p>
+<p>where <span class="math inline">\(u_t(i,j)\)</span>, <span class="math inline">\(v_t(i,j)\)</span>, and <span class="math inline">\(P_t(i,j)\)</span> are discretized wind components and pressure, respectively, at grid location <span class="math inline">\((i,j)\)</span> and time <span class="math inline">\(t\)</span>, and <span class="math inline">\(\Delta_x\)</span>, and <span class="math inline">\(\Delta_y\)</span> are the <span class="math inline">\(x\)</span>-, and <span class="math inline">\(y\)</span>-discretization constants, respectively. Note that this is a multivariate linear system, with each component of the wind conditioned on the past values of that component, the other component, and the difference (gradient) in pressure.</p>
+<p>Now a simple <em>statistical</em> process model based on these equations can be written in vector form as:</p>
+<p><span id="eq-Ueq1"><span class="math display">\[
+\mathbf{u}_{t+1} = \theta_{uu} \mathbf{u}_t + \theta_{uv} \mathbf{v}_t + \theta_{up} \mathbf{D}_x \mathbf{P}_t  + \boldsymbol{\eta}_{u,t},
+\tag{E.3}\]</span></span></p>
+<p><span id="eq-Veq1"><span class="math display">\[
+\mathbf{v}_{t+1} = \theta_{vv} \mathbf{v}_t + \theta_{vu} \mathbf{u}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t  + \boldsymbol{\eta}_{v,t},  \tag{E.4}\]</span></span></p>
+<p>for <span class="math inline">\(t=1,\ldots,T-1\)</span>, where <span class="math inline">\(\mathbf{v}_t\)</span> and <span class="math inline">\(\mathbf{u}_t\)</span> are <span class="math inline">\(n_g\)</span>-dimensional <span class="math inline">\((n_g = n_x \times n_y)\)</span> vectors of the discretized <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> components, <span class="math inline">\(n_x\)</span> and <span class="math inline">\(n_y\)</span> being the number of grid locations in the <span class="math inline">\(x\)</span>- and <span class="math inline">\(y\)</span>-directions on the prediction grid; <span class="math inline">\(\mathbf{P}_t\)</span> is an <span class="math inline">\(n_e = (n_x + 2) \times (n_y + 2)\)</span>-dimensional vector of surface pressure values on an expanded grid (which in our example will come from data); <span class="math inline">\(\mathbf{D}_x\)</span> and <span class="math inline">\(\mathbf{D}_y\)</span> are <span class="math inline">\(n_g \times n_e\)</span> matrix operators that give the centered difference in the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> directions, respectively; and <span class="math inline">\(\boldsymbol{\eta}_{u,t} \sim iid \; Gau(0,\sigma^2_u \mathbf{I})\)</span> and <span class="math inline">\(\boldsymbol{\eta}_{v,t} \sim  iid \; Gau(0, \sigma^2_v \mathbf{I})\)</span> are residual error processes. Although we could specify the <span class="math inline">\(\theta\)</span>-values in <a href="#eq-Ueq1" class="quarto-xref">Equation&nbsp;<span>E.3</span></a> and <a href="#eq-Veq1" class="quarto-xref">Equation&nbsp;<span>E.4</span></a> according to the discretization constants and <span class="math inline">\(f\)</span> and <span class="math inline">\(\gamma\)</span> in <a href="#eq-DRFEu1" class="quarto-xref">Equation&nbsp;<span>E.1</span></a> and <a href="#eq-DRFEv1" class="quarto-xref">Equation&nbsp;<span>E.2</span></a>, we instead allow them to be unknown and random here (see below) and include the additive error terms to adapt to the data and to reflect the fact that the Rayleigh friction equations are a pretty rough approximation for reality. More complicated versions of this model are given in <span class="citation" data-cites="milliff2011ocean">Milliff et al. (<a href="references.html#ref-milliff2011ocean" role="doc-biblioref">2011</a>)</span> and <span class="citation" data-cites="cressie2011statistics">Cressie &amp; Wikle (<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">2011, Chapter 9</a>)</span> to account for spatio-temporal dependent errors as well as a random pressure process.</p>
+<p>We have two sources of data on Mediterranean surface winds (as described in <a href="Chapter2.html#sec-STdata" class="quarto-xref"><span>Section 2.1</span></a>): gridded analysis wind and pressure data from the European Center for Medium Range Weather Forecasting (ECMWF) (these observations are complete in space and time); and higher-resolution satellite observations of near-surface winds over the ocean from the polar-orbiting QuikSCAT scatterometer (these observations are irregular in space and time). The BHM is given by a data model, a process model, and a parameter model. For modeling the Mediterranean wind data, these are defined as follows.</p>
+<p><strong>Data model</strong>. For <span class="math inline">\(t=1,\ldots,T\)</span>, assume <span id="eq-Eu2"><span class="math display">\[
+\mathbf{E}_{u,t} | \mathbf{u}_t, \sigma^2_e \sim indep. \; Gau(\mathbf{H}_{e} \mathbf{u}_t, \sigma^2_e \mathbf{I}),
+\tag{E.5}\]</span></span> <span id="eq-Ev2"><span class="math display">\[
+\mathbf{E}_{v,t} | \mathbf{v}_t, \sigma^2_e \sim indep. \; Gau(\mathbf{H}_{e} \mathbf{v}_t, \sigma^2_e \mathbf{I}),
+\tag{E.6}\]</span></span> <span id="eq-Su2"><span class="math display">\[
+\mathbf{S}_{u,t} | \mathbf{u}_t, \sigma^2_s \sim indep. \; Gau(\mathbf{H}_{s,t} \mathbf{u}_t, \sigma^2_s \mathbf{I}),
+\tag{E.7}\]</span></span> <span id="eq-Sv2"><span class="math display">\[
+\mathbf{S}_{v,t} | \mathbf{v}_t, \sigma^2_s \sim indep. \; Gau(\mathbf{H}_{s,t} \mathbf{v}_t, \sigma^2_s \mathbf{I}),
+\tag{E.8}\]</span></span> where <span class="math inline">\(\mathbf{E}_{u,t}, \mathbf{E}_{v,t}\)</span> are <span class="math inline">\(n_e\)</span>-vectors of ECMWF observations at time <span class="math inline">\(t\)</span>, with associated <span class="math inline">\(n_e \times n_g\)</span> incidence matrix <span class="math inline">\(\mathbf{H}_e\)</span>; and <span class="math inline">\(\mathbf{S}_{u,t}, \mathbf{S}_{v,t}\)</span> are <span class="math inline">\(n_{s,t}\)</span>-dimensional vectors of QuikSCAT observations at time <span class="math inline">\(t\)</span>, with associated <span class="math inline">\(n_{s,t} \times n_g\)</span> incidence matrices, <span class="math inline">\(\mathbf{H}_{s,t}\)</span>. (Note that there are different numbers of QuikSCAT observations at each time, and there can be times for which there are no QuikSCAT observations.)</p>
+<p><strong>Process model</strong>. For <span class="math inline">\(t=1,\ldots,T-1\)</span>, assume</p>
+<p><span id="eq-uproc2"><span class="math display">\[
+\mathbf{u}_{t+1} | \mathbf{u}_t, \mathbf{v}_t, \mathbf{P}_t, \theta_{uu}, \theta_{uv}, \theta_{up}, \sigma^2_u \sim {indep.} \; {Gau}(\theta_{uu} \mathbf{u}_t + \theta_{uv} \mathbf{v}_t + \theta_{up} \mathbf{D}_x \mathbf{P}_t , \sigma^2_u \mathbf{I}),~~~~~
+\tag{E.9}\]</span></span></p>
+<p><span id="eq-vproc2"><span class="math display">\[
+\mathbf{v}_{t+1} | \mathbf{v}_t, \mathbf{u}_t, \mathbf{P}_t, \theta_{vv}, \theta_{vu}, \theta_{vp}, \sigma^2_v \sim {indep.} \; {Gau}(\theta_{vv} \mathbf{v}_t + \theta_{vu} \mathbf{u}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t , \sigma^2_v \mathbf{I}),~~~~~
+\tag{E.10}\]</span></span></p>
+<p>where we have pressure observations, <span class="math inline">\(\mathbf{P}_t\)</span>, from the ECMWF data within the Mediterranean wind data. We also need to specify the process’s initial conditions at time <span class="math inline">\(t=1\)</span>. Assume</p>
+<p><span id="eq-u12"><span class="math display">\[
+\mathbf{u}_1 | \boldsymbol{\mu}_{u,1}, \sigma^2_{u,1} \sim \; {Gau}(\boldsymbol{\mu}_{u,1},\sigma^2_{u,1} \mathbf{I}),
+\tag{E.11}\]</span></span></p>
+<p><span id="eq-v12"><span class="math display">\[
+\mathbf{v}_1 | \boldsymbol{\mu}_{v,1}, \sigma^2_{v,1} \sim \; {Gau}(\boldsymbol{\mu}_{v,1},\sigma^2_{v,1} \mathbf{I}).
+\tag{E.12}\]</span></span></p>
+<p><strong>Parameter model</strong>. All of the process-model parameters are assumed to be independent and their distributions are given by</p>
+<p><span id="eq-theta_ab2"><span class="math display">\[
+\theta_{ab} | \mu_{ab}, \sigma^2_{ab} \sim \; {Gau}(\mu_{ab}, \sigma^2_{ab}),
+\tag{E.13}\]</span></span></p>
+<p>for <span class="math inline">\(ab = \{uu,vv,uv,vu,up,vp\}\)</span>. Further,</p>
+<p><span id="eq-sig2a2"><span class="math display">\[
+\sigma^2_a | q_a, r_a \sim \; {IG}(q_a,r_a),
+\tag{E.14}\]</span></span></p>
+<p>for <span class="math inline">\(a = \{u, v\}\)</span> (where <span class="math inline">\({IG}(q_a, r_a)\)</span> is the <em>inverse gamma</em> distribution with shape parameter <span class="math inline">\(q_a\)</span> and rate parameter <span class="math inline">\(r_a\)</span>).</p>
+<p><strong>Hyperparameters (fixed and specified)</strong>. The following hyperparameters are specified based on scientific assumptions or to correspond to “vague” prior distributions: <span class="math inline">\(\sigma^2_e,\)</span> <span class="math inline">\(\sigma^2_s,\)</span> <span class="math inline">\(\{\mu_{ab},\)</span> <span class="math inline">\(\sigma^2_{ab}:ab = uu,vv,uv,vu,up,vp\}\)</span>, <span class="math inline">\(\{q_a, r_a: a= u,v\}\)</span>, <span class="math inline">\(\boldsymbol{\mu}_{u,1}\)</span>, <span class="math inline">\(\boldsymbol{\mu}_{v,1}\)</span>, <span class="math inline">\(\sigma^2_{u,1}\)</span>, <span class="math inline">\(\sigma^2_{v,1}\)</span>. Specific values are given in the <code>R</code> example that follows.</p>
+<p><strong>Gibbs sampler</strong>. The BHM presented above is amenable to a Gibbs sampler MCMC implementation because all the full conditional distributions are available in closed form <span class="citation" data-cites="cressie2011statistics">(see <a href="references.html#ref-cressie2011statistics" role="doc-biblioref">Cressie &amp; Wikle, 2011, Chapter 8</a>, for details on how to derive full conditional distributions for spatio-temporal models)</span>. Recall from <a href="Chapter4.html#nte-algorithm-GibbsSampler" class="quarto-xref">Note&nbsp;<span>4.5</span></a> that the Gibbs sampler simply cycles through the full conditional distributions, sampling each variable given the most recent samples. The Gibbs sampler for the BHM of the Mediterranean winds data is outlined in <a href="#nte-algorithm-MedWindGibbsSampler" class="quarto-xref">Note&nbsp;<span>E.1</span></a>, where the equation numbers correspond to the full conditional distributions presented in the next section.</p>
+<div id="nte-algorithm-MedWindGibbsSampler" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;E.1: Gibbs Sampler for BHM of Mediterranean winds data set
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Select hyperparameters:</strong> <span class="math inline">\(\sigma^2_e\)</span>, <span class="math inline">\(\sigma^2_s\)</span>, <span class="math inline">\(\{\mu_{ab}, \sigma^2_{ab}:ab = uu,vv,uv,vu,up,vp \}\)</span>, <span class="math inline">\(\{q_a, r_a: a=u,v\}\)</span>, <span class="math inline">\(\boldsymbol{\mu}_{u,1}\)</span>, <span class="math inline">\(\boldsymbol{\mu}_{v,1}\)</span>, <span class="math inline">\(\sigma^2_{u,1}\)</span>, <span class="math inline">\(\sigma^2_{v,1}\)</span></p>
+<p><strong>Select initial values:</strong> <span class="math inline">\(\{\mathbf{u}^{(0)}_t: \, t=2,\ldots,T \}\)</span>, <span class="math inline">\(\{\mathbf{v}^{(0)}_t: \, t=1,\ldots,T \}\)</span>, <span class="math inline">\(\theta_{uu}^{(0)}\)</span>, <span class="math inline">\(\theta_{vv}^{(0)}\)</span>, <span class="math inline">\(\theta_{uv}^{(0)}\)</span>, <span class="math inline">\(\theta_{vu}^{(0)}\)</span>, <span class="math inline">\(\theta_{up}^{(0)}\)</span>, <span class="math inline">\(\theta_{vp}^{(0)}\)</span>, <span class="math inline">\(\sigma_u^{2(0)}\)</span>, <span class="math inline">\(\sigma_v^{2(0)}\)</span></p>
+<p><strong>for</strong> <span class="math inline">\(\; \; i=1,2,\ldots, N_{\mathrm{gibbs}}\)</span> <strong>do</strong></p>
+<ol type="1">
+<li><p>using <a href="#eq-FCu12" class="quarto-xref">Equation&nbsp;<span>E.15</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\small
+\mathbf{u}^{(i)}_1 | \mathbf{v}^{(i-1)}_1, \mathbf{u}^{(i-1)}_2, \mathbf{v}^{(i-1)}_2, \theta_{vu}^{(i-1)}, \theta_{uu}^{(i-1)}, \theta_{uv}^{(i-1)}, \theta_{vv}^{(i-1)}, \theta_{vp}^{(i-1)}, \theta_{up}^{(i-1)}, \sigma_u^{2(i-1)}, \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCut2" class="quarto-xref">Equation&nbsp;<span>E.16</span></a> for <span class="math inline">\(t=2,\ldots,T-1\)</span>, <strong>sample from</strong></p>
+<p><span class="math display">\[\begin{eqnarray*}
+\; &amp; \; &amp; \; \mathbf{u}^{(i)}_t | \mathbf{u}^{(i)}_{t-1}, \mathbf{u}^{(i-1)}_{t+1}, \mathbf{v}^{(i-1)}_{t-1}, \mathbf{v}^{(i-1)}_t, \mathbf{v}^{(i-1)}_{t+1}, \theta_{vu}^{(i-1)}, \theta_{uu}^{(i-1)}, \theta_{uv}^{(i-1)}, \theta_{vv}^{(i-1)}, \nonumber \\
+\; &amp; \; &amp; \;\;\;\;\;\;\;\;\;\;\;\;  \theta_{vp}^{(i-1)}, \theta_{up}^{(i-1)},  \sigma_u^{2(i-1)}, \sigma_v^{2(i-1)}
+\end{eqnarray*}\]</span></p></li>
+<li><p>using <a href="#eq-FCuT2" class="quarto-xref">Equation&nbsp;<span>E.17</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\mathbf{u}^{(i)}_T | \mathbf{u}^{(i)}_{T-1}, \mathbf{v}^{(i-1)}_{T-1},  \theta_{uu}^{(i-1)}, \theta_{uv}^{(i-1)},  \theta_{up}^{(i-1)},  \sigma_u^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCv12" class="quarto-xref">Equation&nbsp;<span>E.18</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[\small
+\mathbf{v}^{(i)}_1 | \mathbf{u}^{(i)}_1, \mathbf{u}^{(i)}_2, \mathbf{v}^{(i-1)}_2, \theta_{uv}^{(i-1)}, \theta_{uu}^{(i-1)}, \theta_{vu}^{(i-1)}, \theta_{vv}^{(i-1)}, \theta_{up}^{(i-1)}, \theta_{vp}^{(i-1)}, \sigma_u^{2(i-1)}, \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCvt2" class="quarto-xref">Equation&nbsp;<span>E.19</span></a> for <span class="math inline">\(t=2,\ldots,T-1\)</span>, <strong>sample from</strong></p>
+<p><span class="math display">\[\small
+\mathbf{v}^{(i)}_t | \mathbf{u}^{(i)}_t, \mathbf{u}^{(i)}_{t-1}, \mathbf{u}^{(i)}_{t+1}, \mathbf{v}^{(i)}_{t-1},  \mathbf{v}^{(i-1)}_{t+1}, \theta_{vu}^{(i-1)}, \theta_{uu}^{(i-1)}, \theta_{uv}^{(i-1)}, \theta_{vv}^{(i-1)}, \theta_{vp}^{(i-1)}, \theta_{up}^{(i-1)},  \sigma_u^{2(i-1)}, \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCvT2" class="quarto-xref">Equation&nbsp;<span>E.20</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\mathbf{v}^{(i)}_T | \mathbf{u}^{(i)}_{T-1}, \mathbf{v}^{(i)}_{T-1},  \theta_{vv}^{(i-1)}, \theta_{vu}^{(i-1)},  \theta_{vp}^{(i-1)},  \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCthuu2" class="quarto-xref">Equation&nbsp;<span>E.21</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\theta_{uu}^{(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{uv}^{(i-1)}, \theta_{up}^{(i-1)}, \sigma_u^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCthvv2" class="quarto-xref">Equation&nbsp;<span>E.22</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\theta_{vv}^{(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{vu}^{(i-1)}, \theta_{vp}^{(i-1)}, \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCthuv2" class="quarto-xref">Equation&nbsp;<span>E.23</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\theta_{uv}^{(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{uu}^{(i)}, \theta_{up}^{(i-1)}, \sigma_u^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCthvu2" class="quarto-xref">Equation&nbsp;<span>E.24</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\theta_{vu}^{(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{vv}^{(i)}, \theta_{vp}^{(i-1)}, \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCthup2" class="quarto-xref">Equation&nbsp;<span>E.25</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\theta_{up}^{(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{uu}^{(i)}, \theta_{uv}^{(i)}, \sigma_u^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCthvp2" class="quarto-xref">Equation&nbsp;<span>E.26</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\theta_{vp}^{(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{vv}^{(i)}, \theta_{vu}^{(i)}, \sigma_v^{2(i-1)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCs2u2" class="quarto-xref">Equation&nbsp;<span>E.27</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\sigma_u^{2(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{uu}^{(i)}, \theta_{uv}^{(i)}, \theta_{up}^{(i)}
+\]</span></p></li>
+<li><p>using <a href="#eq-FCs2v2" class="quarto-xref">Equation&nbsp;<span>E.28</span></a>, <strong>sample from</strong></p>
+<p><span class="math display">\[
+\sigma_v^{2(i)} | \{\mathbf{u}^{(i)}_t: t=1,\ldots,T\}, \{\mathbf{v}^{(i)}_t: t=1,\ldots,T\}, \theta_{vv}^{(i)}, \theta_{vu}^{(i)}, \theta_{vp}^{(i)}
+\]</span></p></li>
+</ol>
+<p><strong>end for</strong></p>
+</div>
+</div>
+<p><strong>Full Conditional Distributions.</strong> Readers be warned that this material is very technical! The full conditional distributions for the Gibbs sampler presented in <a href="#nte-algorithm-MedWindGibbsSampler" class="quarto-xref">Note&nbsp;<span>E.1</span></a> are included here for advanced readers. For more examples in the spatio-temporal context, see <span class="citation" data-cites="cressie2011statistics">(<a href="references.html#ref-cressie2011statistics" role="doc-biblioref">Cressie &amp; Wikle, 2011, Chapter 8</a>)</span>, and for other examples see <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="references.html#ref-gelman2013bayesian" role="doc-biblioref">2014</a>)</span>. In the representation to follow, <span class="math inline">\([equation\ number]_t\)</span> corresponds to the distribution associated with the equation number above, where the variable on the left side of the conditioning symbol is given at time <span class="math inline">\(t\)</span>. When referring to the parameter model, <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> and <a href="#eq-sig2a2" class="quarto-xref">Equation&nbsp;<span>E.14</span></a>, the notation <span class="math inline">\([equation\ number]_{ab}\)</span> and <span class="math inline">\([equation\ number]_a\)</span> correspond to the specific parameter distribution given by <span class="math inline">\(ab = \{uu, vv, uv, vu, up, vp\}\)</span> or <span class="math inline">\(a = \{u, v\}\)</span>, respectively.</p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\mathbf{u}_1\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\mathbf{u}_1 | \cdot] \propto [\)</span> <a href="#eq-Eu2" class="quarto-xref">Equation&nbsp;<span>E.5</span></a> <span class="math inline">\(]_1 \times [\)</span> <a href="#eq-Su2" class="quarto-xref">Equation&nbsp;<span>E.7</span></a> <span class="math inline">\(]_1 \times [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_2 \times [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_2 \times [\)</span> <a href="#eq-u12" class="quarto-xref">Equation&nbsp;<span>E.11</span></a> <span class="math inline">\(]\)</span></p>
+</div>
+<p><span id="eq-FCu12"><span class="math display">\[
+  \mathbf{u}_1 | \cdot \sim Gau(\mathbf{A}_{u,1} \mathbf{b}_{u,1}, \mathbf{A}_{u,1})
+   \tag{E.15}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+  \begin{aligned}
+  \mathbf{A}_{u,1}\equiv &amp;\left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,1}' \mathbf{H}_{s,1}/\sigma^2_s + \theta_{vu}^2 \, \mathbf{I}/\sigma^2_v + \theta_{uu}^2 \, \mathbf{I}/\sigma^2_u +  \mathbf{I}/\sigma^2_{u,1} \right)^{-1},\\
+  \mathbf{b}_{u,1}\equiv &amp;\left(\mathbf{E}_{u,1}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{u,1}' \mathbf{H}_{s,1}/\sigma^2_s +  (\mathbf{v}_2 - \mathbf{c}_{v,1})' \theta_{vu}/\sigma^2_v \right.\\
+  &amp;~~~\left.+ (\mathbf{u}_2 - \mathbf{c}_{u,1})' \theta_{uu}/\sigma^2_u + \boldsymbol{\mu}_{u,1}'/\sigma^2_{u,1}   \right)',
+  \end{aligned}
+  \]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+  \mathbf{c}_{u,1} \equiv \theta_{uv} \mathbf{v}_1  + \theta_{up} \mathbf{D}_x \mathbf{P}_1,
+  \]</span></p>
+<p><span class="math display">\[
+  \mathbf{c}_{v,1} \equiv \theta_{vv} \mathbf{v}_1  + \theta_{vp} \mathbf{D}_y \mathbf{P}_1.
+  \]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\mathbf{u}_t, t=2,\ldots,T-1\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\mathbf{u}_t | \cdot] \propto [\)</span> <a href="#eq-Eu2" class="quarto-xref">Equation&nbsp;<span>E.5</span></a> <span class="math inline">\(]_t \times [\)</span> <a href="#eq-Su2" class="quarto-xref">Equation&nbsp;<span>E.7</span></a> <span class="math inline">\(]_t \times [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t}\)</span></p>
+</div>
+<p><span id="eq-FCut2"><span class="math display">\[
+  \mathbf{u}_t | \cdot \sim Gau(\mathbf{A}_{u,t} \mathbf{b}_{u,t}, \mathbf{A}_{u,t})
+   \tag{E.16}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+  \mathbf{A}_{u,t} \equiv \left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,t}' \mathbf{H}_{s,t}/\sigma^2_s + \theta_{vu}^2 \, \mathbf{I}/\sigma^2_v + \theta_{uu}^2 \, \mathbf{I}/\sigma^2_u + \mathbf{I}/\sigma^2_{u}  \right)^{-1},
+  \]</span></p>
+<p><span class="math display">\[
+  \begin{aligned}
+  \mathbf{b}_{u,t} \equiv &amp; (\mathbf{E}_{u,t}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{u,t}' \mathbf{H}_{s,t}/\sigma^2_s + (\mathbf{v}_{t+1} - \mathbf{c}_{v,t})' \theta_{vu}/\sigma^2_v  + (\mathbf{u}_{t+1} - \mathbf{c}_{u,t})' \theta_{uu}/\sigma^2_u. \\
+  &amp; ~~~ +  (\mathbf{c}_{u,t-1} + \theta_{uu} \mathbf{u}_{t-1})'/\sigma^2_u  )',
+  \end{aligned}
+  \]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+  \mathbf{c}_{v,t} \equiv \theta_{vv} \mathbf{v}_t  + \theta_{vp} \mathbf{D}_y \mathbf{P}_t,
+  \]</span></p>
+<p><span class="math display">\[
+  \mathbf{c}_{u,t} \equiv \theta_{uv} \mathbf{v}_t + \theta_{up} \mathbf{D}_x \mathbf{P}_t,
+  \]</span></p>
+<p><span class="math display">\[
+  \mathbf{c}_{u,t-1} \equiv \theta_{uv} \mathbf{v}_{t-1} + \theta_{up} \mathbf{D}_x \mathbf{P}_{t-1}.
+  \]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\mathbf{u}_T\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\mathbf{u}_T | \cdot] \propto [\)</span> <a href="#eq-Eu2" class="quarto-xref">Equation&nbsp;<span>E.5</span></a> <span class="math inline">\(]_T \times [\)</span> <a href="#eq-Su2" class="quarto-xref">Equation&nbsp;<span>E.7</span></a> <span class="math inline">\(]_T \times [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{T}\)</span></p>
+</div>
+<p><span id="eq-FCuT2"><span class="math display">\[
+\mathbf{u}_T | \cdot \sim Gau(\mathbf{A}_{u,T} \mathbf{b}_{u,T}, \mathbf{A}_{u,T})
+\tag{E.17}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathbf{A}_{u,T} &amp;\equiv \left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,T}' \mathbf{H}_{s,T}/\sigma^2_s + \mathbf{I}/ \sigma^2_{u}  \right)^{-1}, \\
+\mathbf{b}_{u,T} &amp;\equiv (\mathbf{E}_{u,T}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{u,T}' \mathbf{H}_{s,T}/\sigma^2_s +   (\mathbf{c}_{u,T-1} + \theta_{uu} \mathbf{u}_{T-1})'/\sigma^2_u  )',  
+\end{align*}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{c}_{u,T-1} \equiv \theta_{uv} \mathbf{v}_{T-1} + \theta_{up} \mathbf{D}_x \mathbf{P}_{T-1}.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\mathbf{v}_1\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\mathbf{v}_1 | \cdot] \propto [\)</span> <a href="#eq-Ev2" class="quarto-xref">Equation&nbsp;<span>E.6</span></a> <span class="math inline">\(]_1 \times [\)</span> <a href="#eq-Sv2" class="quarto-xref">Equation&nbsp;<span>E.8</span></a> <span class="math inline">\(]_1 \times [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_2 \times [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_2 \times [\)</span> <a href="#eq-v12" class="quarto-xref">Equation&nbsp;<span>E.12</span></a> <span class="math inline">\(]\)</span></p>
+</div>
+<p><span id="eq-FCv12"><span class="math display">\[
+\mathbf{v}_1 | \cdot \sim Gau(\mathbf{A}_{v,1} \mathbf{b}_{v,1}, \mathbf{A}_{v,1})
+\tag{E.18}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathbf{A}_{v,1} &amp;\equiv \left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,1}' \mathbf{H}_{s,1}/\sigma^2_s + \theta_{uv}^2 \, \mathbf{I}/\sigma^2_u + \theta_{vv}^2 \, \mathbf{I}/\sigma^2_v +   \, \mathbf{I}/\sigma^2_{v,1}  \right)^{-1}, \\
+\mathbf{b}_{v,1} &amp;\equiv \left(\mathbf{E}_{v,1}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{v,1}' \mathbf{H}_{s,1}/\sigma^2_s +  (\mathbf{u}_2 - \mathbf{c}_{u,1})' \theta_{uv}/\sigma^2_u  \right. \\
+&amp;~~~~ \left. + (\mathbf{v}_2 - \mathbf{c}_{v,1})' \theta_{vv}/\sigma^2_v + \boldsymbol{\mu}_{v,1}'/\sigma^2_{v,1}   \right)',  
+\end{align*}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathbf{c}_{v,1} &amp;\equiv \theta_{vu} \mathbf{u}_1  + \theta_{vp} \mathbf{D}_y \mathbf{P}_1, \\
+\mathbf{c}_{u,1} &amp;\equiv \theta_{uu} \mathbf{u}_1  + \theta_{up} \mathbf{D}_x \mathbf{P}_1.
+\end{align*}
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\mathbf{v}_t,\ t=2,\ldots,T-1\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\mathbf{v}_t | \cdot] \propto [\)</span> <a href="#eq-Ev2" class="quarto-xref">Equation&nbsp;<span>E.6</span></a> <span class="math inline">\(]_t \times [\)</span> <a href="#eq-Sv2" class="quarto-xref">Equation&nbsp;<span>E.8</span></a> <span class="math inline">\(]_t \times [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t}\)</span></p>
+</div>
+<p><span id="eq-FCvt2"><span class="math display">\[
+\mathbf{v}_t | \cdot \sim Gau(\mathbf{A}_{v,t} \mathbf{b}_{v,t}, \mathbf{A}_{v,t})
+\tag{E.19}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathbf{A}_{v,t} \equiv &amp;\left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,t}' \mathbf{H}_{s,t}/\sigma^2_s + \theta_{uv}^2 \, \mathbf{I}/\sigma^2_u + \theta_{vv}^2 \, \mathbf{I}/\sigma^2_v +  \, \mathbf{I}/\sigma^2_{v}  \right)^{-1}, \\
+\mathbf{b}_{v,t} \equiv &amp;(\mathbf{E}_{v,t}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{v,t}' \mathbf{H}_{s,t}/\sigma^2_s +  (\mathbf{u}_{t+1} - \mathbf{c}_{u,t})' \theta_{uv}/\sigma^2_u  + (\mathbf{v}_{t+1} - \mathbf{c}_{v,t})' \theta_{vv}/\sigma^2_v \\ &amp;+  (\mathbf{c}_{v,t-1} + \theta_{vv} \mathbf{v}_{t-1})'/\sigma^2_v  )',  
+\end{align*}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\begin{align*}
+\mathbf{c}_{u,t} &amp;\equiv \theta_{uu} \mathbf{u}_t  + \theta_{up} \mathbf{D}_x \mathbf{P}_t,\\
+\mathbf{c}_{v,t} &amp;\equiv \theta_{vu} \mathbf{u}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t,\\
+\mathbf{c}_{v,t-1} &amp;\equiv \theta_{vu} \mathbf{u}_{t-1} + \theta_{vp} \mathbf{D}_y \mathbf{P}_{t-1}.
+\end{align*}
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\mathbf{v}_T\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\mathbf{v}_T | \cdot] \propto [\)</span> <a href="#eq-Ev2" class="quarto-xref">Equation&nbsp;<span>E.6</span></a> <span class="math inline">\(]_T \times [\)</span> <a href="#eq-Sv2" class="quarto-xref">Equation&nbsp;<span>E.8</span></a> <span class="math inline">\(]_T \times [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{T}\)</span></p>
+</div>
+<p><span id="eq-FCvT2"><span class="math display">\[
+\mathbf{v}_T | \cdot \sim Gau(\mathbf{A}_{v,T} \mathbf{b}_{v,T}, \mathbf{A}_{v,T})
+\tag{E.20}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbf{A}_{v,T} \equiv \left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,T}' \mathbf{H}_{s,T}/\sigma^2_s +  \, \mathbf{I}/\sigma^2_{v}  \right)^{-1},
+\]</span></p>
+<p><span class="math display">\[
+\mathbf{b}_{v,T} \equiv (\mathbf{E}_{v,T}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{v,T}' \mathbf{H}_{s,T}/\sigma^2_s +   (\mathbf{c}_{v,T-1} + \theta_{vv} \mathbf{v}_{T-1})'/\sigma^2_v  )',
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{c}_{v,T-1} \equiv \theta_{vu} \mathbf{u}_{T-1} + \theta_{vp} \mathbf{D}_y \mathbf{P}_{T-1}.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\theta_{uu}\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\theta_{uu} | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> <span class="math inline">\(]_{(uu)}\)</span></p>
+</div>
+<p><span id="eq-FCthuu2"><span class="math display">\[
+\theta_{uu} | \cdot \sim Gau(A_{uu} b_{uu}, A_{uu})
+\tag{E.21}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+A_{uu} \equiv \left( \sum_{t=1}^{T-1} \mathbf{u}_t' \mathbf{u}_t /\sigma^2_{u} + 1/\sigma^2_{uu} \right)^{-1},
+\]</span></p>
+<p><span class="math display">\[
+b_{uu} \equiv  \sum_{t=1}^{T-1} (\mathbf{u}_{t+1} - \mathbf{k}_{v,t})' \mathbf{u}_t /\sigma^2_u + \mu_{uu}/\sigma^2_{uu},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{v,t} \equiv \theta_{uv} \mathbf{v}_t + \theta_{up} \mathbf{D}_x \mathbf{P}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\theta_{vv}\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\theta_{vv} | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> <span class="math inline">\(]_{(vv)}\)</span></p>
+</div>
+<p><span id="eq-FCthvv2"><span class="math display">\[
+\theta_{vv} | \cdot \sim Gau(A_{vv} b_{vv}, A_{vv})
+\tag{E.22}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+A_{vv} \equiv \left( \sum_{t=1}^{T-1} \mathbf{v}_t' \mathbf{v}_t /\sigma^2_{v} + 1/\sigma^2_{vv} \right)^{-1},
+\]</span></p>
+<p><span class="math display">\[
+b_{vv} \equiv  \sum_{t=1}^{T-1} (\mathbf{v}_{t+1} - \mathbf{k}_{u,t})' \mathbf{v}_t /\sigma^2_v + \mu_{vv}/\sigma^2_{vv},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{u,t} \equiv \theta_{vu} \mathbf{u}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\theta_{uv}\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\theta_{uv} | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> <span class="math inline">\(]_{(uv)}\)</span></p>
+</div>
+<p><span id="eq-FCthuv2"><span class="math display">\[
+\theta_{uv} | \cdot \sim Gau(A_{uv} b_{uv}, A_{uv})
+\tag{E.23}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+A_{uv} \equiv \left( \sum_{t=1}^{T-1} \mathbf{v}_t' \mathbf{v}_t /\sigma^2_{u} + 1/\sigma^2_{uv} \right)^{-1},
+\]</span></p>
+<p><span class="math display">\[
+b_{uv} \equiv  \sum_{t=1}^{T-1} (\mathbf{u}_{t+1} - \mathbf{k}_{u,t})' \mathbf{v}_t /\sigma^2_u + \mu_{uv}/\sigma^2_{uv},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{u,t} \equiv \theta_{uu} \mathbf{u}_t + \theta_{up} \mathbf{D}_x \mathbf{P}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\theta_{vu}\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\theta_{vu} | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> <span class="math inline">\(]_{(vu)}\)</span></p>
+</div>
+<p><span id="eq-FCthvu2"><span class="math display">\[
+\theta_{vu} | \cdot \sim Gau(A_{vu} b_{vu}, A_{vu})
+\tag{E.24}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+A_{vu} \equiv \left( \sum_{t=1}^{T-1} \mathbf{u}_t' \mathbf{u}_t /\sigma^2_{v} + 1/\sigma^2_{vu} \right)^{-1},
+\]</span></p>
+<p><span class="math display">\[
+b_{vu} \equiv  \sum_{t=1}^{T-1} (\mathbf{v}_{t+1} - \mathbf{k}_{v,t})' \mathbf{u}_t /\sigma^2_v + \mu_{vu}/\sigma^2_{vu},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{v,t} \equiv \theta_{vv} \mathbf{v}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\theta_{up}\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\theta_{up} | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> <span class="math inline">\(]_{(up)}\)</span></p>
+</div>
+<p><span id="eq-FCthup2"><span class="math display">\[
+\theta_{up} | \cdot \sim Gau(A_{up} b_{up}, A_{up})
+\tag{E.25}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+A_{up} \equiv \left( \sum_{t=1}^{T-1} (\mathbf{D}_x \mathbf{P}_t)'  (\mathbf{D}_x \mathbf{P}_t) /\sigma^2_{u} + 1/\sigma^2_{up} \right)^{-1},
+\]</span> <span class="math display">\[
+b_{up} \equiv  \sum_{t=1}^{T-1} (\mathbf{u}_{t+1} - \mathbf{k}_{u,t})' \mathbf{D}_x \mathbf{P}_t /\sigma^2_u + \mu_{up}/\sigma^2_{up},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{u,t} \equiv \theta_{uu} \mathbf{u}_t + \theta_{uv} \mathbf{v}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\theta_{vp}\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\theta_{vp} | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a> <span class="math inline">\(]_{(vp)}\)</span></p>
+</div>
+<p><span id="eq-FCthvp2"><span class="math display">\[
+\theta_{vp} | \cdot \sim Gau(A_{vp} b_{vp}, A_{vp})
+\tag{E.26}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+A_{vp} \equiv \left( \sum_{t=1}^{T-1} (\mathbf{D}_y \mathbf{P}_t)'  (\mathbf{D}_y \mathbf{P}_t) /\sigma^2_{v} + 1/\sigma^2_{vp} \right)^{-1},
+\]</span> <span class="math display">\[
+b_{vp} \equiv  \sum_{t=1}^{T-1} (\mathbf{v}_{t+1} - \mathbf{k}_{v,t})' \mathbf{D}_y \mathbf{P}_t /\sigma^2_v + \mu_{vp}/\sigma^2_{vp},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{v,t} \equiv \theta_{vv} \mathbf{u}_t + \theta_{vu} \mathbf{u}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\sigma^2_u\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\sigma^2_u | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-uproc2" class="quarto-xref">Equation&nbsp;<span>E.9</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-sig2a2" class="quarto-xref">Equation&nbsp;<span>E.14</span></a> <span class="math inline">\(]_{(u)}\)</span></p>
+</div>
+<p><span id="eq-FCs2u2"><span class="math display">\[
+\sigma^2_u | \cdot \sim IG(q_{\mathrm{new},u},r_{\mathrm{new},u})
+\tag{E.27}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+q_{\mathrm{new},u} = q_u + (T-1)n_g /2,  
+\]</span> <span class="math display">\[
+r_{\mathrm{new},u} = \left(\frac{1}{r_u} + \frac{1}{2} \sum_{t=1}^{T-1} (\mathbf{u}_{t+1} - \mathbf{k}_{u,t})' (\mathbf{u}_{t+1} - \mathbf{k}_{u,t})  \right)^{-1},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{u,t} \equiv \theta_{uu} \mathbf{u}_t + \theta_{uv} \mathbf{v}_t + \theta_{up} \mathbf{D}_x \mathbf{P}_t.
+\]</span></p>
+<ul>
+<li>Full conditional distribution for <span class="math inline">\(\sigma^2_v\)</span>:</li>
+</ul>
+<div class="text-center">
+<p><span class="math inline">\([\sigma^2_v | \cdot] \propto \prod_{t=1}^{T-1} [\)</span> <a href="#eq-vproc2" class="quarto-xref">Equation&nbsp;<span>E.10</span></a> <span class="math inline">\(]_{t+1} \times [\)</span> <a href="#eq-sig2a2" class="quarto-xref">Equation&nbsp;<span>E.14</span></a> <span class="math inline">\(]_{(v)}\)</span></p>
+</div>
+<p><span id="eq-FCs2v2"><span class="math display">\[
+\sigma^2_v | \cdot \sim IG(q_{\mathrm{new},v},r_{\mathrm{new},v})
+\tag{E.28}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+q_{\mathrm{new},v} = q_v + (T-1)n_g /2,  
+\]</span> <span class="math display">\[
+r_{\mathrm{new},v} = \left(\frac{1}{r_v} + \frac{1}{2} \sum_{t=1}^{T-1} (\mathbf{v}_{t+1} - \mathbf{k}_{v,t})' (\mathbf{v}_{t+1} - \mathbf{k}_{v,t})  \right)^{-1},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\mathbf{k}_{v,t} \equiv \theta_{vv} \mathbf{v}_t + \theta_{vu} \mathbf{u}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t.
+\]</span></p>
+<section id="implementation-in-r" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="implementation-in-r">Implementation in <code>R</code></h3>
+<section id="r-preliminaries" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="r-preliminaries"><code>R</code> Preliminaries</h4>
+<p>We will need the <strong>Matrix</strong> package because the BHM Gibbs sampler uses sparse matrices, and <strong>ggquiver</strong> and <strong>ggmap</strong> to make “quiver” plots of the wind vectors on a map of the Mediterranean region.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"Matrix"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggmap"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggquiver"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"STRbook"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The functions needed for this case study are provided with <strong>STRbook</strong>. Two functions designed to work for this specific application are <code>Medwind_BHM_preproc</code> and <code>Medwind_BHM</code>, which we describe in more detail below. Their purpose is to show that this realistic, complex, science-motivated spatio-temporal BHM can be analyzed in <code>R</code> using the dynamical approach described in Chapter 5. It is worth browsing through the code of these functions to see how it is implemented (visit <a href="https://github.com/andrewzm/STRbook">https://github.com/andrewzm/STRbook</a>).</p>
+</section>
+<section id="preprocessing-the-data-and-model-setup" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="preprocessing-the-data-and-model-setup">Preprocessing the Data and Model Setup</h4>
+<p>The function <code>Medwind_BHM_preproc</code> is a preprocessor function that takes the following as arguments:</p>
+<ul>
+<li><code>Edat</code>: A list of four items
+<ul>
+<li><code>ECMWFxylocs</code>: Data frame containing the <span class="math inline">\((x,y)\)</span> coordinates on which the wind vectors and pressures are defined</li>
+<li><code>EUdat</code>: Data frame containing the east–west (<span class="math inline">\(u\)</span>) component of the ECMWF wind vector (in units of m/s) in time-wide format</li>
+<li><code>EVdat</code>: Data frame containing the north–south (<span class="math inline">\(v\)</span>) component of the ECMWF wind vector (in units of m/s) in time-wide format</li>
+<li><code>EPdat</code>: Data frame containing the ECMWF atmospheric pressure (in pascals (Pa)) in time-wide format.</li>
+</ul></li>
+<li><code>Sdat</code>: A list of three items
+<ul>
+<li><code>Sxylocs</code>: A list of items (one per time point) containing the spatial locations (for each time point) of the scatterometer data</li>
+<li><code>SUdat</code>: The east–west (<span class="math inline">\(u\)</span>) component of the QuikSCAT wind vector (in units of m/s)</li>
+<li><code>SVdat</code>: The north–south (<span class="math inline">\(v\)</span>) component of the QuikSCAT wind vector (in units of m/s)</li>
+</ul></li>
+<li><code>Predlocs</code>: Data frame containing the <span class="math inline">\((x,y)\)</span> coordinates of the spatial prediction grid.</li>
+<li><code>Inparm</code>: Other parameters for the Gibbs sampler, discussed further below.</li>
+</ul>
+<p>The data objects required for this application, <code>Edat</code>, <code>Sdat</code>, and <code>Predlocs</code>, can be loaded from <strong>STRbook</strong> as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Medwind_data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The data here correspond to 28 time periods from 00:00 UTC on 29 January 2005 to 18:00 UTC on 04 February 2005 (every 6 hours). The ECMWF analysis winds and pressure are on a <span class="math inline">\(0.5^\circ \times 0.5^\circ\)</span> grid and the QuikSCAT scatterometer winds are polar-orbiting satellite observations at a finer resolution <span class="citation" data-cites="milliff2011ocean">(see the description in <a href="references.html#ref-milliff2011ocean" role="doc-biblioref">Milliff et al., 2011</a>)</span>. There are typically no QuikSCAT observations in the prediction domain considered here at 00:00 UTC and 12:00 UTC. The prediction grid consists of 1035 (<span class="math inline">\(n_y = 23\)</span>, <span class="math inline">\(n_x = 45\)</span>) grid locations with a <span class="math inline">\(0.5^\circ\)</span> spacing; this prediction grid coincides with the interior grid points of the ECMWF domain; see <a href="Chapter2.html#sec-STdata" class="quarto-xref"><span>Section 2.1</span></a> for more details.</p>
+<p>The preprocessor argument <code>Inparm</code> is a list of several parameters. These parameters are associated with the prediction grid, the distance to search for data near prediction-grid locations, and hyperparameters for the parameter model (prior) distributions. In particular, the item <code>gspdeg</code> is the prediction-grid spacing in degrees, and <code>srad</code> and <code>erad</code> correspond to the distance (in degrees) to search for ECMWF and QuikSCAT data locations, respectively, centered on a prediction-grid location. So <code>srad = 0.5</code> would mean that we would identify all QuikSCAT observations within 0.25 degrees of a prediction-grid location. The values of <code>hx</code> and <code>hy</code> correspond to the average longitudinal and latitudinal spacing (in meters), respectively, between the prediction-grid locations. With regard to the fixed hyperparameters in <code>Inparm</code>, the variables <code>s2e</code> and <code>s2s</code> are the measurement-error variances for the ECMWF and QuikSCAT wind data (<span class="math inline">\(\sigma^2_e\)</span> and <span class="math inline">\(\sigma^2_s\)</span>), respectively, as given in the data-model equations <a href="#eq-Eu2" class="quarto-xref">Equation&nbsp;<span>E.5</span></a>–<a href="#eq-Sv2" class="quarto-xref">Equation&nbsp;<span>E.8</span></a>. These are assumed to be known <span class="citation" data-cites="milliff2011ocean">(<a href="references.html#ref-milliff2011ocean" role="doc-biblioref">Milliff et al., 2011</a>)</span>. The variables <code>mu_pri</code> and <code>s2_pri</code> corresponding to the normal-distribution-prior mean (<span class="math inline">\(\mu_{ab}\)</span>) and variance (<span class="math inline">\(\sigma^2_{ab}\)</span>) for the <span class="math inline">\(\theta\)</span> parameters, given in model <a href="#eq-theta_ab2" class="quarto-xref">Equation&nbsp;<span>E.13</span></a>, are also fixed (at <span class="math inline">\(0\)</span> and <span class="math inline">\(10^6\)</span>, respectively, corresponding to a vague prior for <span class="math inline">\(\theta_{ab}\)</span>). <code>IGshape</code> and <code>IGrate</code> are the prior shape (<span class="math inline">\(q_a\)</span>) and rate (<span class="math inline">\(r_a\)</span>) parameters, respectively, for an inverse gamma prior on the process-model error variances given in <a href="#eq-sig2a2" class="quarto-xref">Equation&nbsp;<span>E.14</span></a>; these are fixed at 1 and 1, respectively, corresponding to a vague prior for <span class="math inline">\(\sigma^2_a\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">##     parameters to control the grid, data search, and priors</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  preprocInput <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">gspdeg =</span> .<span class="dv">5</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">srad =</span> .<span class="dv">5</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">erad =</span> .<span class="dv">5</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">hx =</span> <span class="dv">2</span><span class="sc">*</span><span class="fl">19.42865</span><span class="sc">*</span><span class="dv">1000</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">hy =</span> <span class="dv">2</span><span class="sc">*</span><span class="fl">27.75</span><span class="sc">*</span><span class="dv">1000</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">s2s =</span> <span class="dv">1</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">s2e =</span> <span class="dv">10</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_pri =</span> <span class="dv">0</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">s2_pri =</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">IGshape =</span> <span class="dv">1</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">IGrate =</span> <span class="dv">1</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function <code>Medwind_BHM_preproc</code> takes the data and other parameters and then builds the data-model incidence matrices (<span class="math inline">\(\mathbf{H}_e\)</span>, <span class="math inline">\(\mathbf{H}_{s,t}\)</span>) given in equations <a href="#eq-Eu2" class="quarto-xref">Equation&nbsp;<span>E.5</span></a>–<a href="#eq-Sv2" class="quarto-xref">Equation&nbsp;<span>E.8</span></a>, and the difference operator matrices (<span class="math inline">\(\mathbf{D}_x\)</span>, <span class="math inline">\(\mathbf{D}_y\)</span>) given in equations <a href="#eq-Ueq1" class="quarto-xref">Equation&nbsp;<span>E.3</span></a> and <a href="#eq-Veq1" class="quarto-xref">Equation&nbsp;<span>E.4</span></a>, respectively. The returned list (denoted below as <code>Mpre</code>) contains the lists <code>Mdata</code> (data), <code>Mgrid</code> (grid), <code>Mpriors</code> (prior hyperparameters), and <code>Mstrt</code> (MCMC starting values). This list is used in the Gibbs sampler given in the next section. Recall that the Gibbs sampler is an MCMC algorithm that produces samples from the posterior distribution of all the “unknowns” given the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Mpre <span class="ot">&lt;-</span> <span class="fu">Medwind_BHM_preproc</span>(<span class="at">Edat =</span> Edat,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Sdat =</span> Sdat,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Predlocs =</span> Predlocs,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Inparm =</span> preprocInput)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="running-the-gibbs-sampler" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="running-the-gibbs-sampler">Running the Gibbs Sampler</h4>
+<p>This section provides the commands necessary to implement the Gibbs sampler presented in <a href="#nte-algorithm-MedWindGibbsSampler" class="quarto-xref">Note&nbsp;<span>E.1</span></a>. We specify the parameters that control the number of Gibbs sampler iterations (<code>ngibbs</code>), the number of burn-in samples (<code>nburn</code>), and the number of iterations to save in memory (<code>nreal</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>GibbsInput <span class="ot">=</span> <span class="fu">list</span>(<span class="at">ngibbs =</span> <span class="dv">10000</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nburn =</span> <span class="dv">1000</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nreal =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Gibbs sampler for this problem takes the arguments <code>GibbsInput</code>, defined as above, and the output of the pre-processor, <code>Mpre</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) <span class="co"># ensure reproducibility</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Mout <span class="ot">&lt;-</span> <span class="fu">Medwind_BHM</span>(GibbsInput, Mpre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The algorithm can take quite a long time to run in order to obtain a reasonable number of iterations. For this Lab, the output can be loaded directly from <strong>STRbook</strong>, if desired, as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Medwind_Gibbs_output"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Gibbs sampler function <code>Medwind_BHM</code> returns a list that includes posterior means, posterior standard deviations, and <code>nreal</code> realizations for the <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> wind components, as well as all of the iterations for the <span class="math inline">\(\theta\)</span> parameters and the process-model variances. Specifically, in this case, the list contains the following items:</p>
+<ul>
+<li><code>uS</code>: posterior mean of the <span class="math inline">\(u\)</span> components (1035 locations <span class="math inline">\(\times\)</span> 28 time points)</li>
+<li><code>vS</code>: posterior mean of the <span class="math inline">\(v\)</span> components (1035 locations <span class="math inline">\(\times\)</span> 28 time points)</li>
+<li><code>uSTD</code>: posterior standard deviation of the <span class="math inline">\(u\)</span> components (1035 locations <span class="math inline">\(\times\)</span> 28 time points)</li>
+<li><code>vSTD</code>: posterior standard deviation of the <span class="math inline">\(v\)</span> components (1035 locations <span class="math inline">\(\times\)</span> 28 time points)</li>
+<li><code>uSreal</code>: <code>nreal</code> realizations of all 1035 <span class="math inline">\(\times\)</span> 28 locations/time points for the <span class="math inline">\(u\)</span> components (list)</li>
+<li><code>vSreal</code>: <code>nreal</code> realizations of all 1035 <span class="math inline">\(\times\)</span> 28 locations/time points for the <span class="math inline">\(v\)</span> components (list)</li>
+<li><code>theta_xxS</code> (<code>xx = uu,vv,uv,vu,up,vp</code>): <code>ngibbs</code> samples for the <span class="math inline">\(\theta\)</span> parameters</li>
+<li><code>s2uS,s2vS</code>: <code>ngibbs</code> samples for the variance parameters.</li>
+</ul>
+<p>We reiterate that both the pre-processor and the Gibbs sampler functions are specifically designed for this BHM fitted to the Mediterranean winds data. They would need substantial modification for different BHMs fitted to different data sets using different space-time grids. Advanced readers could examine and modify the code contained in the <strong>STRbook</strong> package for their applications.</p>
+</section>
+<section id="examining-the-model-output" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="examining-the-model-output">Examining the Model Output</h4>
+<p>It is customary to plot the Gibbs sampler output against iteration number of the Gibbs sampler, to provide visual evidence that the samples have reasonably converged. More formal diagnostics for MCMC convergence can be found in the <strong>coda</strong> package. In <a href="#fig-BHM_trace" class="quarto-xref">Figure&nbsp;<span>E.1</span></a>, we plot the post burn-in samples for <span class="math inline">\(\theta_{up}\)</span> and <span class="math inline">\(\sigma^2_{u}\)</span> as a demonstration of the code and the graphics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>indx <span class="ot">&lt;-</span> (GibbsInput<span class="sc">$</span>nburn<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>GibbsInput<span class="sc">$</span>ngibbs <span class="co">#plot post "burn-in"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">indx =</span> indx,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">theta_up =</span> Mout<span class="sc">$</span>theta_upS[indx]),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> indx,<span class="at">y =</span> theta_up)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ylab</span>(<span class="fu">expression</span>(theta[up])) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">indx =</span> indx, <span class="at">s2u =</span> Mout<span class="sc">$</span>s2uS[indx]),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> indx,<span class="at">y =</span> s2u)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ylab</span>(<span class="fu">expression</span>(sigma[vu]<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-BHM_trace" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BHM_trace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./img/Chapter_5/BHM_trace.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BHM_trace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;E.1: Post burn-in trace plots for MCMC samples from the posterior distribution, plotted against iteration number <code>indx</code>. Top: MCMC samples for <span class="math inline">\(\theta_{up}\)</span>. Bottom: MCMC samples for <span class="math inline">\(\sigma^2_{vu}\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>For inference on the model’s parameters, we are usually interested in their marginal posterior distributions. In the top-left panel of <a href="#fig-BHM_post" class="quarto-xref">Figure&nbsp;<span>E.2</span></a>, we plot the posterior distribution for <span class="math inline">\(\theta_{up}\)</span> and give the code below; coding for the other parameters in the process-model equations <a href="#eq-Ueq1" class="quarto-xref">Equation&nbsp;<span>E.3</span></a> and <a href="#eq-Veq1" class="quarto-xref">Equation&nbsp;<span>E.4</span></a> proceeds in a similar fashion.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">theta_up =</span> Mout<span class="sc">$</span>theta_upS[indx]),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> theta_up)) <span class="sc">+</span> <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(theta_up)),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">xlab</span>(<span class="fu">expression</span>(theta[up])) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-BHM_post" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BHM_post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./img/Chapter_5/BHM_post_parms.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BHM_post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;E.2: The marginal posterior distributions (after applying a kernel smoother to the MCMC samples) for the process-model parameters. The red dashed line shows the posterior mean for each distribution.
+</figcaption>
+</figure>
+</div>
+<p>Finally, the main goal in this case study was to fuse the ECMWF and QuikSCAT wind observations to generate a posterior probability distribution on wind speeds. In <a href="#fig-post_quiver14" class="quarto-xref">Figure&nbsp;<span>E.3</span></a>, we plot the posterior mean and a posterior realization quiver plot for the winds for 06:00 UTC on 01 February 2005, using the following code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rnaturalearth"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract mean</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>u14 <span class="ot">&lt;-</span> Mout<span class="sc">$</span>uS[, <span class="dv">14</span>]              <span class="co">#time 14 is Feb 1, 2005 06 UTC</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>v14 <span class="ot">&lt;-</span> Mout<span class="sc">$</span>vS[, <span class="dv">14</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract realization</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>u14r <span class="ot">&lt;-</span> Mout<span class="sc">$</span>uSreal[[<span class="dv">5</span>]][, <span class="dv">14</span>]    <span class="co">#consider the 5th realization</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>v14r <span class="ot">&lt;-</span> Mout<span class="sc">$</span>vSreal[[<span class="dv">5</span>]][, <span class="dv">14</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Get map using get_map</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>lat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">34</span>, <span class="dv">45</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="dv">16</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Create grid on which to plot</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>xg <span class="ot">&lt;-</span> Mpre<span class="sc">$</span>Mgrid<span class="sc">$</span>Mgridxylocs[, <span class="dv">1</span>]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>yg <span class="ot">&lt;-</span> Mpre<span class="sc">$</span>Mgrid<span class="sc">$</span>Mgridxylocs[, <span class="dv">2</span>]</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">&lt;-</span>  <span class="fu">expand.grid</span>(<span class="at">x =</span> <span class="fu">seq</span>(long[<span class="dv">1</span>], long[<span class="dv">2</span>], <span class="fl">0.5</span>),</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> <span class="fu">seq</span>(lat[<span class="dv">1</span>], lat[<span class="dv">2</span>], <span class="fl">0.5</span>))</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct land and ocean polygons</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>land <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>ocean <span class="ot">&lt;-</span> <span class="fu">ne_download</span>(</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="st">"medium"</span>,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"ocean"</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">category =</span> <span class="st">"physical"</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">returnclass =</span> <span class="st">"sf"</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot the posterior mean and realization</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_sf</span>(<span class="at">data =</span> ocean, <span class="at">fill =</span> <span class="st">"#7EC8E3"</span>, <span class="at">colour =</span> <span class="cn">NA</span>) <span class="sc">+</span>  <span class="co"># blue ocean</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_sf</span>(<span class="at">data =</span> land,  <span class="at">fill =</span> <span class="st">"#F5E5D0"</span>, <span class="at">colour =</span> <span class="st">"grey60"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_quiver</span>(<span class="at">data =</span> c2,</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> xg, <span class="at">y =</span> yg, <span class="at">u =</span> u14, <span class="at">v =</span> v14),</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>                <span class="at">vecsize =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>                <span class="fu">coord_sf</span>(<span class="at">xlim =</span> long, <span class="at">ylim =</span> lat)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_sf</span>(<span class="at">data =</span> ocean, <span class="at">fill =</span> <span class="st">"#7EC8E3"</span>, <span class="at">colour =</span> <span class="cn">NA</span>) <span class="sc">+</span>  <span class="co"># blue ocean</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_sf</span>(<span class="at">data =</span> land,  <span class="at">fill =</span> <span class="st">"#F5E5D0"</span>, <span class="at">colour =</span> <span class="st">"grey60"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_quiver</span>(<span class="at">data =</span> c2,</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> xg, <span class="at">y =</span> yg, <span class="at">u =</span> u14r, <span class="at">v =</span> v14r),</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>                <span class="at">vecsize =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>        <span class="fu">coord_sf</span>(<span class="at">xlim =</span> long, <span class="at">ylim =</span> lat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-post_quiver14" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-post_quiver14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./img/Chapter_5/BHM_post_quiver.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_quiver14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;E.3: Quiver plots derived from the posterior distribution of winds for 06:00 UTC on 01 February 2005. Top: Posterior mean. Bottom: A single realization from the posterior distribution.
+</figcaption>
+</figure>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-cressie2011statistics" class="csl-entry" role="listitem">
+Cressie, N., &amp; Wikle, C. K. (2011). <em>Statistics for spatio-temporal data</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-gelman2013bayesian" class="csl-entry" role="listitem">
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., &amp; Rubin, D. B. (2014). <em>Bayesian data analysis</em> (3rd ed.). Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-milliff2011ocean" class="csl-entry" role="listitem">
+Milliff, R. F., Bonazzi, A., Wikle, C. K., Pinardi, N., &amp; Berliner, L. M. (2011). Ocean ensemble forecasting. Part i: Ensemble mediterranean winds from a bayesian hierarchical model. <em>Quarterly Journal of the Royal Meteorological Society</em>, <em>137</em>(657), 858–878.
+</div>
+<div id="ref-stevens2002entrainment" class="csl-entry" role="listitem">
+Stevens, B., Duan, J., McWilliams, J. C., Münnich, M., &amp; Neelin, J. D. (2002). Entrainment, rayleigh friction, and boundary layer winds over the tropical pacific. <em>Journal of Climate</em>, <em>15</em>(1), 30–44.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ChapterAppendixD.html" class="pagination-link" aria-label="Mechanistically Motivated Dynamic Spatio-Temporal Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Mechanistically Motivated Dynamic Spatio-Temporal Models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ChapterAppendixF.html" class="pagination-link" aria-label="Case Study: Quadratic Echo State Networks for Sea Surface Temperature Long-Lead Prediction">
+        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Case Study: Quadratic Echo State Networks for Sea Surface Temperature Long-Lead Prediction</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
