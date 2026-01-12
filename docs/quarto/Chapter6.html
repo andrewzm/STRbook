@@ -343,15 +343,7 @@ window.Quarto = {
   <li><a href="#sec-informationcriteria" id="toc-sec-informationcriteria" class="nav-link" data-scroll-target="#sec-informationcriteria"><span class="header-section-number">6.4.4</span> Information Criteria</a></li>
   </ul></li>
   <li><a href="#chapter-6-wrap-up" id="toc-chapter-6-wrap-up" class="nav-link" data-scroll-target="#chapter-6-wrap-up"><span class="header-section-number">6.5</span> Chapter 6 Wrap-Up</a></li>
-  <li><a href="#lab-6.1-spatio-temporal-model-validation" id="toc-lab-6.1-spatio-temporal-model-validation" class="nav-link" data-scroll-target="#lab-6.1-spatio-temporal-model-validation">Lab 6.1: Spatio-Temporal Model Validation</a>
-  <ul class="collapse">
-  <li><a href="#step-1-training-and-validation-data" id="toc-step-1-training-and-validation-data" class="nav-link" data-scroll-target="#step-1-training-and-validation-data">Step 1: Training and Validation Data</a></li>
-  <li><a href="#step-2-fitting-the-ide-model" id="toc-step-2-fitting-the-ide-model" class="nav-link" data-scroll-target="#step-2-fitting-the-ide-model">Step 2: Fitting the IDE Model</a></li>
-  <li><a href="#step-3-fitting-the-frk-model" id="toc-step-3-fitting-the-frk-model" class="nav-link" data-scroll-target="#step-3-fitting-the-frk-model">Step 3: Fitting the FRK Model</a></li>
-  <li><a href="#step-4-organizing-predictions-for-further-analysis" id="toc-step-4-organizing-predictions-for-further-analysis" class="nav-link" data-scroll-target="#step-4-organizing-predictions-for-further-analysis">Step 4: Organizing Predictions for Further Analysis</a></li>
-  <li><a href="#step-5-scoring" id="toc-step-5-scoring" class="nav-link" data-scroll-target="#step-5-scoring">Step 5: Scoring</a></li>
-  <li><a href="#step-6-model-comparison" id="toc-step-6-model-comparison" class="nav-link" data-scroll-target="#step-6-model-comparison">Step 6: Model Comparison</a></li>
-  </ul></li>
+  <li><a href="#lab-6.1-spatio-temporal-model-validation" id="toc-lab-6.1-spatio-temporal-model-validation" class="nav-link" data-scroll-target="#lab-6.1-spatio-temporal-model-validation">Lab 6.1: Spatio-Temporal Model Validation</a></li>
   </ul>
 </nav>
     </div>
@@ -1009,8 +1001,8 @@ Tip
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"STRbook"</span>)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="step-1-training-and-validation-data" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="step-1-training-and-validation-data">Step 1: Training and Validation Data</h3>
+<section id="step-1-training-and-validation-data" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="step-1-training-and-validation-data">Step 1: Training and Validation Data</h4>
 <p>First, we load the Sydney radar data set and create a new field <code>timeHM</code> that contains the time in an hours:minutes format.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"radar_STIDF"</span>, <span class="at">package =</span> <span class="st">"STRbook"</span>)</span>
@@ -1037,8 +1029,8 @@ Tip
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>radar_valrandom <span class="ot">&lt;-</span> radar_STIDF[valrandom_idx, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="step-2-fitting-the-ide-model" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="step-2-fitting-the-ide-model">Step 2: Fitting the IDE Model</h3>
+<section id="step-2-fitting-the-ide-model" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="step-2-fitting-the-ide-model">Step 2: Fitting the IDE Model</h4>
 <p>In Lab 5.2 we fitted the IDE model to the entire data set. Here, instead, we fit the IDE model to the training data set created above. As before, since this computation takes a long time, we can load the results directly from cache.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>IDEmodel <span class="ot">&lt;-</span> <span class="fu">IDE</span>(<span class="at">f =</span> z <span class="sc">~</span> <span class="dv">1</span>,</span>
@@ -1083,8 +1075,8 @@ Tip
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> radar_valrandom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="step-3-fitting-the-frk-model" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="step-3-fitting-the-frk-model">Step 3: Fitting the FRK Model</h3>
+<section id="step-3-fitting-the-frk-model" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="step-3-fitting-the-frk-model">Step 3: Fitting the FRK Model</h4>
 <p>For <strong>FRK</strong> we need to specify the spatial basis functions and temporal basis functions in order to construct the spatio-temporal basis functions. For the spatial basis functions we specify two resolutions of bisquare functions regularly distributed inside the domain.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>G_spatial <span class="ot">&lt;-</span> <span class="fu">auto_basis</span>(<span class="at">manifold =</span> <span class="fu">plane</span>(),     <span class="co"># fns on plane</span></span>
@@ -1140,8 +1132,8 @@ Tip
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df_random_over <span class="ot">&lt;-</span> <span class="fu">over</span>(radar_valrandom, FRK_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="step-4-organizing-predictions-for-further-analysis" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="step-4-organizing-predictions-for-further-analysis">Step 4: Organizing Predictions for Further Analysis</h3>
+<section id="step-4-organizing-predictions-for-further-analysis" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="step-4-organizing-predictions-for-further-analysis">Step 4: Organizing Predictions for Further Analysis</h4>
 <p>Having obtained our predictions and prediction standard errors from the two models, the next step is to combine them into one data frame. We take the hold-out <code>STIDF</code> from the two time points, convert it to a data frame, and then put in the FRK and IDE predictions, prediction standard errors on the process, and the prediction standard errors in observation space. We distinguish between the latter two by using the labels <code>predse</code> and <code>predZse</code>, respectively.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>radar_valblock_df <span class="ot">&lt;-</span> radar_valblock <span class="sc">%&gt;%</span></span>
@@ -1164,8 +1156,8 @@ Tip
 </div>
 <p>Construction of <code>radar_valrandom_df</code> and <code>radar_valrandom_df_long</code> proceeds in identical fashion to the code given above (with <code>block</code> replaced with <code>random</code>) and is thus omitted.</p>
 </section>
-<section id="step-5-scoring" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="step-5-scoring">Step 5: Scoring</h3>
+<section id="step-5-scoring" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="step-5-scoring">Step 5: Scoring</h4>
 <p>Now we have everything in place to start analyzing the prediction errors. We start by simply plotting histograms of the prediction errors to get an initial feel of the distributions of these errors from the two models. As before, we only show the code for the left-out data in <code>radar_valblock_df_long</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(radar_valblock_df_long) <span class="sc">+</span></span>
@@ -1427,8 +1419,8 @@ Figure&nbsp;6.13: One of the 100 simulations from the predictive distribution of
 </div>
 <p>As expected, we find that the IDE model has a lower <span class="math inline">\(VS_1\)</span> than the FRK model. Thus, the IDE model in this case has provided better probabilistic predictions than the FRK model, both marginally and jointly.</p>
 </section>
-<section id="step-6-model-comparison" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="step-6-model-comparison">Step 6: Model Comparison</h3>
+<section id="step-6-model-comparison" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="step-6-model-comparison">Step 6: Model Comparison</h4>
 <p>We conclude this Lab by evaluating the Akaike information criterion (AIC) and Bayesian information criterion (BIC) for the two models. Recall that the AIC and BIC of a model <span class="math inline">\({\cal M}_\ell\)</span> with <span class="math inline">\(p_l\)</span> parameters estimated with <span class="math inline">\(m^*\)</span> data points are given by <span class="math display">\[
 \begin{aligned}
 AIC({\cal M}_\ell) &amp;= -2 \log p(\mathbf{Z}| \widehat{\boldsymbol{\theta}}, {\cal M}_\ell) + 2p_l, \\

@@ -343,12 +343,10 @@ window.Quarto = {
 
 <p>In this section we present a specific and detailed example of how to develop a physically motivated bivariate spatio-temporal model for the purpose of predicting near-surface wind fields in the Mediterranean Sea. The implementation of this model in <code>R</code> is given below.</p>
 <p>Consider a simple analytical model for the surface wind known as the <em>Rayleigh friction equations</em> <span class="citation" data-cites="stevens2002entrainment">(e.g., <a href="references.html#ref-stevens2002entrainment" role="doc-biblioref">Stevens et al., 2002</a>)</span>:</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \frac{\partial u}{\partial t} &amp;= f v - \frac{1}{\rho_0} \frac{\partial P}{\partial x} - \gamma u, \\
 \frac{\partial v}{\partial t} &amp;= - f u - \frac{1}{\rho_0} \frac{\partial P}{\partial y} - \gamma v,
-\end{align*}
-\]</span></p>
+\end{align*}\]</span></p>
 <p>where <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> are the east–west and north–south components of the wind, respectively (recall that winds are vectors with a magnitude and direction that can be decomposed into <span class="math inline">\(x\)</span> (east–west) and <span class="math inline">\(y\)</span> (north–south) coordinates); <span class="math inline">\(f\)</span> is the Coriolis parameter; <span class="math inline">\(\rho_0\)</span> is a reference atmospheric density; <span class="math inline">\(P\)</span> is the sea-level pressure; and <span class="math inline">\(\gamma\)</span> is the Rayleigh friction parameter. Note that <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span>, and <span class="math inline">\(P\)</span> are functions of time and space. As in <a href="ChapterAppendixD.html#sec-PDEdecomp1" class="quarto-xref"><span>Section D.1</span></a>, simple forward differencing in time with <span class="math inline">\(\Delta_t = 1\)</span>, and centered differencing in space, give the analogous discretized form of these equations:</p>
 <p><span id="eq-DRFEu1"><span class="math display">\[
 \small
@@ -542,12 +540,10 @@ Note&nbsp;E.1: Gibbs Sampler for BHM of Mediterranean winds data set
 \mathbf{u}_T | \cdot \sim Gau(\mathbf{A}_{u,T} \mathbf{b}_{u,T}, \mathbf{A}_{u,T})
 \tag{E.17}\]</span></span></p>
 <p>where</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \mathbf{A}_{u,T} &amp;\equiv \left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,T}' \mathbf{H}_{s,T}/\sigma^2_s + \mathbf{I}/ \sigma^2_{u}  \right)^{-1}, \\
 \mathbf{b}_{u,T} &amp;\equiv (\mathbf{E}_{u,T}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{u,T}' \mathbf{H}_{s,T}/\sigma^2_s +   (\mathbf{c}_{u,T-1} + \theta_{uu} \mathbf{u}_{T-1})'/\sigma^2_u  )',  
-\end{align*}
-\]</span></p>
+\end{align*}\]</span></p>
 <p>with</p>
 <p><span class="math display">\[
 \mathbf{c}_{u,T-1} \equiv \theta_{uv} \mathbf{v}_{T-1} + \theta_{up} \mathbf{D}_x \mathbf{P}_{T-1}.
@@ -562,20 +558,16 @@ Note&nbsp;E.1: Gibbs Sampler for BHM of Mediterranean winds data set
 \mathbf{v}_1 | \cdot \sim Gau(\mathbf{A}_{v,1} \mathbf{b}_{v,1}, \mathbf{A}_{v,1})
 \tag{E.18}\]</span></span></p>
 <p>where</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \mathbf{A}_{v,1} &amp;\equiv \left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,1}' \mathbf{H}_{s,1}/\sigma^2_s + \theta_{uv}^2 \, \mathbf{I}/\sigma^2_u + \theta_{vv}^2 \, \mathbf{I}/\sigma^2_v +   \, \mathbf{I}/\sigma^2_{v,1}  \right)^{-1}, \\
 \mathbf{b}_{v,1} &amp;\equiv \left(\mathbf{E}_{v,1}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{v,1}' \mathbf{H}_{s,1}/\sigma^2_s +  (\mathbf{u}_2 - \mathbf{c}_{u,1})' \theta_{uv}/\sigma^2_u  \right. \\
 &amp;~~~~ \left. + (\mathbf{v}_2 - \mathbf{c}_{v,1})' \theta_{vv}/\sigma^2_v + \boldsymbol{\mu}_{v,1}'/\sigma^2_{v,1}   \right)',  
-\end{align*}
-\]</span></p>
+\end{align*}\]</span></p>
 <p>with</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \mathbf{c}_{v,1} &amp;\equiv \theta_{vu} \mathbf{u}_1  + \theta_{vp} \mathbf{D}_y \mathbf{P}_1, \\
 \mathbf{c}_{u,1} &amp;\equiv \theta_{uu} \mathbf{u}_1  + \theta_{up} \mathbf{D}_x \mathbf{P}_1.
-\end{align*}
-\]</span></p>
+\end{align*}\]</span></p>
 <ul>
 <li>Full conditional distribution for <span class="math inline">\(\mathbf{v}_t,\ t=2,\ldots,T-1\)</span>:</li>
 </ul>
@@ -586,20 +578,16 @@ Note&nbsp;E.1: Gibbs Sampler for BHM of Mediterranean winds data set
 \mathbf{v}_t | \cdot \sim Gau(\mathbf{A}_{v,t} \mathbf{b}_{v,t}, \mathbf{A}_{v,t})
 \tag{E.19}\]</span></span></p>
 <p>where</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \mathbf{A}_{v,t} \equiv &amp;\left( \mathbf{H}_e' \mathbf{H}_e/\sigma^2_e + \mathbf{H}_{s,t}' \mathbf{H}_{s,t}/\sigma^2_s + \theta_{uv}^2 \, \mathbf{I}/\sigma^2_u + \theta_{vv}^2 \, \mathbf{I}/\sigma^2_v +  \, \mathbf{I}/\sigma^2_{v}  \right)^{-1}, \\
 \mathbf{b}_{v,t} \equiv &amp;(\mathbf{E}_{v,t}' \mathbf{H}_e/\sigma^2_e + \mathbf{S}_{v,t}' \mathbf{H}_{s,t}/\sigma^2_s +  (\mathbf{u}_{t+1} - \mathbf{c}_{u,t})' \theta_{uv}/\sigma^2_u  + (\mathbf{v}_{t+1} - \mathbf{c}_{v,t})' \theta_{vv}/\sigma^2_v \\ &amp;+  (\mathbf{c}_{v,t-1} + \theta_{vv} \mathbf{v}_{t-1})'/\sigma^2_v  )',  
-\end{align*}
-\]</span></p>
+\end{align*}\]</span></p>
 <p>with</p>
-<p><span class="math display">\[
-\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \mathbf{c}_{u,t} &amp;\equiv \theta_{uu} \mathbf{u}_t  + \theta_{up} \mathbf{D}_x \mathbf{P}_t,\\
 \mathbf{c}_{v,t} &amp;\equiv \theta_{vu} \mathbf{u}_t + \theta_{vp} \mathbf{D}_y \mathbf{P}_t,\\
 \mathbf{c}_{v,t-1} &amp;\equiv \theta_{vu} \mathbf{u}_{t-1} + \theta_{vp} \mathbf{D}_y \mathbf{P}_{t-1}.
-\end{align*}
-\]</span></p>
+\end{align*}\]</span></p>
 <ul>
 <li>Full conditional distribution for <span class="math inline">\(\mathbf{v}_T\)</span>:</li>
 </ul>
